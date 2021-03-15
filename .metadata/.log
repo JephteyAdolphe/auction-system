@@ -334,3 +334,101 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2021-03-15 12:20:05.388 -----------------------------------------------
+eclipse.buildId=4.18.0.I20201202-1800
+java.version=15
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.jface 2 0 2021-03-15 12:20:20.492
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2021-03-15 12:20:20.492
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@34525143,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@126e2710,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.debug.core 4 125 2021-03-15 12:20:29.419
+!MESSAGE Error logged from Debug Core: 
+!STACK 1
+org.eclipse.core.runtime.CoreException: File not found: C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.debug.core\.launches\_HelloWorld.jsp (2).launch.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:48)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:409)
+	at org.eclipse.debug.internal.core.LaunchManager.getInfo(LaunchManager.java:1346)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.getInfo(LaunchConfiguration.java:488)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.getType(LaunchConfiguration.java:643)
+	at org.eclipse.debug.internal.core.LaunchManager.isValid(LaunchManager.java:2072)
+	at org.eclipse.debug.internal.core.LaunchManager.verifyConfigurations(LaunchManager.java:2440)
+	at org.eclipse.debug.internal.core.LaunchManager.getAllLaunchConfigurations(LaunchManager.java:1130)
+	at org.eclipse.debug.internal.core.LaunchManager.getLaunchConfigurations(LaunchManager.java:1432)
+	at org.eclipse.debug.internal.core.LaunchManager.getLaunchConfigurations(LaunchManager.java:1427)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.restoreHistory(LaunchConfigurationManager.java:564)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.restoreLaunchHistory(LaunchConfigurationManager.java:534)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.loadLaunchHistories(LaunchConfigurationManager.java:1052)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.getLaunchHistory(LaunchConfigurationManager.java:1024)
+	at org.eclipse.debug.ui.actions.AbstractLaunchHistoryAction.internalGetHistory(AbstractLaunchHistoryAction.java:549)
+	at org.eclipse.debug.ui.actions.AbstractLaunchHistoryAction.getToolTip(AbstractLaunchHistoryAction.java:240)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1764)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1756)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)
+Caused by: java.io.FileNotFoundException: C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.debug.core\.launches\_HelloWorld.jsp (2).launch (The system cannot find the file specified)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:211)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:153)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:404)
+	... 21 more
+!SUBENTRY 1 org.eclipse.core.filesystem 4 269 2021-03-15 12:20:29.420
+!MESSAGE File not found: C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.debug.core\.launches\_HelloWorld.jsp (2).launch.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.debug.core\.launches\_HelloWorld.jsp (2).launch (The system cannot find the file specified)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:211)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:153)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.openInputStream(LocalFile.java:404)
+	at org.eclipse.debug.internal.core.LaunchManager.getInfo(LaunchManager.java:1346)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.getInfo(LaunchConfiguration.java:488)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.getType(LaunchConfiguration.java:643)
+	at org.eclipse.debug.internal.core.LaunchManager.isValid(LaunchManager.java:2072)
+	at org.eclipse.debug.internal.core.LaunchManager.verifyConfigurations(LaunchManager.java:2440)
+	at org.eclipse.debug.internal.core.LaunchManager.getAllLaunchConfigurations(LaunchManager.java:1130)
+	at org.eclipse.debug.internal.core.LaunchManager.getLaunchConfigurations(LaunchManager.java:1432)
+	at org.eclipse.debug.internal.core.LaunchManager.getLaunchConfigurations(LaunchManager.java:1427)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.restoreHistory(LaunchConfigurationManager.java:564)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.restoreLaunchHistory(LaunchConfigurationManager.java:534)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.loadLaunchHistories(LaunchConfigurationManager.java:1052)
+	at org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager.getLaunchHistory(LaunchConfigurationManager.java:1024)
+	at org.eclipse.debug.ui.actions.AbstractLaunchHistoryAction.internalGetHistory(AbstractLaunchHistoryAction.java:549)
+	at org.eclipse.debug.ui.actions.AbstractLaunchHistoryAction.getToolTip(AbstractLaunchHistoryAction.java:240)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1764)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1756)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)
+
+!ENTRY org.eclipse.egit.ui 2 0 2021-03-15 12:20:41.918
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\JA1999'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.

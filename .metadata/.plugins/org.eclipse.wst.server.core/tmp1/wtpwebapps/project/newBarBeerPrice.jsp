@@ -21,8 +21,8 @@
 		Statement stmt = con.createStatement();
 
 		//Get parameters from the HTML form at the index.jsp
-		String newBar = request.getParameter("username");
-		String newBeer = request.getParameter("password");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 
 
 		//Make an insert statement for the Sells table:

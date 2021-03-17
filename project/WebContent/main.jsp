@@ -19,7 +19,7 @@
          Log In
       </p>
 		</div>
-		<form method="get" action="LogIn.jsp">
+		<form method="post" action="dashboard.jsp">
 		<div class="inputs"> 
 			<table>
 				<tr>    
@@ -30,7 +30,6 @@
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Password:</p></td><td><input type="text" name="password"></td>
 				</tr>
-				
 			</table>
 			</div>
 			<div class="submit">
@@ -38,33 +37,32 @@
 			</div>
 		</form>
 	<br>
+	
+	<%-- Maybe present user with an alert message (for successful account creation or failure message) 
+	instead of redirecting them. Only redirect if they have a valid account and successfully log in.--%>
 	<div class="Login">
 	<p style="font-family:georgia,garamond,serif;font-size:24px;font-style:bold;color:white;">
          Create Account
       </p>
 	</div>
-		<form method="get" action="CreateAccount.jsp">
+		<form method="get" action="accountCreation.jsp">
 		<div class="inputs">
 			<table>
-			
 				<tr>    
-					 <td> <p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
+					<td> <p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Username:</p> </td> <td><input type="text" name="account_id"></td>
 				</tr>
 				<tr>
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Password:</p></td><td><input type="text" name="password"></td>
 				</tr>
-				
 			</table>
 			</div>
 			<div class="submit">
-			<input type="submit" value="Log In">
+			<input type="submit" value="Create">
 			</div>
 		</form>
-		
 	<br>
-	
 
 </body>
 </html>

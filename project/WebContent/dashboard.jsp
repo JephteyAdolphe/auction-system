@@ -14,35 +14,6 @@
 	try {
 		// LOG IN
 
-		/*Connection con = db.getConnection();
-
-		//Create a SQL statement
-		//Statement stmt = con.createStatement();
-
-		//Get parameters (username and password) from the HTML form at the HelloWorld.jsp (should rename)
-		String accountID = request.getParameter("account_id");
-		String password = request.getParameter("passwd");
-
-
-		//Check if account exists:
-		String getAccount = "select * from account where account_id = ? and password = ?";
-		//Create a Prepared SQL statement allowing you to introduce the parameters of the query
-		PreparedStatement ps = con.prepareStatement(getAccount);
-
-		//Add parameters of the query. Start with 1, the 0-parameter is the SELECT statement itself
-		ps.setString(1, accountID);
-		ps.setString(2, password);
-		
-		//Run the query against the DB
-		ResultSet rs = ps.executeQuery(getAccount);
-		out.println(rs.getString(0));
-		out.println("Logged In");
-		out.println(accountID);
-		out.println(password);
-
-		//Close the connection. Don't forget to do it, otherwise you're keeping the resources of the server allocated.
-		con.close();*/
-
 		//Get the database connection
 		ApplicationDB db = new ApplicationDB();	
 		

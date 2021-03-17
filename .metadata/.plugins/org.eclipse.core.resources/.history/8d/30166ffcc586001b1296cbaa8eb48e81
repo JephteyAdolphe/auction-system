@@ -45,7 +45,7 @@
          Create Account
       </p>
 	</div>
-		<form method="post" <%
+		<form method="get" <%
 				try {
 					// Sign Up
 

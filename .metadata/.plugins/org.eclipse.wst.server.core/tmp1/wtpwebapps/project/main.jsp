@@ -45,7 +45,22 @@
          Create Account
       </p>
 	</div>
-		<form method="get" action="accountCreation.jsp">
+		<form method="post" <%
+				try {
+					// Sign Up
+
+					//Get the database connection
+					ApplicationDB db = new ApplicationDB();
+					if (db.createAccount(request.getParameter("account_id"), request.getParameter("password"))) {
+						out.println("Account Successfully Created!");
+					} else{
+						out.println("Could not create account :(");
+					}
+					
+				} catch (Exception ex) {
+					out.println(ex);
+				}
+		%>>
 		<div class="inputs">
 			<table>
 				<tr>    

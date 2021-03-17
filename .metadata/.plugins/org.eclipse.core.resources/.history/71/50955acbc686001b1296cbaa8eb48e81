@@ -68,11 +68,7 @@ public class ApplicationDB {
 	public boolean accountExists(String givenAccountID, String givenPassword){
 		try {
 			// Log In
-			
-			if (givenAccountID == null || givenPassword == null) {
-				return false;
-			}
-			
+
 			//Get the database connection
 			Connection con = this.getConnection();
 
@@ -114,11 +110,7 @@ public class ApplicationDB {
 	public boolean createAccount(String givenAccountID, String givenPassword){
 		try {
 			// Sign Up
-			
-			if (givenAccountID == null || givenPassword == null) {
-				return false;
-			}
-			
+
 			//Get the database connection
 			Connection con = this.getConnection();
 

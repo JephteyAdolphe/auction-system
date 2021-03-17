@@ -69,8 +69,8 @@ public class ApplicationDB {
 		try {
 			// Log In
 			
-			if (givenAccountID == null || givenPassword == null) {
-				return false;
+			if (givenAccountID.trim().equals("") || givenPassword.trim().equals("")) {
+				throw new Exception();
 			}
 			
 			//Get the database connection
@@ -114,11 +114,7 @@ public class ApplicationDB {
 	public boolean createAccount(String givenAccountID, String givenPassword){
 		try {
 			// Sign Up
-			
-			if (givenAccountID == null || givenPassword == null) {
-				return false;
-			}
-			
+
 			//Get the database connection
 			Connection con = this.getConnection();
 

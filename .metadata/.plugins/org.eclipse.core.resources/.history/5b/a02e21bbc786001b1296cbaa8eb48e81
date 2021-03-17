@@ -70,7 +70,7 @@ public class ApplicationDB {
 			// Log In
 			
 			if (givenAccountID == null || givenPassword == null) {
-				return false;
+				throw new Exception();
 			}
 			
 			//Get the database connection
@@ -116,7 +116,7 @@ public class ApplicationDB {
 			// Sign Up
 			
 			if (givenAccountID == null || givenPassword == null) {
-				return false;
+				throw new Exception();
 			}
 			
 			//Get the database connection

@@ -58,11 +58,5 @@
 	}
 %>
 <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
-<button onclick="goBack()">Go Back</button>
-<script>
-function goBack() {
-  window.history.back();
-}
-</script>
 </body>
 </html>

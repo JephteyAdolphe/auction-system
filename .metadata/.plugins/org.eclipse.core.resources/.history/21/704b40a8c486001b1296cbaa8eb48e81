@@ -19,7 +19,7 @@
          Log In
       </p>
 		</div>
-		<form method="post" action="dashboard.jsp">
+		<form method="post" action="">
 		<div class="inputs"> 
 			<table>
 				<tr>    
@@ -45,22 +45,7 @@
          Create Account
       </p>
 	</div>
-		<form method="post" <%
-				try {
-					// Sign Up
-
-					//Get the database connection
-					ApplicationDB db = new ApplicationDB();
-					if (db.createAccount(request.getParameter("account_id"), request.getParameter("password"))) {
-						out.println("Account Successfully Created!");
-					} else{
-						out.println("Could not create account :(");
-					}
-					
-				} catch (Exception ex) {
-					out.println(ex);
-				}
-		%>>
+		<form method="get" action="accountCreation.jsp">
 		<div class="inputs">
 			<table>
 				<tr>    

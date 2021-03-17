@@ -18,18 +18,14 @@
 		ApplicationDB db = new ApplicationDB();
 		if (db.createAccount(request.getParameter("account_id"), request.getParameter("password"))) {
 			out.println("Account Successfully Created!");
+		} else{
+			out.println("Could not create account :(");
 		}
-		out.println("Could not create account :(");
 		
 	} catch (Exception ex) {
-		System.out.println(ex);
+		out.println(ex);
 	}
 %>
-<button onclick="goBack()">Go Back</button>
-<script>
-function goBack() {
-  window.history.back();
-}
-</script>
+<form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
 </body>
 </html>

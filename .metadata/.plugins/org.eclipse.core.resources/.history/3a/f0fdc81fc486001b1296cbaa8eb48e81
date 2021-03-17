@@ -15,7 +15,7 @@ public class ApplicationDB {
 	public Connection getConnection(){
 		
 		//Create a connection string
-		String connectionUrl = "jdbc:mysql://localhost:3306/project";	// project is the database created in mysql
+		String connectionUrl = "jdbc:mysql://localhost:3306/project";	// project is the databse created in mysql
 		Connection connection = null;
 		
 		try {
@@ -68,11 +68,7 @@ public class ApplicationDB {
 	public boolean accountExists(String givenAccountID, String givenPassword){
 		try {
 			// Log In
-			
-			if (givenAccountID == null || givenPassword == null) {
-				return false;
-			}
-			
+
 			//Get the database connection
 			Connection con = this.getConnection();
 
@@ -114,11 +110,7 @@ public class ApplicationDB {
 	public boolean createAccount(String givenAccountID, String givenPassword){
 		try {
 			// Sign Up
-			
-			if (givenAccountID == null || givenPassword == null) {
-				return false;
-			}
-			
+
 			//Get the database connection
 			Connection con = this.getConnection();
 

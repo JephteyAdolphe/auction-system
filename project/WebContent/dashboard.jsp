@@ -21,7 +21,7 @@
 		if (db.accountExists(request.getParameter("account_id"), request.getParameter("password"))) {
 			System.out.println("Account matches");
 		} else {
-			throw new Exception("nooo");
+			response.sendRedirect("wrong.jsp");
 		}
 		
 	} catch (Exception ex) {

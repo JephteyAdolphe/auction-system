@@ -46,22 +46,8 @@
          Create Account
       </p>
 	</div>
-		<form method="post" <%
-				try {
-					// Sign Up
-
-					//Get the database connection
-					ApplicationDB db = new ApplicationDB();
-					if (db.createAccount(request.getParameter("account_id"), request.getParameter("password"))) {
-						out.println("Account Successfully Created!");
-					} else{
-						out.println("Could not create account :(");
-					}
-					
-				} catch (Exception ex) {
-					out.println(ex);
-				}
-		%>>
+		<form method="post" action="auctionServlet">
+		<input type="hidden" name="create_user_form" value="123jksdj">
 		<div class="inputs">
 			<table>
 				<tr>    

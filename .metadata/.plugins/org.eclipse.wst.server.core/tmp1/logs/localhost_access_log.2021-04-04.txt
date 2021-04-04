@@ -210,3 +210,8 @@
 0:0:0:0:0:0:0:1 - - [04/Apr/2021:10:49:02 -0400] "GET /project/createListing.jsp HTTP/1.1" 200 4201
 0:0:0:0:0:0:0:1 - - [04/Apr/2021:10:49:34 -0400] "POST /project/auctionServlet HTTP/1.1" 302 -
 0:0:0:0:0:0:0:1 - - [04/Apr/2021:10:49:34 -0400] "GET /project/dashboard.jsp HTTP/1.1" 200 519
+127.0.0.1 - - [04/Apr/2021:12:12:28 -0400] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [04/Apr/2021:12:12:32 -0400] "GET /project/main.jsp HTTP/1.1" 200 1976
+0:0:0:0:0:0:0:1 - - [04/Apr/2021:12:12:41 -0400] "POST /project/auctionServlet HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [04/Apr/2021:12:12:41 -0400] "GET /project/wrong.jsp HTTP/1.1" 200 479
+0:0:0:0:0:0:0:1 - - [04/Apr/2021:12:12:46 -0400] "GET /project/main.jsp HTTP/1.1" 200 1976

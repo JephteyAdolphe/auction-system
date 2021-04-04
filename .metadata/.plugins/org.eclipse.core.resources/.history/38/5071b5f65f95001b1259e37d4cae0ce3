@@ -77,22 +77,6 @@ public class AuctionServlet extends HttpServlet {
 				response.sendRedirect("wrong.jsp");
 			}
 			
-		} else if (request.getParameter("create_user_form") != null){
-			try {
-				// Sign Up
-
-				// If account creation is successful then user is sent to the main login page else they are sent to an error page
-				if (db.createAccount(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
-					System.out.println("Account Successfully Created!");
-					response.sendRedirect("main.jsp");
-				} else{
-					response.sendRedirect("wrong.jsp");
-				}
-				
-			} catch (Exception ex) {
-				response.sendRedirect("wrong.jsp");
-			}
-			
 		} else {System.out.println("No form was submitted");}		
 	}
 

@@ -10,24 +10,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%
-	try {
-		// LOG IN
 
-		//Get the database connection
-		ApplicationDB db = new ApplicationDB();	
-		
-		// Checks if the given account id and password exists in the user account table
-		if (db.accountExists(request.getParameter("account_id"), request.getParameter("password"))) {
-			System.out.println("Account matches");
-		} else {
-			response.sendRedirect("wrong.jsp");
-		}
-		
-	} catch (Exception ex) {
-		System.out.println(ex);
-	}
-%>
 <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
+<form method="get" action="createListing.jsp"><input type="submit" value="Create A Listing"></form>
+
 </body>
 </html>

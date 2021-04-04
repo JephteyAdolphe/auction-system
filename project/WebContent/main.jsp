@@ -19,7 +19,8 @@
          Log In
       </p>
 		</div>
-		<form method="post" action="dashboard.jsp">
+		<form method="post" action="auctionServlet">
+		<input type="hidden" name="login_form" value="123jksdj">
 		<div class="inputs"> 
 			<table>
 				<tr>    

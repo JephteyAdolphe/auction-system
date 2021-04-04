@@ -54,10 +54,6 @@ public class ApplicationDB {
 		}
 	}
 	
-	
-	
-	
-	
 	public static void main(String[] args) {
 		ApplicationDB dao = new ApplicationDB();
 		Connection connection = dao.getConnection();
@@ -116,14 +112,12 @@ public class ApplicationDB {
 	public boolean createAccount(String givenAccountID, String givenPassword){
 		try {
 			// Sign Up
-			String id = givenAccountID.trim();
-			String pass = givenAccountID.trim();
 			
-			if (id.equals("") || pass.equals("")) {
+			if (givenAccountID.equals("") || givenPassword.equals("")) {
 				return false;
 			}
 			
-			if (accountIsValid(id)) {
+			if (accountIsValid(givenAccountID)) {
 				return false;
 			} else {
 			
@@ -134,9 +128,9 @@ public class ApplicationDB {
 				Statement stmt = con.createStatement();
 	
 				// Forms sql insert query with given account id and password
-				String sql = String.format("insert into account values ('%s', 0, '%s')", id, pass);
-				String sellerSQL = String.format("insert into seller values ('%s')", id);
-				String buyerSQL = String.format("insert into buyer values ('%s')", id);
+				String sql = String.format("insert into account values ('%s', 0, '%s')", givenAccountID, givenPassword);
+				String sellerSQL = String.format("insert into seller values ('%s')", givenAccountID);
+				String buyerSQL = String.format("insert into buyer values ('%s')", givenAccountID);
 				
 				//Run the query against the DB
 				stmt.executeUpdate(sql);
@@ -159,20 +153,20 @@ public class ApplicationDB {
 				String bidIncrement, String startPrice, String startDate, String startTime, String endDate, String endTime, String minPrice){
 			try {
 				
-				if (startDate.trim().equals("") || endDate.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") ||
-						bidIncrement.trim().equals("") || startPrice.trim().equals("") || accountID.trim().equals("")) {
+				if (startDate.equals("") || endDate.equals("") || startTime.equals("") || endTime.equals("") ||
+						bidIncrement.equals("") || startPrice.equals("") || accountID.equals("")) {
 					return false;
 				}
 				
 				// Checks if a valid account id is submitted when creating listing... should be obtained from session object though
-				if (!accountIsValid(accountID.trim())) return false;
+				if (!accountIsValid(accountID)) return false;
 				
 				// Parses date and time submitted
-				String[] startD = startDate.trim().split("/");
-				String[] endD = endDate.trim().split("/");
+				String[] startD = startDate.split("/");
+				String[] endD = endDate.split("/");
 				
-				String[] startT = startTime.trim().split(":");
-				String[] endT = endTime.trim().split(":");
+				String[] startT = startTime.split(":");
+				String[] endT = endTime.split(":");
 				
 				String startDateTime = startD[2] + "-" + startD[0] + "-" + startD[1] + " " + startT[0] + ":" + startT[1] + ":" + startT[2];
 				String endDateTime = endD[2] + "-" + endD[0] + "-" + endD[1] + " " + endT[0] + ":" + endT[1] + ":" + endT[2];		
@@ -186,13 +180,13 @@ public class ApplicationDB {
 				
 				if (itemType.equals("Tops")) {
 					category = "tops";
-					size = clothingSize.trim();
+					size = clothingSize;
 				} else if (itemType.equals("Bottoms")) {
 					category = "bottoms";
-					size = clothingSize.trim();
+					size = clothingSize;
 				} else {
 					category = "shoes";
-					size = shoeSize.trim();
+					size = shoeSize;
 				}
 								
 				//Get the database connection
@@ -232,10 +226,10 @@ public class ApplicationDB {
 				
 				// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
 				String clothingSQL = String.format("insert into clothing (cid, brand, bid_increment,"
-						+ "cur_price, start_price) values (%d, '%s', %f, %f, %f)", cid, brand.trim(), Float.parseFloat(bidIncrement), Float.parseFloat(startPrice), Float.parseFloat(startPrice));
+						+ "cur_price, start_price) values (%d, '%s', %f, %f, %f)", cid, brand, Float.parseFloat(bidIncrement), Float.parseFloat(startPrice), Float.parseFloat(startPrice));
 				
 				String sellsSQL = String.format("insert into sells (account_id, cid, minimum, start_date,"
-						+ "end_date) values ('%s', %d, %f, '%s', '%s')", accountID.trim(), cid,
+						+ "end_date) values ('%s', %d, %f, '%s', '%s')", accountID, cid,
 						Float.parseFloat(minPrice), startDateTime, endDateTime);
 				
 				String categorySQL = String.format("insert into %s (cid, category, size) values (%d, '%s', '%s')", category, cid, category, size);
@@ -257,7 +251,7 @@ public class ApplicationDB {
 		public boolean accountIsValid(String accountID) {
 			try {
 				
-				if (accountID.trim().equals("")) {
+				if (accountID.equals("")) {
 					return false;
 				}
 				

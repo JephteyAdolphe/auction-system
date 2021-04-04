@@ -40,15 +40,41 @@ public class AuctionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+        /*String action = request.getParameter("action");
+        System.out.println(action);
+        //using if assuming you work with Java SE 6
+        if (CreateAccount.equals(action)) {
+            db.createAccount(action, action);
+        	//add(request, response);
+        } else if (CreateListing.equals(action)) {
+            if (db.createListing(request.getParameter("brand"), request.getParameter("item_type"), request.getParameter("clothing_size"), request.getParameter("shoe_size"),
+            		request.getParameter("bid_increment"), request.getParameter("start_price"), request.getParameter("start_date"), request.getParameter("start_time"),
+            		request.getParameter("end_date"), request.getParameter("end_time"), request.getParameter("min_price"))) {
+            	System.out.println("yayyy");
+            	response.setContentType("text/plain");  
+            	response.setCharacterEncoding("UTF-8");
+            	response.getWriter().write("hello world"); 
+            } else {
+            	System.out.println("noooooooooooo");
+            	response.setContentType("text/plain");  
+            	response.setCharacterEncoding("UTF-8");
+            	response.getWriter().write("hkhsdkhd"); 
+            }
+        } else {
+            //submitted action can't be interpreted
+            //or no action was submitted
+            //errorForward(request, response);
+        	System.out.println("submitted action can't be interpreted");
+        }*/
 		
 		// Checks which form called the POST method
 		
 		if (request.getParameter("listing_form") != null) {
 			try {
 				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
-				if (db.createListing(request.getParameter("brand").trim(), request.getParameter("item_type").trim(), request.getParameter("clothing_size").trim(), request.getParameter("shoe_size").trim(),
-						request.getParameter("account").trim(), request.getParameter("bid_increment").trim(), request.getParameter("start_price").trim(), request.getParameter("start_date").trim(), request.getParameter("start_time").trim(),
-		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
+				if (db.createListing(request.getParameter("brand"), request.getParameter("item_type"), request.getParameter("clothing_size"), request.getParameter("shoe_size"),
+						request.getParameter("account"), request.getParameter("bid_increment"), request.getParameter("start_price"), request.getParameter("start_date"), request.getParameter("start_time"),
+		        		request.getParameter("end_date"), request.getParameter("end_time"), request.getParameter("min_price"))) {
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
 		        	response.sendRedirect("invalidListing.jsp");
@@ -65,7 +91,7 @@ public class AuctionServlet extends HttpServlet {
 				// LOG IN
 				
 				// Checks if the given account id and password exists in the user account table
-				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
+				if (db.accountExists(request.getParameter("account_id"), request.getParameter("password"))) {
 					System.out.println("Account matches");
 					response.sendRedirect("dashboard.jsp");
 				} else {

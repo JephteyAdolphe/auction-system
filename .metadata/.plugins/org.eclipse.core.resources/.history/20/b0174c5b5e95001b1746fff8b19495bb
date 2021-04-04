@@ -116,26 +116,37 @@ public class ApplicationDB {
 	public boolean createAccount(String givenAccountID, String givenPassword){
 		try {
 			// Sign Up
+			String id = givenAccountID.trim();
+			String pass = givenAccountID.trim();
 			
-			if (givenAccountID == null || givenPassword == null) {
+			if (id.equals("") || pass.equals("")) {
 				return false;
 			}
 			
-			//Get the database connection
-			Connection con = this.getConnection();
-
-			//Create a SQL statement
-			Statement stmt = con.createStatement();
-
-			// Forms sql insert query with given account id and password
-			String sql = String.format("insert into account values ('%s', 0, '%s')", givenAccountID, givenPassword);
+			if (accountIsValid(id)) {
+				return false;
+			} else {
 			
-			//Run the query against the DB
-			stmt.executeUpdate(sql);
-
-			//Close the connection with no account match
-			con.close();
-			return true;
+				//Get the database connection
+				Connection con = this.getConnection();
+	
+				//Create a SQL statement
+				Statement stmt = con.createStatement();
+	
+				// Forms sql insert query with given account id and password
+				String sql = String.format("insert into account values ('%s', 0, '%s')", id, pass);
+				String sellerSQL = String.format("insert into seller values ('%s')", id);
+				String buyerSQL = String.format("insert into buyer values ('%s')", id);
+				
+				//Run the query against the DB
+				stmt.executeUpdate(sql);
+				stmt.executeUpdate(sellerSQL);
+				stmt.executeUpdate(buyerSQL);
+	
+				//Close the connection with no account match
+				con.close();
+				return true;
+			}
 								
 		} catch (Exception ex) {
 			System.out.println(ex);
@@ -143,31 +154,47 @@ public class ApplicationDB {
 		}
 	}
 	
-		// Converts the form submitted by the seller into an item listing
-		public boolean createListing(String brand, String itemType, String clothingSize, String shoeSize,
+		// Converts the form submitted by the seller into an item listing - returns true if query went through
+		public boolean createListing(String brand, String itemType, String clothingSize, String shoeSize, String accountID,
 				String bidIncrement, String startPrice, String startDate, String startTime, String endDate, String endTime, String minPrice){
 			try {
 				
 				if (startDate.trim().equals("") || endDate.trim().equals("") || startTime.trim().equals("") || endTime.trim().equals("") ||
-						bidIncrement.trim().equals("") || startPrice.trim().equals("")) {
-					//throw new Exception();
+						bidIncrement.trim().equals("") || startPrice.trim().equals("") || accountID.trim().equals("")) {
 					return false;
 				}
-				System.out.println(brand);
-				System.out.println(itemType);
-				System.out.println(clothingSize);
-				System.out.println(shoeSize);
-				System.out.println(bidIncrement);
-				System.out.println(startPrice);
-				System.out.println(startDate);
-				System.out.println(startTime);
-				System.out.println(endDate);
-				System.out.println(endTime);
-				System.out.println(minPrice);
-				return true;
-				/*
+				
+				// Checks if a valid account id is submitted when creating listing... should be obtained from session object though
+				if (!accountIsValid(accountID.trim())) return false;
+				
+				// Parses date and time submitted
+				String[] startD = startDate.trim().split("/");
+				String[] endD = endDate.trim().split("/");
+				
+				String[] startT = startTime.trim().split(":");
+				String[] endT = endTime.trim().split(":");
+				
+				String startDateTime = startD[2] + "-" + startD[0] + "-" + startD[1] + " " + startT[0] + ":" + startT[1] + ":" + startT[2];
+				String endDateTime = endD[2] + "-" + endD[0] + "-" + endD[1] + " " + endT[0] + ":" + endT[1] + ":" + endT[2];		
+				
+				// Have to check that start date/time is before end date/time
 				
 				
+				// Notes item type that is being listed
+				String category = null;
+				String size = null;
+				
+				if (itemType.equals("Tops")) {
+					category = "tops";
+					size = clothingSize.trim();
+				} else if (itemType.equals("Bottoms")) {
+					category = "bottoms";
+					size = clothingSize.trim();
+				} else {
+					category = "shoes";
+					size = shoeSize.trim();
+				}
+								
 				//Get the database connection
 				Connection con = this.getConnection();
 				
@@ -200,18 +227,67 @@ public class ApplicationDB {
 							continue;
 						}
 					}
-								
+					rs.close();			
 				}
-				// Forms sql insert query for Clothing and Sells tables with data
-				String clothingSQL = String.format("insert into clothing () values ()");
-				String sellsSQL = String.format("insert into sells () values ()");
 				
+				// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
+				String clothingSQL = String.format("insert into clothing (cid, brand, bid_increment,"
+						+ "cur_price, start_price) values (%d, '%s', %f, %f, %f)", cid, brand.trim(), Float.parseFloat(bidIncrement), Float.parseFloat(startPrice), Float.parseFloat(startPrice));
 				
+				String sellsSQL = String.format("insert into sells (account_id, cid, minimum, start_date,"
+						+ "end_date) values ('%s', %d, %f, '%s', '%s')", accountID.trim(), cid,
+						Float.parseFloat(minPrice), startDateTime, endDateTime);
+				
+				String categorySQL = String.format("insert into %s (cid, category, size) values (%d, '%s', '%s')", category, cid, category, size);
+				
+				stmt.executeUpdate(clothingSQL);
+				stmt.executeUpdate(categorySQL);
+				stmt.executeUpdate(sellsSQL);
+				
+				//Close the connection with no account match
+				con.close();
+				return true;
+													
+			} catch (Exception ex) {
+				System.out.println(ex);
+				return false;
+			}
+		}
+		
+		public boolean accountIsValid(String accountID) {
+			try {
+				
+				if (accountID.trim().equals("")) {
+					return false;
+				}
+				
+				//Get the database connection
+				Connection con = this.getConnection();
+
+				//Create a SQL statement
+				Statement stmt = con.createStatement();
+
+				// Forms sql select query with given account id
+				String sql = String.format("select account_id from account where account_id = '%s'", accountID);
+				
+				//Run the query against the DB and retrieves accounts
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				// Iterates through the returned rows (should only be 1 row) to see if if the account exists
+				while (rs.next()) {
+					if (rs.getString("account_id").equals(accountID)) {
+						con.close();
+						rs.close();
+						return true;
+					} else {
+						continue;
+					}
+				}
+
 				//Close the connection with no account match
 				rs.close();
 				con.close();
-				
-				*/
+				return false;
 									
 			} catch (Exception ex) {
 				System.out.println(ex);

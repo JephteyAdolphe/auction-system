@@ -46,9 +46,9 @@ public class AuctionServlet extends HttpServlet {
 		if (request.getParameter("listing_form") != null) {
 			try {
 				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
-				if (db.createListing(request.getParameter("brand").trim(), request.getParameter("item_type").trim(), request.getParameter("clothing_size").trim(), request.getParameter("shoe_size").trim(),
-						request.getParameter("account").trim(), request.getParameter("bid_increment").trim(), request.getParameter("start_price").trim(), request.getParameter("start_date").trim(), request.getParameter("start_time").trim(),
-		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
+				if (db.createListing(request.getParameter("brand"), request.getParameter("item_type"), request.getParameter("clothing_size"), request.getParameter("shoe_size"),
+						request.getParameter("account"), request.getParameter("bid_increment"), request.getParameter("start_price"), request.getParameter("start_date"), request.getParameter("start_time"),
+		        		request.getParameter("end_date"), request.getParameter("end_time"), request.getParameter("min_price"))) {
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
 		        	response.sendRedirect("invalidListing.jsp");
@@ -65,7 +65,7 @@ public class AuctionServlet extends HttpServlet {
 				// LOG IN
 				
 				// Checks if the given account id and password exists in the user account table
-				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
+				if (db.accountExists(request.getParameter("account_id"), request.getParameter("password"))) {
 					System.out.println("Account matches");
 					response.sendRedirect("dashboard.jsp");
 				} else {

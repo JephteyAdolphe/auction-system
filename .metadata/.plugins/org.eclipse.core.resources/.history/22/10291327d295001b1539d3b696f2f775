@@ -46,7 +46,7 @@ public class AuctionServlet extends HttpServlet {
 		if (request.getParameter("listing_form") != null) {
 			try {
 				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
-				if (db.createListing(request.getParameter("brand").trim(), request.getParameter("item_type"), request.getParameter("clothing_size"), request.getParameter("shoe_size"),
+				if (db.createListing(request.getParameter("brand").trim(), request.getParameter("item_type").trim(), request.getParameter("clothing_size").trim(), request.getParameter("shoe_size").trim(),
 						request.getParameter("account").trim(), request.getParameter("bid_increment").trim(), request.getParameter("start_price").trim(), request.getParameter("start_date").trim(), request.getParameter("start_time").trim(),
 		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
 		        	response.sendRedirect("dashboard.jsp");

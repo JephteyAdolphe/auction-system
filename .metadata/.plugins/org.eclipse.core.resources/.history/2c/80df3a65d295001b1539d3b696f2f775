@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.sql.*;
 import java.io.*;
 import java.util.Random;
-import java.util.Date;
 
 public class ApplicationDB {
 	

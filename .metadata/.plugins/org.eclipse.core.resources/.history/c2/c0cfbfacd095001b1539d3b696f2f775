@@ -1,11 +1,12 @@
 package com.cs336.pkg;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.*;
 import java.io.*;
 import java.util.Random;
-import java.util.Date;
 
 public class ApplicationDB {
 	
@@ -100,7 +101,8 @@ public class ApplicationDB {
 			return false;
 								
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			System.out.println(ex);
+			//System.out.println("Account Does Not Exist");
 			return false;
 		}
 	}
@@ -141,7 +143,7 @@ public class ApplicationDB {
 			}
 								
 		} catch (Exception ex) {
-			ex.printStackTrace();;
+			System.out.println(ex);
 			return false;
 		}
 	}
@@ -169,8 +171,7 @@ public class ApplicationDB {
 				String startDateTime = startD[2] + "-" + startD[0] + "-" + startD[1] + " " + startT[0] + ":" + startT[1] + ":" + startT[2];
 				String endDateTime = endD[2] + "-" + endD[0] + "-" + endD[1] + " " + endT[0] + ":" + endT[1] + ":" + endT[2];		
 				
-				// Checks that start date/time is before end date/time
-				if (!compareDates(startDateTime, endDateTime)) return false;
+				// Have to check that start date/time is before end date/time
 				
 				
 				// Notes item type that is being listed
@@ -247,7 +248,7 @@ public class ApplicationDB {
 			}
 		}
 		
-		private boolean accountIsValid(String accountID) {
+		public boolean accountIsValid(String accountID) {
 			try {
 				
 				if (accountID.equals("")) {
@@ -283,41 +284,9 @@ public class ApplicationDB {
 				return false;
 									
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				System.out.println(ex);
 				return false;
 			}
 		}
 		
-		private static boolean compareDates(String d1,String d2)
-	    {
-	        try{
-	            // If you already have date objects then skip 1
-
-	            //1
-	            // Create 2 dates starts
-	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	            Date date1 = (Date) sdf.parse(d1);
-	            Date date2 = (Date) sdf.parse(d2);
-
-	            // Date object is having 3 methods namely after,before and equals for comparing
-	            // after() will return false if date1 is after date 2
-	            if(date1.after(date2)){
-	                return false;
-	            }
-	            // before() will return true if and only if date1 is before date2
-	            if(date1.before(date2)){
-	                return true;
-	            }
-
-	            //equals() returns false if both the dates are equal
-	            if(date1.equals(date2)){
-	                return false;
-	            }
-	            return false;
-	        }
-	        catch(ParseException ex){
-	            ex.printStackTrace();
-	            return false;
-	        }
-	    }
 }

@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.sql.*;
 import java.io.*;
 import java.util.Random;
-import java.util.Date;
 
 public class ApplicationDB {
 	
@@ -100,7 +99,8 @@ public class ApplicationDB {
 			return false;
 								
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			System.out.println(ex);
+			//System.out.println("Account Does Not Exist");
 			return false;
 		}
 	}
@@ -141,7 +141,7 @@ public class ApplicationDB {
 			}
 								
 		} catch (Exception ex) {
-			ex.printStackTrace();;
+			System.out.println(ex);
 			return false;
 		}
 	}
@@ -170,7 +170,7 @@ public class ApplicationDB {
 				String endDateTime = endD[2] + "-" + endD[0] + "-" + endD[1] + " " + endT[0] + ":" + endT[1] + ":" + endT[2];		
 				
 				// Checks that start date/time is before end date/time
-				if (!compareDates(startDateTime, endDateTime)) return false;
+				compareDates(startDateTime, endDateTime);
 				
 				
 				// Notes item type that is being listed
@@ -283,7 +283,7 @@ public class ApplicationDB {
 				return false;
 									
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				System.out.println(ex);
 				return false;
 			}
 		}

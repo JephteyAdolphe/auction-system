@@ -8,6 +8,6 @@
     <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-15"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="start"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dcatalina.base=&quot;C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.wst.server.core\tmp1&quot; -Dcatalina.home=&quot;C:\Program Files\Apache Software Foundation\Tomcat 10.0&quot; -Dwtp.deploy=&quot;C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps&quot;"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dcatalina.base=&quot;C:\Users\JA1999\Desktop\GitHub Code\new-auction\auction-system\.metadata\.plugins\org.eclipse.wst.server.core\tmp1&quot; -Dcatalina.home=&quot;C:\Program Files\Apache Software Foundation\Tomcat 10.0&quot; -Dwtp.deploy=&quot;C:\Users\JA1999\Desktop\GitHub Code\new-auction\auction-system\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps&quot;"/>
     <stringAttribute key="server-id" value="Tomcat v10.0 Server at localhost"/>
 </launchConfiguration>

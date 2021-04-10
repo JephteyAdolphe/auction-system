@@ -57,11 +57,11 @@
                     $('#table_id').DataTable();
                 });
             </script>
-        
-        <!-- --><%-- <%
+        </body>
+        <%
 	
 	//get todays date and time and convert it to a string
-	 Date date = new Date();
+	/* Date date = new Date();
 	 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
 	 SimpleDateFormat time = new SimpleDateFormat ("hh:mm:ss");
 	 String td = day.format(date);
@@ -78,13 +78,13 @@
 			float winBid = db.highestBid(cid);
 			int winnerBidID = db.highestBidAid(cid); //find the highest bid acc
 			db.setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
-		} --%>
+		}
 		//means that acution is closed
 	
-	} 
+	} */
 	//TO Do
 	//Need to figure out how to get Accountid and cid into method
 	
 %>
-</body>
+
 </html>

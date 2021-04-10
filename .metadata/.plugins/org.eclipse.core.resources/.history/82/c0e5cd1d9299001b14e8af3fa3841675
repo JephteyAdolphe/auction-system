@@ -44,6 +44,7 @@
                             <% for(int j=0; j < itemList.get(i).length; j++) { %>
 
                                 <td>
+                                	<% if () %>
                                     <%=itemList.get(i)[j]%>
                                 </td>
 
@@ -58,7 +59,7 @@
                 });
             </script>
         
-        <!-- --><%-- <%
+        <%
 	
 	//get todays date and time and convert it to a string
 	 Date date = new Date();
@@ -78,7 +79,7 @@
 			float winBid = db.highestBid(cid);
 			int winnerBidID = db.highestBidAid(cid); //find the highest bid acc
 			db.setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
-		} --%>
+		}
 		//means that acution is closed
 	
 	} 

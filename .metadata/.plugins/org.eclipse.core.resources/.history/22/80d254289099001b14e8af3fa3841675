@@ -587,7 +587,7 @@ public class ApplicationDB {
 			e.printStackTrace();
 		}
 		
-		
+		}
 
 	//Close the connection with no account match
 	try {

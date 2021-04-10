@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"
     %>
 <!--Import some libraries that have classes that we need -->
-<%@ page import="java.io.*,java.util.*,java.sql.*,java.util.ArrayList" %>
+<%@ page import="java.io.*,java.util.*,java.sql.*,java.util.ArrayList,java.util.Date,java.text.SimpleDateFormat" %>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
 <link rel="stylesheet" type="text/css"
     href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
@@ -57,6 +57,34 @@
                     $('#table_id').DataTable();
                 });
             </script>
-        </body>
-
+        
+        <!-- --><%-- <%
+	
+	//get todays date and time and convert it to a string
+	 Date date = new Date();
+	 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
+	 SimpleDateFormat time = new SimpleDateFormat ("hh:mm:ss");
+	 String td = day.format(date);
+	 String tim = time.format(date);
+	 
+	//When the user loads the auction, you check if it is expired or not and do the corresponding things
+	if (db.endOfautction(td, tim, account_id, cid)) { //call funcion to determine that the date and time matches a product thats auction time is up
+		if ( db.minPrice(cid) == 0){ //means that there is no min value
+			float winBid = db.highestBid(cid);
+			int winnerBidID = db.highestBidAid(cid);//find the highest bid acc
+			db.setWinner(winnerBidID); //Store acount with highest bid as winner in  bids table by setting winner value to 1
+		}
+		else if (db.minPrice(cid) <= db.highestBid(cid)){ //means ther is a min value
+			float winBid = db.highestBid(cid);
+			int winnerBidID = db.highestBidAid(cid); //find the highest bid acc
+			db.setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
+		} --%>
+		//means that acution is closed
+	
+	} 
+	//TO Do
+	//Need to figure out how to get Accountid and cid into method
+	
+%>
+</body>
 </html>

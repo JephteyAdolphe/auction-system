@@ -2933,3 +2933,9 @@ org.eclipse.core.runtime.CoreException: No property tester contributes a propert
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1461)
 !SUBENTRY 1 org.eclipse.core.expressions 4 201 2021-04-09 11:51:45.211
 !MESSAGE No property tester contributes a property org.eclipse.jdt.launching.hasMain to type class org.eclipse.jst.javaee.web.internal.impl.ServletImpl
+
+!ENTRY org.eclipse.wst.server.core 4 0 2021-04-09 22:06:27.871
+!MESSAGE Server Tomcat v10.0 Server at localhost failed to start.
+
+!ENTRY org.eclipse.wst.server.core 4 0 2021-04-09 22:16:14.788
+!MESSAGE Server Tomcat v10.0 Server at localhost failed to start.

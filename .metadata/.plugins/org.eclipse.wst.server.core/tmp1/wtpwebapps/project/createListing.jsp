@@ -100,21 +100,6 @@
 			<input type="submit" value="Create Listing">
 			</div>
 		</form>
-		
-		<!--<script>
-
-		$(document).on("submit", "#listing_form", function(event) {
-		    var $form = $(this);
-		
-		    $.post($form.attr("createListing"), $form.serialize(), function(response) {
-		        // ...
-		    });
-		
-		    event.preventDefault(); // Important! Prevents submitting the form.
-		});
-
-		</script>-->
-		
 	<br>
 
 </body>

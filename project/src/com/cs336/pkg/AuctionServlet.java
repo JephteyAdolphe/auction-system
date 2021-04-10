@@ -2,12 +2,14 @@ package com.cs336.pkg;
 
 import java.io.*;
 
+import jakarta.servlet.RequestDispatcher;
 // javax. was changed to jakarta.
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class AuctionServlet
@@ -16,8 +18,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuctionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private static final String CreateAccount = "createAccount";
-    private static final String CreateListing = "createListing";
     ApplicationDB db = new ApplicationDB();
 
     /**
@@ -67,7 +67,18 @@ public class AuctionServlet extends HttpServlet {
 				// Checks if the given account id and password exists in the user account table
 				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
 					System.out.println("Account matches");
-					response.sendRedirect("dashboard.jsp");
+					
+					/*HttpSession session = request.getSession(true);
+					String user = "user";
+					String pass = "pass";
+					session.setAttribute("myData", request.getParameter("account_id").trim());
+					session.setAttribute("myData", request.getParameter("password").trim());*/
+					
+					request.setAttribute("user", request.getParameter("account_id").trim());
+					RequestDispatcher rd = request.getRequestDispatcher("/dashboard.jsp");
+					rd.forward(request, response);
+					
+					//response.sendRedirect("dashboard.jsp");
 				} else {
 					response.sendRedirect("wrong.jsp");
 				}
@@ -88,6 +99,18 @@ public class AuctionServlet extends HttpServlet {
 				} else{
 					response.sendRedirect("wrong.jsp");
 				}
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+			
+			
+		} else if (request.getParameter("bid_form") != null){
+			try {
+				
+				System.out.println("bid servlet");
+				System.out.println(request.getParameter("brand"));
 				
 			} catch (Exception ex) {
 				ex.printStackTrace();

@@ -17,6 +17,9 @@
 </head>
 <% ApplicationDB db=new ApplicationDB(); ArrayList<String[]> itemList = new ArrayList<String[]>();
         itemList = db.getListings();
+
+		String account_id = String.valueOf(request.getAttribute("user"));
+			
         %>
 
         <body>
@@ -36,20 +39,30 @@
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Seller</th>
+                        <th>Bid</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% for(int i=0; i < itemList.size(); i++) { %>
                         <tr>
-                            <% for(int j=0; j < itemList.get(i).length; j++) { %>
+                            <% String cid = "";
+                            for(int j=0; j < itemList.get(i).length; j++) { 
+                            	if (j == 0) {
+                            		cid =itemList.get(i)[j];
+                            	}
+                            %>
 
                                 <td>
                                     <%=itemList.get(i)[j]%>
                                 </td>
 
                                 <% } %>
+                                <td>
+                                    <form name="bid_form" method="post" action="bid.jsp"><input id="bid_id" name="bid" type="submit" value=<%=cid %>></form>
+                                </td>
                         </tr>
-                        <% } %>
+                        <% } 
+                    %>
                 </tbody>
             </table>
             <script>
@@ -58,33 +71,5 @@
                 });
             </script>
         
-        <!-- --><%-- <%
-	
-	//get todays date and time and convert it to a string
-	 Date date = new Date();
-	 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
-	 SimpleDateFormat time = new SimpleDateFormat ("hh:mm:ss");
-	 String td = day.format(date);
-	 String tim = time.format(date);
-	 
-	//When the user loads the auction, you check if it is expired or not and do the corresponding things
-	if (db.endOfautction(td, tim, account_id, cid)) { //call funcion to determine that the date and time matches a product thats auction time is up
-		if ( db.minPrice(cid) == 0){ //means that there is no min value
-			float winBid = db.highestBid(cid);
-			int winnerBidID = db.highestBidAid(cid);//find the highest bid acc
-			db.setWinner(winnerBidID); //Store acount with highest bid as winner in  bids table by setting winner value to 1
-		}
-		else if (db.minPrice(cid) <= db.highestBid(cid)){ //means ther is a min value
-			float winBid = db.highestBid(cid);
-			int winnerBidID = db.highestBidAid(cid); //find the highest bid acc
-			db.setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
-		} --%>
-		//means that acution is closed
-	
-	} 
-	//TO Do
-	//Need to figure out how to get Accountid and cid into method
-	
-%>
 </body>
 </html>

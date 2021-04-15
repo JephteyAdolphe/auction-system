@@ -17,11 +17,12 @@
 </head>
 
      <body>
+     <form method="get" action="dashboard.jsp"><input type="submit" value="Back to Dashboard"></form>
      <%
      ApplicationDB db = new ApplicationDB();
      
      String account_id = String.valueOf(request.getAttribute("user"));
-     int cid = Integer.valueOf(request.getParameter("bid"));
+     /*int cid = Integer.valueOf(request.getParameter("cid"));
 	
 	//get todays date and time and convert it to a string
 	 Date date = new Date();
@@ -29,9 +30,11 @@
 	 SimpleDateFormat time = new SimpleDateFormat ("hh:mm:ss");
 	 String td = day.format(date);
 	 String tim = time.format(date);
+	 String today= (td + " " + tim);
 	 
+	 System.out.println(today);
 	//When the user loads the auction, you check if it is expired or not and do the corresponding things
-	if (db.endOfautction(td, tim, account_id, cid)) { //call funcion to determine that the date and time matches a product thats auction time is up
+	if (db.endOfautction(today, cid)) { //call funcion to determine that the date and time matches a product thats auction time is up
 		if ( db.minPrice(cid) == 0){ //means that there is no min value
 			float winBid = db.highestBid(cid);
 			int winnerBidID = db.highestBidAid(cid);//find the highest bid acc
@@ -42,13 +45,17 @@
 			int winnerBidID = db.highestBidAid(cid); //find the highest bid acc
 			db.setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
 		}
-		//means that acution is closed
+		//means that auction is closed
 	
-	}
+	}*/
 	//TO Do
 	//Need to figure out how to get Accountid and cid into method
-	
+
 %>
-        
+	<form method="post" id="make_bid" action="auctionServlet">
+	<input type="hidden" name="make_bid" value="1234">
+  	Bid Price: <input type="number" step="0.01" name="price">
+  	<p>Upper Limit of Automatic Bid: <input type="number" step="0.01" name="upperLimit"></p>
+  	<p><input type="submit" value="Create Bid"></p></form>
 	</body>
 </html>

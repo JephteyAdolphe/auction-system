@@ -11,8 +11,8 @@ INDEX VERSION 1.131+C:\Users\JA1999\Desktop\GitHub Code\new-auction\auction-syst
 731582296.index
 4242718921.index
 3143917454.index
-233724573.index
 2917510946.index
+233724573.index
 3238113754.index
 3246517818.index
 3178928953.index
@@ -21,7 +21,6 @@ INDEX VERSION 1.131+C:\Users\JA1999\Desktop\GitHub Code\new-auction\auction-syst
 2586040603.index
 235612554.index
 208453311.index
-3383308686.index
 500343823.index
 720869389.index
 4239293200.index

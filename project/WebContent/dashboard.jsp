@@ -19,6 +19,7 @@
         itemList = db.getListings();
 
 		String account_id = String.valueOf(request.getAttribute("user"));
+		String test = String.valueOf(session.getAttribute("user"));
 			
         %>
 
@@ -58,7 +59,7 @@
 
                                 <% } %>
                                 <td>
-                                    <form name="bid_form" method="post" action="bid.jsp"><input id="bid_id" name="bid" type="submit" value=<%=cid %>></form>
+                                    <form name="bid_form" method="get" action="auctionServlet"><input type="hidden" name="bid_form" value="123"><input id="bid_id" name="cid" type="submit" value=<%=cid %>></form>
                                 </td>
                         </tr>
                         <% } 

@@ -19,6 +19,7 @@ public class AuctionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
     ApplicationDB db = new ApplicationDB();
+    HttpSession session;
 
     /**
      * Default constructor. 
@@ -32,7 +33,54 @@ public class AuctionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		if (request.getParameter("login_form") != null){
+			try {
+				// LOG IN
+				
+				// Checks if the given account id and password exists in the user account table
+				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
+					System.out.println("Account matches");
+					
+					session = request.getSession();
+				    String username = (String)request.getParameter("account_id");
+				    session.setAttribute("user", username);
+				    System.out.println("in the do get method");
+				    System.out.println(username);
+				    response.sendRedirect("dashboard.jsp");
+					
+				} 
+				
+				else {
+					response.sendRedirect("wrong.jsp");
+				}
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+		}
+			else if(request.getParameter("bid_form") != null) {
+				try 
+				{
+					session = request.getSession();
+					
+				    String cid = (String)request.getParameter("cid");
+				    session.setAttribute("cid", cid);
+				    System.out.println("in the do get method for bid form");
+				    System.out.println(cid);
+				    response.sendRedirect("bid.jsp");
+					
+				} 
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+					response.sendRedirect("wrong.jsp");
+				}
+			}
+		
+		
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -110,14 +158,48 @@ public class AuctionServlet extends HttpServlet {
 			try {
 				
 				System.out.println("bid servlet");
-				System.out.println(request.getParameter("brand"));
+				System.out.println(request.getParameter("cid"));
+				request.setAttribute("cid", request.getParameter("cid"));
+				RequestDispatcher rd = request.getRequestDispatcher("/bid.jsp");
+				rd.forward(request, response);
 				
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				response.sendRedirect("wrong.jsp");
 			}
 			
-		} else {System.out.println("No form was submitted");}		
+		} 
+		else if(request.getParameter("make_bid") != null) {
+			try 
+			{
+				session = request.getSession();
+				
+			    String cid = String.valueOf(session.getAttribute("cid"));
+				
+				
+				//Make BID
+				//need to get account_id and CID
+				//is working when i hard code account_id and cid but currently null because idk how to get values
+				//price may need to be updated because idk if i should make it the starting price seller put + bid price or
+				//force bid price to above previous bids and starting price or in general how to do it
+				if(db.createBid(request.getParameter("price").trim(), request.getParameter("upperLimit").trim(), 
+						String.valueOf(session.getAttribute("user")), cid))
+				{
+					System.out.println("Bid made successfully");
+				} 
+				else
+				{
+					System.out.println("1st wrong");
+					response.sendRedirect("wrong.jsp");
+				}
+			} 
+			catch(Exception ex) 
+			{
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+		}
+		else {System.out.println("No form was submitted");}		
 	}
 
 }

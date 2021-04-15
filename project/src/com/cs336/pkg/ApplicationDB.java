@@ -192,8 +192,10 @@ public class ApplicationDB {
 			// Notes item type that is being listed
 			String category = null;
 			String size = null;
-
-			if (itemType.equals("Tops")) {
+			if (itemType == null) {
+				System.out.println("hi");
+			}
+			else if (itemType.equals("Tops")) {
 				category = "tops";
 				size = clothingSize;
 			} else if (itemType.equals("Bottoms")) {
@@ -241,6 +243,7 @@ public class ApplicationDB {
 			}
 
 			// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
+			
 			String clothingSQL = String.format(
 					"insert into clothing (cid, brand, bid_increment,"
 							+ "cur_price, start_price) values (%d, '%s', %f, %f, %f)",
@@ -264,6 +267,76 @@ public class ApplicationDB {
 			return true;
 
 		} catch (Exception ex) {
+			System.out.println(ex);
+			return false;
+		}
+	}
+	
+	//Allows the user to bid on an item
+	public boolean createBid(String price, String upperLimit, String accountID, String CID)
+	{
+		try
+		{
+			if (price.equals("") || upperLimit.equals("") || accountID.equals("") || CID.equals("")) {
+				return false;
+			}
+			
+			//uncomment this, its needed, only commented for testing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+			//if (!accountIsValid(accountID))
+			//	return false;
+			
+			// Get the database connection
+			Connection con = this.getConnection();
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+			
+			// Generate random bidID
+			Random rand = new Random();
+			int upper = 10000;
+			int Bid_ID = -1;
+
+			// Generates bidID and checks that it is not a duplicate
+			while (Bid_ID == -1) 
+			{
+				Bid_ID = rand.nextInt(upper);
+
+				// Forms sql select query with given account id and password
+				String sql = String.format("select Bid_ID from bids");
+
+				// Run the query against the DB and retrieves results
+				ResultSet rs = stmt.executeQuery(sql);
+
+				// Iterates through the returned rows (should only be 1 row) to see if if the
+				// account with the correct password exists
+				while (rs.next()) 
+				{
+					if (rs.getInt("Bid_ID") == Bid_ID) 
+					{
+						System.out.println("Bid_ID ALREADY EXISTS");
+						Bid_ID = -1;
+						break;
+
+					} 
+					else 
+					{
+						continue;
+					}
+				}
+				rs.close();
+			}
+			
+			String BIDSql = String.format("insert into bids (Bid_ID, price, upper_limit, account_id, CID) values "
+					+ "(%d, '%f', '%f', '%s', '%s')", Bid_ID, Float.parseFloat(price), Float.parseFloat(upperLimit), accountID, CID);
+			
+			stmt.executeUpdate(BIDSql);
+			
+			// Close the connection with no account match
+			con.close();
+			return true;
+		}
+		catch(Exception ex)
+		{
 			System.out.println(ex);
 			return false;
 		}
@@ -394,11 +467,11 @@ public class ApplicationDB {
 		}
 	}
 	
-	//mine
+	//rob
 		//checks if the we have reached the end of the auction time that the user set
-		public boolean endOfautction (String today, String time, String givenAccountID, int CID ){
+		public boolean endOfautction (String today, int CID ){
 			try {
-				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 				//Get the database connection
 				Connection con = this.getConnection();
@@ -407,23 +480,27 @@ public class ApplicationDB {
 				Statement stmt = con.createStatement();
 
 				// Forms sql select query with given time
-				String sql = String.format("select account_id, CID, End_date, End_time from Sells where account_id = '%s' and CID = '%d' and End_date = '%s'and End_time = '%s' ", givenAccountID, CID, today, time);
+				String sql = String.format("select CID, End_date from Sells where CID = '%d' ", CID);
 				
 				//Run the query against the DB and retrieves results
 				ResultSet rs = stmt.executeQuery(sql);
+			//	System.out.println ("HERE: ");
 				
 				// Iterates through the returned rows (should only be 1 row) to see if if the account with the correct password exists
 				while (rs.next()) {
-					if (rs.getString("account_id").equals(givenAccountID) && rs.getString("CID").equals(String.valueOf(CID)) && rs.getString("End_date").equals(today) && rs.getString("End_time").equals(time)) {
+					//System.out.println ("end date: " + sdf.parse(rs.getString("End_date")));
+					if (rs.getString("CID").equals(String.valueOf(CID)) && ( (sdf.parse(today).after(sdf.parse(rs.getString("End_date")))) || (sdf.parse(today).equals(sdf.parse(rs.getString("End_date"))))  )) {
 						//System.out.println("Time is up");
 						con.close();
 						rs.close();
+						//System.out.println ("HERE: worked");
 						return true;
 					} else {
+						//System.out.println ("HERE: midb");
 						break;
 					}
 				}
-
+				//System.out.println ("HERE: end ");
 				//Close the connection with no account match
 				rs.close();
 				con.close();
@@ -457,6 +534,7 @@ public class ApplicationDB {
 				while (rs.next()) {
 					
 					if (rs.getString("Minimum") != null) {
+						//System.out.println ("HERE: worked2");
 						float minprice = Float.parseFloat(rs.getString("Minimum")); //this is the min price in our table as float
 						con.close();
 						rs.close();
@@ -499,6 +577,7 @@ public class ApplicationDB {
 				while (rs.next()) {
 					
 					if (rs.getString("p") != null) {
+						//System.out.println ("HERE: worked3");
 						 highestBid = Float.parseFloat(rs.getString("p")); //this is the max bid price in our table
 						con.close();
 						rs.close();
@@ -532,14 +611,14 @@ public class ApplicationDB {
 				Statement stmt = con.createStatement();
 
 				// Forms sql select query with given time
-				String sql = String.format("select Bid_id from Bids where price =(select  max(price) as p from Bids where CID = '%d)", CID);//get the max price bid on that cid
+				String sql = String.format("select Bid_id from Bids where price =(select  max(price) as p from Bids where CID = '%d')", CID);//get the max price bid on that cid
 				
 				//Run the query against the DB and retrieves results
 				ResultSet rs = stmt.executeQuery(sql);
 				int accountW_highestBid = -1;
 				// Iterates through the returned rows (should only be 1 row) to see if if the account with the correct password exists
 				while (rs.next()) {
-					
+					//System.out.println ("HERE: worked5");
 						 accountW_highestBid = Integer.parseInt(rs.getString("Bid_id")); //this is the min price in our table
 						con.close();
 						rs.close();
@@ -571,7 +650,7 @@ public class ApplicationDB {
 			}
 		String setsWinner = String.format("update Bids set winner = '1' where Bid_id = '%d'", Bid_id);
 		
-		
+		//System.out.println ("HERE: worked8");
 		try { //update 
 			stmt.executeUpdate(setsWinner);
 		} catch (SQLException e) {

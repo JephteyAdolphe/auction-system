@@ -146,7 +146,6 @@ public class AuctionServlet extends HttpServlet {
 						String.valueOf(session.getAttribute("user")), cid))
 				{
 					System.out.println("Bid made successfully");
-					response.sendRedirect("dashboard.jsp");
 				} 
 				else
 				{

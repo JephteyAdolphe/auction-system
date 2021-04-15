@@ -27,6 +27,8 @@
      String account_id = String.valueOf(session.getAttribute("user"));
      int cid = Integer.valueOf((String)session.getAttribute("cid"));
      
+     System.out.println(account_id);
+     System.out.println(cid);
 	
 	//get todays date and time and convert it to a string
 	 Date date = new Date();

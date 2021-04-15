@@ -21,12 +21,8 @@
      <%
      ApplicationDB db = new ApplicationDB();
      
-    // String account_id = String.valueOf(request.getAttribute("user"));
-     //int cid = Integer.valueOf(request.getParameter("cid"));
-     
-     String account_id = String.valueOf(session.getAttribute("user"));
-     int cid = Integer.valueOf((String)session.getAttribute("cid"));
-     
+     String account_id = String.valueOf(request.getAttribute("user"));
+     /*int cid = Integer.valueOf(request.getParameter("cid"));
 	
 	//get todays date and time and convert it to a string
 	 Date date = new Date();
@@ -38,7 +34,7 @@
 	 
 	 System.out.println(today);
 	//When the user loads the auction, you check if it is expired or not and do the corresponding things
-	if (db.endOfauction(today, cid)) { //call funcion to determine that the date and time matches a product thats auction time is up
+	if (db.endOfautction(today, cid)) { //call funcion to determine that the date and time matches a product thats auction time is up
 		if ( db.minPrice(cid) == 0){ //means that there is no min value
 			float winBid = db.highestBid(cid);
 			int winnerBidID = db.highestBidAid(cid);//find the highest bid acc
@@ -51,7 +47,7 @@
 		}
 		//means that auction is closed
 	
-	}
+	}*/
 	//TO Do
 	//Need to figure out how to get Accountid and cid into method
 

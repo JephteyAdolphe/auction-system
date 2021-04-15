@@ -678,7 +678,7 @@ public class ApplicationDB {
 	
 	}
 	
-		/*public boolean checkIfListingValid(int cid) {
+		public boolean checkIfListingValid(int cid) {
 			
 			//int cid = Integer.valueOf(request.getParameter("cid"));
 			
@@ -706,7 +706,6 @@ public class ApplicationDB {
 					setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
 				}
 				//means that auction is closed
-				return true;
 				
 			
 			}
@@ -720,6 +719,6 @@ public class ApplicationDB {
 			}
 				
 		
-	}*/
+	}
 
 }

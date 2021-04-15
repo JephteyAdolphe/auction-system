@@ -62,7 +62,7 @@ public class AuctionServlet extends HttpServlet {
 			}
 		}
 			
-		// Gets cid from dashboard and puts it in session object
+		// Gets cid from and puts it in session object
 			else if(request.getParameter("bid_form") != null) {
 				try 
 				{
@@ -111,6 +111,34 @@ public class AuctionServlet extends HttpServlet {
 			}
 			
 			
+		} else if (request.getParameter("login_form") != null){
+			try {
+				// LOG IN
+				
+				// Checks if the given account id and password exists in the user account table
+				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
+					System.out.println("Account matches");
+					
+					/*HttpSession session = request.getSession(true);
+					String user = "user";
+					String pass = "pass";
+					session.setAttribute("myData", request.getParameter("account_id").trim());
+					session.setAttribute("myData", request.getParameter("password").trim());*/
+					
+					request.setAttribute("user", request.getParameter("account_id").trim());
+					RequestDispatcher rd = request.getRequestDispatcher("/dashboard.jsp");
+					rd.forward(request, response);
+					
+					//response.sendRedirect("dashboard.jsp");
+				} else {
+					response.sendRedirect("wrong.jsp");
+				}
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+			
 		} else if (request.getParameter("create_user_form") != null){
 			try {
 				// Sign Up
@@ -129,7 +157,22 @@ public class AuctionServlet extends HttpServlet {
 			}
 			
 			
-		} else if(request.getParameter("make_bid") != null) {
+		} else if (request.getParameter("bid_form") != null){
+			try {
+				
+				System.out.println("bid servlet");
+				System.out.println(request.getParameter("cid"));
+				request.setAttribute("cid", request.getParameter("cid"));
+				RequestDispatcher rd = request.getRequestDispatcher("/bid.jsp");
+				rd.forward(request, response);
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+			
+		} 
+		else if(request.getParameter("make_bid") != null) {
 			try 
 			{
 				session = request.getSession();
@@ -146,7 +189,6 @@ public class AuctionServlet extends HttpServlet {
 						String.valueOf(session.getAttribute("user")), cid))
 				{
 					System.out.println("Bid made successfully");
-					response.sendRedirect("dashboard.jsp");
 				} 
 				else
 				{

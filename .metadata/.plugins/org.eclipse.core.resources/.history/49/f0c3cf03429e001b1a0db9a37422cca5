@@ -678,7 +678,7 @@ public class ApplicationDB {
 	
 	}
 	
-		/*public boolean checkIfListingValid(int cid) {
+		public boolean checkIfListingValid(int cid) {
 			
 			//int cid = Integer.valueOf(request.getParameter("cid"));
 			
@@ -720,6 +720,6 @@ public class ApplicationDB {
 			}
 				
 		
-	}*/
+	}
 
 }

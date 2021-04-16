@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;auction-system/main.jsp&apos;" deleteContents="false" description="Delete resource &apos;auction-system/main.jsp&apos;" element1="/auction-system/main.jsp" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1615825252238"/>
-</session>

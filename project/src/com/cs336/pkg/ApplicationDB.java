@@ -547,6 +547,92 @@ public class ApplicationDB {
 			return null;
 		}
 	}
+	
+	public ArrayList<String[]> getHistory(String cid) {
+		try {
+
+			// Get the database connection
+			Connection con = this.getConnection();
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+
+			// Forms sql to get all bids
+			ArrayList<String[]> bidList = new ArrayList<String[]>();
+
+
+			String sql = String.format("select * from bids where cid = %s order by price ASC", cid);
+
+			// Run the query against the DB and retrieves results
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// Iterates through the returned listings
+			while (rs.next()) {
+				String[] bid_row = { rs.getString("BID_ID"), rs.getString("price"), rs.getString("account_id"), rs.getString("cid")};
+
+				bidList.add(bid_row);
+
+			}
+			rs.close();
+			
+
+			// Close the connection
+			con.close();
+			return bidList;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<String[]> getBidderHistory(String bidder) {
+		try {
+
+			// Get the database connection
+			Connection con = this.getConnection();
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+
+			// Forms sql to get all bids
+			ArrayList<String[]> bidderList = new ArrayList<String[]>();
+
+
+			String sql = String.format("select * from bids where account_id = '%s' group by cid", bidder);
+			
+			
+			
+			
+			/*String test_sql = String.format(
+					"select c.cid, cat.category, cat.size, c.brand, c.cur_price, s.start_date, s.end_date,"
+							+ "a.account_id from account a, sells s, clothing c, %s cat where s.cid = cat.cid and cat.cid = c.cid and a.account_id = s.account_id",
+					cats[i]);*/
+			
+			
+
+			// Run the query against the DB and retrieves results
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// Iterates through the returned listings
+			while (rs.next()) {
+				String[] bidder_row = { rs.getString("BID_ID"), rs.getString("price"), rs.getString("account_id"), rs.getString("cid")};
+
+				bidderList.add(bidder_row);
+
+			}
+			rs.close();
+			
+
+			// Close the connection
+			con.close();
+			return bidderList;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
 
 	private boolean accountIsValid(String accountID) {
 		try {

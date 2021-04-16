@@ -20,16 +20,7 @@
 
 		String account_id = String.valueOf(request.getAttribute("user"));
 		String test = String.valueOf(session.getAttribute("user"));
-		
-		//get todays date and time and convert it to a string
-		 Date date = new Date();
-		 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
-		 SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
-		 String td = day.format(date);
-		 String tim = time.format(date);
-		 String today= (td + " " + tim);
-		 //System.out.println(today);
-			
+
         %>
 
         <body>
@@ -50,6 +41,7 @@
                         <th>End Time</th>
                         <th>Seller</th>
                         <th>Bid</th>
+                        <th>History</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,6 +65,12 @@
                                     <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
                                     <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
                                     <input type="submit" value = "Make Bid"></form>
+                                </td>
+                                <td>
+                                    <form name="history_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="history_form" value="123">
+                                    <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
+                                    <input type="submit" value = "View"></form>
                                 </td>
                         </tr>
                         <% } 

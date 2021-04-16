@@ -78,12 +78,7 @@ public class AuctionServlet extends HttpServlet {
 					
 				    String cid = (String)request.getParameter("cid");
 				    String seller = (String)request.getParameter("seller");
-				    //System.out.println(seller);
 				    session.setAttribute("cid", cid);
-				    //System.out.println("in the do get method for bid form");
-				    //System.out.println(cid);
-				   // System.out.println(String.valueOf(session.getAttribute("user")));
-				   // System.out.println(String.valueOf(session.getAttribute("user").equals(seller)));
 				    
 				 // If true send user to wrong.jsp since auction is over, else send user to bid.jsp so they can bid
 					if (db.checkIfListingValid(Integer.valueOf(cid), String.valueOf(session.getAttribute("user")))) {
@@ -100,6 +95,44 @@ public class AuctionServlet extends HttpServlet {
 						System.out.println("The auction is no longer valid");
 						response.sendRedirect("wrong.jsp");
 					}
+					
+				} 
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+					response.sendRedirect("wrong.jsp");
+				}
+				
+			} else if(request.getParameter("history_form") != null) {
+				try 
+				{
+					session = request.getSession();
+					
+				    String cid = (String)request.getParameter("cid");
+				    session.setAttribute("cid", cid);
+
+				    
+				 // Send user to bid history page
+				    response.sendRedirect("history.jsp");
+					
+				} 
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+					response.sendRedirect("wrong.jsp");
+				}
+			} else if(request.getParameter("bidder_history_form") != null) {
+				try 
+				{
+					session = request.getSession();
+					String cid = (String)request.getParameter("cid");
+				    session.setAttribute("cid", cid);
+				    String bidder = (String)request.getParameter("bidder");
+				    session.setAttribute("bidder", bidder);
+
+				    
+				 // Send user to bid history page
+				    response.sendRedirect("bidder_history.jsp");
 					
 				} 
 				catch(Exception ex) 

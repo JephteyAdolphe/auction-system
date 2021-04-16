@@ -18,7 +18,10 @@
 
      <body>
      <form method="get" action="dashboard.jsp"><input type="submit" value="Back to Dashboard"></form>
-     <%
+     
+     <form method="post" id="check_auction" action="auctionServlet"><input type="hidden" name="check_auction" value="123456"></form>
+     
+     <%-- <%
      ApplicationDB db = new ApplicationDB();
      
     // String account_id = String.valueOf(request.getAttribute("user"));
@@ -29,9 +32,9 @@
      
 	
 	//get todays date and time and convert it to a string
-	 Date date = new Date();
+	 /* Date date = new Date();
 	 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
-	 SimpleDateFormat time = new SimpleDateFormat ("hh:mm:ss");
+	 SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
 	 String td = day.format(date);
 	 String tim = time.format(date);
 	 String today= (td + " " + tim);
@@ -51,12 +54,13 @@
 		}
 		//means that auction is closed
 	
-	}
+	} */
 	//TO Do
 	//Need to figure out how to get Accountid and cid into method
 
-%>
+%> --%>
 	<form method="post" id="make_bid" action="auctionServlet">
+	
 	<input type="hidden" name="make_bid" value="1234">
   	Bid Price: <input type="number" step="0.01" name="price">
   	<p>Upper Limit of Automatic Bid: <input type="number" step="0.01" name="upperLimit"></p>

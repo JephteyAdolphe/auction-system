@@ -78,10 +78,6 @@
 					<td> <p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Start Price:</p> </td> <td><input type="number" min="0.00" step="0.01" name="start_price"></td>
 				</tr>
-				<tr>
-					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
-         			Start Date:</p></td><td><input type="text" name="start_date" placeholder="MM/DD/YYYY"><input type="text" name="start_time" placeholder="HH:MM:SS"></td>
-				</tr>
 				<tr>    
 					<td> <p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			End date:</p> </td> <td><input type="text" name="end_date" placeholder="MM/DD/YYYY"><input type="text" name="end_time" placeholder="HH:MM:SS"></td>
@@ -89,10 +85,6 @@
 				<tr>
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Minimum Reserve Price:</p></td><td><input type="number" min="0.00" step="0.01" value="0.01" name="min_price"></td>
-				</tr>
-				<tr>
-					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
-         			Enter Your Account ID:</p> </td> <td><input type="text" id="account" name="account"></td>
 				</tr>
 			</table>
 			</div>

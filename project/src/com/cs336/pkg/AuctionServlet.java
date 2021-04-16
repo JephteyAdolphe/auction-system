@@ -97,8 +97,8 @@ public class AuctionServlet extends HttpServlet {
 		if (request.getParameter("listing_form") != null) {
 			try {
 				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
-				if (db.createListing(request.getParameter("brand").trim(), request.getParameter("item_type"), request.getParameter("clothing_size"), request.getParameter("shoe_size"),
-						request.getParameter("account").trim(), request.getParameter("bid_increment").trim(), request.getParameter("start_price").trim(), request.getParameter("start_date").trim(), request.getParameter("start_time").trim(),
+				if (db.createListing(request.getParameter("brand").trim(), request.getParameter("item_type"), request.getParameter("clothing_size"), request.getParameter("shoe_size"), String.valueOf(session.getAttribute("user")),
+						request.getParameter("bid_increment").trim(), request.getParameter("start_price").trim(),
 		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
@@ -159,7 +159,28 @@ public class AuctionServlet extends HttpServlet {
 				ex.printStackTrace();
 				response.sendRedirect("wrong.jsp");
 			}
+		} else if(request.getParameter("check_auction") != null) {
+			try 
+			{
+				session = request.getSession();
+				
+			    int cid = Integer.valueOf((String) session.getAttribute("cid"));
+				
+			    // If true send user to wrong.jsp since auction is over, else send user to bid.jsp so they can bid
+				if (db.checkIfListingValid(cid)) {
+					response.sendRedirect("wrong.jsp");
+				} else {
+					response.sendRedirect("bid.jsp");
+				}
+				
+			} 
+			catch(Exception ex) 
+			{
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
 		}
+		
 		else {System.out.println("No form was submitted");}		
 	}
 

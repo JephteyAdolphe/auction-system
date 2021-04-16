@@ -20,6 +20,15 @@
 
 		String account_id = String.valueOf(request.getAttribute("user"));
 		String test = String.valueOf(session.getAttribute("user"));
+		
+		//get todays date and time and convert it to a string
+		 Date date = new Date();
+		 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
+		 SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
+		 String td = day.format(date);
+		 String tim = time.format(date);
+		 String today= (td + " " + tim);
+		 System.out.println(today);
 			
         %>
 

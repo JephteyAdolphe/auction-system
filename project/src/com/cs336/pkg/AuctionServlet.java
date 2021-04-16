@@ -140,7 +140,31 @@ public class AuctionServlet extends HttpServlet {
 					ex.printStackTrace();
 					response.sendRedirect("wrong.jsp");
 				}
+				
+			} else if(request.getParameter("similar_form") != null) {
+				try 
+				{
+					session = request.getSession();
+					
+				    String cid = (String)request.getParameter("cid");
+				    String seller = (String)request.getParameter("seller");
+				    String category = (String)request.getParameter("category");
+				    session.setAttribute("cid", cid);
+				    session.setAttribute("seller", seller);
+				    session.setAttribute("category", category);
+				    
+				    response.sendRedirect("similar.jsp");
+				    
+					
+				} 
+				catch(Exception ex) 
+				{
+					ex.printStackTrace();
+					response.sendRedirect("wrong.jsp");
+				}
 			}
+				
+			
 		
 		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());

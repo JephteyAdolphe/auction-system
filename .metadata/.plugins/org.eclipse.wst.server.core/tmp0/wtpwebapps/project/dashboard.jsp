@@ -42,6 +42,7 @@
                         <th>Seller</th>
                         <th>Bid</th>
                         <th>History</th>
+                        <th>Similar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +72,14 @@
                                     <input type="hidden" name="history_form" value="123">
                                     <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
                                     <input type="submit" value = "View"></form>
+                                </td>
+                                <td>
+                                    <form name="similar_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="similar_form" value="123">
+                                    <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
+                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
+                                    <input type="hidden" name="category" value=<%=itemList.get(i)[1]%>>
+                                    <input type="submit" value = "View Similar"></form>
                                 </td>
                         </tr>
                         <% } 

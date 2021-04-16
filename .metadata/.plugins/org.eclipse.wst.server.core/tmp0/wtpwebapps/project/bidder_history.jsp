@@ -37,7 +37,6 @@
                         <th>Price</th>
                         <th>Bidder</th>
                         <th>Clothing ID</th>
-                        <th>Bidder History</th>
                     </tr>
                 </thead>
                 <tbody>

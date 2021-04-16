@@ -68,7 +68,11 @@
 
                                 <% } %>
                                 <td>
-                                    <form name="bid_form" method="get" action="auctionServlet"><input type="hidden" name="bid_form" value="123"><input id="bid_id" name="cid" type="submit" value="Make Bid"></form>
+                                    <form name="bid_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="bid_form" value="123">
+                                    <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
+                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
+                                    <input type="submit" value = "Make Bid"></form>
                                 </td>
                         </tr>
                         <% } 

@@ -296,13 +296,17 @@ public class ApplicationDB {
 
 			if (endDate.equals("") || endTime.equals("")
 					|| bidIncrement.equals("") || startPrice.equals("") || accountID.equals("")) {
+				System.out.println("Is something empty");
 				return false;
 			}
 
 			// Checks if a valid account id is submitted when creating listing... should be
 			// obtained from session object though
 			if (!accountIsValid(accountID))
+			{
+				System.out.println("Is the account valid?");
 				return false;
+			}
 
 			// Parses date and time submitted
 			String[] endD = endDate.split("/");
@@ -315,7 +319,7 @@ public class ApplicationDB {
 			 String td = day.format(date);
 			 String tim = time.format(date);
 			 String startDateTime = (td + " " + tim);
-			 System.out.println(startDateTime);
+			 //System.out.println(startDateTime);
 			
 			
 			String endDateTime = endD[2] + "-" + endD[0] + "-" + endD[1] + " " + endT[0] + ":" + endT[1] + ":"
@@ -323,7 +327,10 @@ public class ApplicationDB {
 
 			// Checks that start date/time is before end date/time
 			if (!compareDates(startDateTime, endDateTime))
+			{
+				System.out.println("Are the dates correct?");
 				return false;
+			}
 
 			// Notes item type that is being listed
 			String category = null;
@@ -404,6 +411,7 @@ public class ApplicationDB {
 
 		} catch (Exception ex) {
 			System.out.println(ex);
+			System.out.println("Try catch failed");
 			return false;
 		}
 	}
@@ -418,8 +426,8 @@ public class ApplicationDB {
 			}
 			
 			//uncomment this, its needed, only commented for testing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-			//if (!accountIsValid(accountID))
-			//	return false;
+			if (!accountIsValid(accountID))
+				return false;
 			
 			// Get the database connection
 			Connection con = this.getConnection();
@@ -438,6 +446,7 @@ public class ApplicationDB {
 				Bid_ID = rand.nextInt(upper);
 
 				// Forms sql select query with given account id and password
+				
 				String sql = String.format("select Bid_ID from bids");
 
 				// Run the query against the DB and retrieves results
@@ -447,9 +456,10 @@ public class ApplicationDB {
 				// account with the correct password exists
 				while (rs.next()) 
 				{
-					if (rs.getInt("Bid_ID") == Bid_ID) 
+					if (rs.getInt("Bid_ID") == Bid_ID ) 
 					{
 						System.out.println("Bid_ID ALREADY EXISTS");
+						
 						Bid_ID = -1;
 						break;
 
@@ -461,7 +471,11 @@ public class ApplicationDB {
 				}
 				rs.close();
 			}
+			//update current price of clothing
+			String sql1 = String.format("update clothing set cur_price = %f where CID = %d", Float.parseFloat(price), Integer.parseInt(CID));
+			stmt.executeUpdate(sql1);
 			
+			//inserting bid into bid table
 			String BIDSql = String.format("insert into bids (Bid_ID, price, upper_limit, account_id, CID) values "
 					+ "(%d, '%f', '%f', '%s', '%s')", Bid_ID, Float.parseFloat(price), Float.parseFloat(upperLimit), accountID, CID);
 			
@@ -536,8 +550,9 @@ public class ApplicationDB {
 
 	private boolean accountIsValid(String accountID) {
 		try {
-
+			
 			if (accountID.equals("")) {
+				System.out.println("Is the account empty");
 				return false;
 			}
 
@@ -568,10 +583,12 @@ public class ApplicationDB {
 			// Close the connection with no account match
 			rs.close();
 			con.close();
+			System.out.println("Account did not match");
 			return false;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			System.out.println("Try catch failed");
 			return false;
 		}
 	}
@@ -814,12 +831,14 @@ public class ApplicationDB {
 	
 	}
 	
-		public boolean checkIfListingValid(int cid) {
-			
-			//int cid = Integer.valueOf(request.getParameter("cid"));
-			
+		public boolean checkIfListingValid(int cid, String accountID) {
 			try {
 			
+			if (accountID.equals("")) {
+				System.out.println("Is the account empty");
+				return false;
+			}
+		
 			//get todays date and time and convert it to a string
 			 Date date = new Date();
 			 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
@@ -828,29 +847,29 @@ public class ApplicationDB {
 			 String tim = time.format(date);
 			 String today= (td + " " + tim);
 			 
-			 System.out.println(today);
+			 //System.out.println(today);
 			//When the user loads the auction, you check if it is expired or not and do the corresponding things
 			if (endOfauction(today, cid)) { //call function to determine that the date and time matches a product thats auction time is up
 				if ( minPrice(cid) == 0){ //means that there is no min value
 					float winBid = highestBid(cid);
 					int winnerBidID = highestBidAid(cid);//find the highest bid acc
 					setWinner(winnerBidID); //Store account with highest bid as winner in  bids table by setting winner value to 1
-					return true;
+					return false;
 				}
 				else if (minPrice(cid) <= highestBid(cid)){ //means there is a min value
 					float winBid = highestBid(cid);
 					int winnerBidID = highestBidAid(cid); //find the highest bid acc
 					setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
-					return true;
+					return false;
 				}
 				//means that auction is closed
-				return true;
+				return false;
 				
 			
 			}
 			else {
-				System.out.println("auciton is not over");
-				return false;
+				//System.out.println("auction is not over");
+				return true;
 			}
 			
 			} catch (Exception e) {

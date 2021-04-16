@@ -38,21 +38,29 @@ public class AuctionServlet extends HttpServlet {
 		if (request.getParameter("login_form") != null){
 			try {
 				// LOG IN
-				
+				session = request.getSession();
 				// Checks if the given account id and password exists in the user account table
 				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
 					System.out.println("Account matches");
 					
-					session = request.getSession();
-				    String username = (String)request.getParameter("account_id");
-				    session.setAttribute("user", username);
-				    System.out.println("in the do get method");
-				    System.out.println(username);
-				    response.sendRedirect("dashboard.jsp");
-					
-				} 
-				
-				else {
+					/*HttpSession session = request.getSession(true);
+					String user = "user";
+					String pass = "pass";
+					session.setAttribute("myData", request.getParameter("account_id").trim());
+					session.setAttribute("myData", request.getParameter("password").trim());*/
+					if (db.isAdmin(request.getParameter("account_id").trim(), request.getParameter("password").trim()) == true ) {
+						if (db.isAdminTable(request.getParameter("account_id").trim())== true) { //if admin ( acc id in admin table and bool = 1)
+						//System.out.print("here");
+						session.setAttribute("user", request.getParameter("account_id").trim());
+						response.sendRedirect("Admindashboard.jsp");
+					}
+					}
+					else { //regular user
+					session.setAttribute("user", request.getParameter("account_id").trim());
+					response.sendRedirect("dashboard.jsp");
+					}
+					//response.sendRedirect("dashboard.jsp");
+				} else {
 					response.sendRedirect("wrong.jsp");
 				}
 				
@@ -69,15 +77,28 @@ public class AuctionServlet extends HttpServlet {
 					session = request.getSession();
 					
 				    String cid = (String)request.getParameter("cid");
+				    String seller = (String)request.getParameter("seller");
+				    //System.out.println(seller);
 				    session.setAttribute("cid", cid);
-				    System.out.println("in the do get method for bid form");
-				    System.out.println(cid);
+				    //System.out.println("in the do get method for bid form");
+				    //System.out.println(cid);
+				   // System.out.println(String.valueOf(session.getAttribute("user")));
+				   // System.out.println(String.valueOf(session.getAttribute("user").equals(seller)));
 				    
 				 // If true send user to wrong.jsp since auction is over, else send user to bid.jsp so they can bid
-					if (db.checkIfListingValid(Integer.valueOf(cid))) {
-						response.sendRedirect("wrong.jsp");
+					if (db.checkIfListingValid(Integer.valueOf(cid), String.valueOf(session.getAttribute("user")))) {
+						if(String.valueOf(session.getAttribute("user")).equals(seller))
+					    {
+							System.out.println("Seller cannot bid on their own item");
+					    	response.sendRedirect("wrong.jsp");
+					    }
+					    else
+					    {
+					    	response.sendRedirect("bid.jsp");
+					    }
 					} else {
-						response.sendRedirect("bid.jsp");
+						System.out.println("The auction is no longer valid");
+						response.sendRedirect("wrong.jsp");
 					}
 					
 				} 
@@ -108,6 +129,7 @@ public class AuctionServlet extends HttpServlet {
 		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
+		        	System.out.println("Are we here?");
 		        	response.sendRedirect("invalidListing.jsp");
 		        }
 				
@@ -156,29 +178,9 @@ public class AuctionServlet extends HttpServlet {
 				} 
 				else
 				{
-					System.out.println("1st wrong");
+					//System.out.println("1st wrong");
 					response.sendRedirect("wrong.jsp");
 				}
-			} 
-			catch(Exception ex) 
-			{
-				ex.printStackTrace();
-				response.sendRedirect("wrong.jsp");
-			}
-		} else if(request.getParameter("check_auction") != null) {
-			try 
-			{
-				session = request.getSession();
-				
-			    int cid = Integer.valueOf((String) session.getAttribute("cid"));
-				
-			    // If true send user to wrong.jsp since auction is over, else send user to bid.jsp so they can bid
-				if (db.checkIfListingValid(cid)) {
-					response.sendRedirect("wrong.jsp");
-				} else {
-					response.sendRedirect("bid.jsp");
-				}
-				
 			} 
 			catch(Exception ex) 
 			{
@@ -186,6 +188,23 @@ public class AuctionServlet extends HttpServlet {
 				response.sendRedirect("wrong.jsp");
 			}
 		}
+		else if (request.getParameter("create_CRuser_form") != null){ ////
+			 try {
+					// Sign Up
+
+					// If account creation is successful then user is sent to the main login page else they are sent to an error page
+					if (db.createCRAccount(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
+						System.out.println("Account Successfully Created!");
+						response.sendRedirect("Admindashboard.jsp");
+					} else{
+						response.sendRedirect("wrong.jsp");
+					}
+					
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					response.sendRedirect("wrong.jsp");
+				}
+		 }
 		
 		else {System.out.println("No form was submitted");}		
 	}

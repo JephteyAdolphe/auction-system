@@ -19,6 +19,7 @@
      <body>
      <form method="get" action="dashboard.jsp"><input type="submit" value="Back to Dashboard"></form>
      
+     <form method="post" id="check_auction" action="auctionServlet"><input type="hidden" name="check_auction" value="123456"></form>
      
      <%-- <%
      ApplicationDB db = new ApplicationDB();

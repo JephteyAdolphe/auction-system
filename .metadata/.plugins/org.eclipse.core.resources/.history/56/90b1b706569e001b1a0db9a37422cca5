@@ -72,13 +72,7 @@ public class AuctionServlet extends HttpServlet {
 				    session.setAttribute("cid", cid);
 				    System.out.println("in the do get method for bid form");
 				    System.out.println(cid);
-				    
-				 // If true send user to wrong.jsp since auction is over, else send user to bid.jsp so they can bid
-					if (db.checkIfListingValid(Integer.valueOf(cid))) {
-						response.sendRedirect("wrong.jsp");
-					} else {
-						response.sendRedirect("bid.jsp");
-					}
+				    response.sendRedirect("bid.jsp");
 					
 				} 
 				catch(Exception ex) 

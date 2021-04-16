@@ -28,7 +28,7 @@
 		 String td = day.format(date);
 		 String tim = time.format(date);
 		 String today= (td + " " + tim);
-		 System.out.println(today);
+		 //System.out.println(today);
 			
         %>
 

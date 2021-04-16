@@ -46,7 +46,7 @@
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Clothing Size:</p></td><td>
          			
-						<select name="clothing_size" id="size" form="sizeform">
+						<select name="clothin_size" id="size" form="sizeform">
 						  <option value="small">Small</option>
 						  <option value="medium">Medium</option>
 						  <option value="large">Large</option>

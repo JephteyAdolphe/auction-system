@@ -298,7 +298,7 @@ public class ApplicationDB {
 					|| bidIncrement.equals("") || startPrice.equals("") || accountID.equals("")) {
 				System.out.println("Is something empty");
 				return false;
-			}
+			} System.out.println("in create listing method and the item_type is: " + itemType);
 
 			// Checks if a valid account id is submitted when creating listing... should be
 			// obtained from session object though
@@ -338,10 +338,10 @@ public class ApplicationDB {
 			if (itemType == null) {
 				System.out.println("hi");
 			}
-			else if (itemType.equals("tops")) {
+			else if (itemType.equals("Tops")) {
 				category = "tops";
 				size = clothingSize;
-			} else if (itemType.equals("bottoms")) {
+			} else if (itemType.equals("Bottoms")) {
 				category = "bottoms";
 				size = clothingSize;
 			} else {

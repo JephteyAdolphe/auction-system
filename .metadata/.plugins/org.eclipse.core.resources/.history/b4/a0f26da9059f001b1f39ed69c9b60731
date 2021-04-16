@@ -298,7 +298,7 @@ public class ApplicationDB {
 					|| bidIncrement.equals("") || startPrice.equals("") || accountID.equals("")) {
 				System.out.println("Is something empty");
 				return false;
-			}
+			} System.out.println("in create listing method and the item_type is: " + itemType);
 
 			// Checks if a valid account id is submitted when creating listing... should be
 			// obtained from session object though

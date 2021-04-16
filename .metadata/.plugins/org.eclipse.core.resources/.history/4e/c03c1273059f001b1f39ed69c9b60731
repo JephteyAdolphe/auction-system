@@ -338,10 +338,10 @@ public class ApplicationDB {
 			if (itemType == null) {
 				System.out.println("hi");
 			}
-			else if (itemType.equals("tops")) {
+			else if (itemType.equals("Tops")) {
 				category = "tops";
 				size = clothingSize;
-			} else if (itemType.equals("bottoms")) {
+			} else if (itemType.equals("Bottoms")) {
 				category = "bottoms";
 				size = clothingSize;
 			} else {

@@ -18,10 +18,7 @@
 <%
 	ApplicationDB db=new ApplicationDB(); ArrayList<String[]> bidderList = new ArrayList<String[]>();
 	String bidder = String.valueOf(session.getAttribute("bidder"));
-    bidderList = db.getBidderHistory(bidder);
-
-		
-			
+    bidderList = db.getBidderHistory(bidder);	
         %>
 
         <body>

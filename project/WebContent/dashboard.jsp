@@ -26,8 +26,8 @@
         <body>
 
             <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
-            <form method="get" action="createListing.jsp"><input type="submit" value="Create A Listing">
-            </form>
+            <form method="get" action="createListing.jsp"><input type="submit" value="Create A Listing"></form>
+            <form method="get" action="alert.jsp"><input type="submit" value="Go To Alerts"></form>
 
             <table id="table_id" class="display">
                 <thead>

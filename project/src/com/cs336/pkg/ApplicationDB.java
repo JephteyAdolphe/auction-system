@@ -629,16 +629,6 @@ public class ApplicationDB {
 
 
 			String sql = String.format("select * from bids where account_id = '%s' group by cid", bidder);
-			
-			
-			
-			
-			/*String test_sql = String.format(
-					"select c.cid, cat.category, cat.size, c.brand, c.cur_price, s.start_date, s.end_date,"
-							+ "a.account_id from account a, sells s, clothing c, %s cat where s.cid = cat.cid and cat.cid = c.cid and a.account_id = s.account_id",
-					cats[i]);*/
-			
-			
 
 			// Run the query against the DB and retrieves results
 			ResultSet rs = stmt.executeQuery(sql);
@@ -656,6 +646,112 @@ public class ApplicationDB {
 			// Close the connection
 			con.close();
 			return bidderList;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<String[]> getAlerts(String bidder) {
+		try {
+			
+			//get todays date and time and convert it to a string
+			 Date date = new Date();
+			 SimpleDateFormat day = new SimpleDateFormat ("yyyy-MM-dd");
+			 SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
+			 String td = day.format(date);
+			 String tim = time.format(date);
+			 String today= (td + " " + tim);
+			 
+			// Get the database connection
+			Connection con = this.getConnection();
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+			
+			ArrayList<String> cidList = new ArrayList<String>();
+			
+			// Forms sql to get all info necessary for creating user alerts
+			ArrayList<String[]> alertList = new ArrayList<String[]>();
+			
+			 String cidSQL = String.format("select * from bids where account_id = '%s' group by cid", bidder);
+
+			// Run the query against the DB and retrieves results
+			ResultSet rs = stmt.executeQuery(cidSQL);
+
+			// Iterates through the returned listings
+			while (rs.next()) {
+				cidList.add(String.valueOf(rs.getString("cid")));
+			}
+			rs.close();
+			
+			System.out.println(cidList.size());
+			
+			for (int i = 0; i < cidList.size(); i++) {
+				
+				int index = 0;
+				
+				String cid = cidList.get(i);
+				
+				System.out.println(cid);
+				
+				String[] alerts = new String[4];
+				alerts[index] = cid;
+				index++;
+				
+				String maxSQL = String.format("select  max(price), account_id from Bids where CID = '%d'", Integer.valueOf(cid));
+				
+				ResultSet rs2 = stmt.executeQuery(maxSQL);
+				String userWinning = "";
+				
+				// Iterates through the returned listings
+				while (rs2.next()) {
+					userWinning = rs2.getString("account_id");
+				}
+				rs2.close();
+				
+				if (bidder.equals(userWinning)) {
+					alerts[index] = "You have the highest bid";
+					index++;
+				} else {
+					alerts[index] = "There has been a higher bid placed";
+					index++;
+				}
+				
+				if (endOfauction(today, Integer.valueOf(cid))) {
+					String winnerSQL = String.format("select account_id from bids where CID = '%d' and winner = 1", Integer.valueOf(cid));
+					
+					ResultSet rsWinner = stmt.executeQuery(winnerSQL);
+					String winner = "";
+
+					// Iterates through the returned listings
+					while (rsWinner.next()) {
+						winner = rsWinner.getString("account_id");
+					}
+					rsWinner.close();
+										
+					if (bidder.equals(winner)) {
+						alerts[index] = "You have WON";
+						index++;
+					} else {
+						alerts[index] = "You did not win";
+						index++;
+					}
+				} else {
+					alerts[index] = "Auction is not over";
+					index++;
+				}
+
+				// Close the connection
+				
+				alerts[index] = "upper limit";
+				alertList.add(alerts);
+			}
+			
+			
+			con.close();
+			return alertList;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

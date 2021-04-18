@@ -693,8 +693,6 @@ public class ApplicationDB {
 				
 				String cid = cidList.get(i);
 				
-				checkIfListingValid(Integer.valueOf(cid), user);
-				
 				// String array of alerts that will accumulate any alert messages specific to the logged in user
 				String[] alerts = new String[4];
 				alerts[index] = cid;

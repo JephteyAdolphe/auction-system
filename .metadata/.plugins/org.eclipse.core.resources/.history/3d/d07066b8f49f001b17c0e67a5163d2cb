@@ -693,16 +693,13 @@ public class ApplicationDB {
 				
 				String cid = cidList.get(i);
 				
-				checkIfListingValid(Integer.valueOf(cid), user);
-				
 				// String array of alerts that will accumulate any alert messages specific to the logged in user
 				String[] alerts = new String[4];
 				alerts[index] = cid;
 				index++;
 				
 				// Gets the user who holds the highest bid on a specific item
-				String maxSQL = String.format("select account_id from bids where CID = '%d' and price ="
-						+ "(select max(price) from bids where CID = '%d')", Integer.valueOf(cid), Integer.valueOf(cid));
+				String maxSQL = String.format("select  max(price), account_id from Bids where CID = '%d'", Integer.valueOf(cid));
 				
 				ResultSet rs2 = stmt.executeQuery(maxSQL);
 				String userWinning = "";
@@ -743,12 +740,14 @@ public class ApplicationDB {
 					alerts[index] = "Auction is not over";
 					index++;
 				}
+
+				// Close the connection
 				
 				alerts[index] = "upper limit";
 				alertList.add(alerts);
 			}
 			
-			// Close connection
+			
 			con.close();
 			return alertList;
 

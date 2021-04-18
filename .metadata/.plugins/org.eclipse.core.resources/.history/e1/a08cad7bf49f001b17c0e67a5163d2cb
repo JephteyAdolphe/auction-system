@@ -653,7 +653,7 @@ public class ApplicationDB {
 		}
 	}
 	
-	public ArrayList<String[]> getAlerts(String user) {
+	public ArrayList<String[]> getAlerts(String bidder) {
 		try {
 			
 			//get todays date and time and convert it to a string
@@ -675,7 +675,7 @@ public class ApplicationDB {
 			// Forms sql to get all info necessary for creating user alerts
 			ArrayList<String[]> alertList = new ArrayList<String[]>();
 			
-			 String cidSQL = String.format("select * from bids where account_id = '%s' group by cid", user);
+			 String cidSQL = String.format("select * from bids where account_id = '%s' group by cid", bidder);
 
 			// Run the query against the DB and retrieves results
 			ResultSet rs = stmt.executeQuery(cidSQL);
@@ -693,26 +693,24 @@ public class ApplicationDB {
 				
 				String cid = cidList.get(i);
 				
-				checkIfListingValid(Integer.valueOf(cid), user);
+				System.out.println(cid);
 				
-				// String array of alerts that will accumulate any alert messages specific to the logged in user
 				String[] alerts = new String[4];
 				alerts[index] = cid;
 				index++;
 				
-				// Gets the user who holds the highest bid on a specific item
-				String maxSQL = String.format("select account_id from bids where CID = '%d' and price ="
-						+ "(select max(price) from bids where CID = '%d')", Integer.valueOf(cid), Integer.valueOf(cid));
+				String maxSQL = String.format("select  max(price), account_id from Bids where CID = '%d'", Integer.valueOf(cid));
 				
 				ResultSet rs2 = stmt.executeQuery(maxSQL);
 				String userWinning = "";
-
+				
+				// Iterates through the returned listings
 				while (rs2.next()) {
 					userWinning = rs2.getString("account_id");
 				}
 				rs2.close();
 				
-				if (user.equals(userWinning)) {
+				if (bidder.equals(userWinning)) {
 					alerts[index] = "You have the highest bid";
 					index++;
 				} else {
@@ -726,13 +724,13 @@ public class ApplicationDB {
 					ResultSet rsWinner = stmt.executeQuery(winnerSQL);
 					String winner = "";
 
-					// Checks winner of the auction
+					// Iterates through the returned listings
 					while (rsWinner.next()) {
 						winner = rsWinner.getString("account_id");
 					}
 					rsWinner.close();
 										
-					if (user.equals(winner)) {
+					if (bidder.equals(winner)) {
 						alerts[index] = "You have WON";
 						index++;
 					} else {
@@ -743,12 +741,14 @@ public class ApplicationDB {
 					alerts[index] = "Auction is not over";
 					index++;
 				}
+
+				// Close the connection
 				
 				alerts[index] = "upper limit";
 				alertList.add(alerts);
 			}
 			
-			// Close connection
+			
 			con.close();
 			return alertList;
 

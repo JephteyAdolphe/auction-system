@@ -55,7 +55,7 @@
                                     <input type="hidden" name="bidder_history_form" value="123">
                                     <input type="hidden" name="bidder" value=<%=bidList.get(i)[2]%>>
                                     <input type="hidden" name="cid" value=<%=bidList.get(i)[3]%>>
-                                    <input type="submit" value = "View"></form>
+                                    <input type="submit" value = "View Listings This Bidder Participated In"></form>
                                 </td>
                         </tr>
                         <% } %>

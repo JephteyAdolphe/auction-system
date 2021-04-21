@@ -14,6 +14,8 @@
 	
 	<body>
 	<body style="background-color:#1F1F1F;">
+	  <form method="get" action="Admindashboard.jsp"><input type="submit" value="Go To Admin Dash Board">
+            </form>
 	<div class="Login">
 	
 	<p style="font-family:georgia,garamond,serif;font-size:24px;font-style:bold;color:white;">

@@ -31,10 +31,14 @@
          			Brand:</p> </td> <td><input type="text" name="brand"></td>
 				</tr>
 				<tr>
+				<td> <p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
+         			Item Name:</p> </td> <td><input type="text" name="name"></td>
+         		</tr>
+				<tr>
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Item Type:</p></td><td>
          			
-						<select name="item_type" id="item_type" form="itemform">
+						<select name="item_type" id="item_type" >
 						  <option value="shoes">Shoes</option>
 						  <option value="bottoms">Bottoms</option>
 						  <option value="tops">Tops</option>
@@ -46,7 +50,7 @@
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Clothing Size:</p></td><td>
          			
-						<select name="clothing_size" id="size" form="sizeform">
+						<select name="clothing_size" id="size" >
 						  <option value="small">Small</option>
 						  <option value="medium">Medium</option>
 						  <option value="large">Large</option>
@@ -58,7 +62,7 @@
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
          			Shoes Size:</p></td><td>
          			
-						<select name="shoe_size" id="size" form="sizeform">
+						<select name="shoe_size" id="size" >
 						  <option value="8">8</option>
 						  <option value="8.5">8.5</option>
 						  <option value="9">9</option>

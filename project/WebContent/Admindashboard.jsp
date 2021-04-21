@@ -15,6 +15,7 @@
 	<body>
 	<body style="background-color:#1F1F1F;">
 	<form method="get" action="createCR.jsp"><input type="submit" value="Create Customer Representive Account"></form>
+	<form method="get" action="SalesReport.jsp"><input type="submit" value="Generate Sales Reports"></form>
 	<p style="font-family:georgia,garamond,serif;font-size:24px;font-style:bold;color:white;">
-       Hi
+       Hi Admin
         </p>

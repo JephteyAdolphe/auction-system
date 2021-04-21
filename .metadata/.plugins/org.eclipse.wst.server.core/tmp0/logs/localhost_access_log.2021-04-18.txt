@@ -1,0 +1,5 @@
+127.0.0.1 - - [18/Apr/2021:17:51:30 -0400] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [18/Apr/2021:17:51:32 -0400] "GET /project/main.jsp HTTP/1.1" 200 1975
+0:0:0:0:0:0:0:1 - - [18/Apr/2021:17:51:32 -0400] "GET /project/mystyle.css HTTP/1.1" 200 665
+0:0:0:0:0:0:0:1 - - [18/Apr/2021:17:51:52 -0400] "GET /project/auctionServlet?login_form=123jksdj&account_id=test&password=test HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [18/Apr/2021:17:51:52 -0400] "GET /project/dashboard.jsp HTTP/1.1" 200 34492

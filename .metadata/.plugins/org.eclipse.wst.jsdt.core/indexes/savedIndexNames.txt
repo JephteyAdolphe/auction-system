@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+C:\Users\adolp\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3581163120.index
+269848574.index
+650942067.index
+314088565.index
+2043823001.index
+261172403.index
+802322997.index

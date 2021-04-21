@@ -19,7 +19,7 @@
          Log In
       </p>
 		</div>
-		<form method="post" action="auctionServlet">
+		<form method="get" action="auctionServlet">
 		<input type="hidden" name="login_form" value="123jksdj">
 		<div class="inputs"> 
 			<table>

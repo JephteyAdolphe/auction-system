@@ -1,67 +1,101 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="com.cs336.pkg.*"
+    %>
 <!--Import some libraries that have classes that we need -->
-<%@ page import="java.io.*,java.util.*,java.sql.*"%>
-<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*,java.util.ArrayList,java.util.Date,java.text.SimpleDateFormat" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>DashBoard</title>
 </head>
-<body>
-	<%
-	try {
-		// LOG IN
+<% ApplicationDB db=new ApplicationDB(); ArrayList<String[]> itemList = new ArrayList<String[]>();
+        itemList = db.getListings();
 
-		/*Connection con = db.getConnection();
+		String account_id = String.valueOf(request.getAttribute("user"));
+		String test = String.valueOf(session.getAttribute("user"));
 
-		//Create a SQL statement
-		//Statement stmt = con.createStatement();
+        %>
 
-		//Get parameters (username and password) from the HTML form at the HelloWorld.jsp (should rename)
-		String accountID = request.getParameter("account_id");
-		String password = request.getParameter("passwd");
+        <body>
 
+            <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
+            <form method="get" action="createListing.jsp"><input type="submit" value="Create A Listing"></form>
+            <form method="get" action="alert.jsp"><input type="submit" value="Go To Alerts"></form>
 
-		//Check if account exists:
-		String getAccount = "select * from account where account_id = ? and password = ?";
-		//Create a Prepared SQL statement allowing you to introduce the parameters of the query
-		PreparedStatement ps = con.prepareStatement(getAccount);
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>Clothing ID</th>
+                        <th>Category</th>
+                        <th>Size</th>
+                        <th>Brand</th>
+                        <th>Current Price</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Seller</th>
+                        <th>Bid</th>
+                        <th>History</th>
+                        <th>Similar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(int i=0; i < itemList.size(); i++) { %>
+                        <tr>
+                            <% String cid = "";
+                            for(int j=0; j < itemList.get(i).length; j++) { 
+                            	if (j == 0) {
+                            		cid =itemList.get(i)[j];
+                            	}
+                            %>
 
-		//Add parameters of the query. Start with 1, the 0-parameter is the SELECT statement itself
-		ps.setString(1, accountID);
-		ps.setString(2, password);
-		
-		//Run the query against the DB
-		ResultSet rs = ps.executeQuery(getAccount);
-		out.println(rs.getString(0));
-		out.println("Logged In");
-		out.println(accountID);
-		out.println(password);
+                                <td>
+                                    <%=itemList.get(i)[j]%>
+                                </td>
 
-		//Close the connection. Don't forget to do it, otherwise you're keeping the resources of the server allocated.
-		con.close();*/
-
-		//Get the database connection
-		ApplicationDB db = new ApplicationDB();	
-		
-		// Checks if the given account id and password exists in the user account table
-		if (db.accountExists(request.getParameter("account_id"), request.getParameter("password"))) {
-			System.out.println("Account matches");
-		} else {
-			throw new Exception("nooo");
-		}
-		
-	} catch (Exception ex) {
-		System.out.println(ex);
-	}
-%>
-<button onclick="goBack()">Go Back</button>
-<script>
-function goBack() {
-  window.history.back();
-}
-</script>
+                                <% } %>
+                                <td>
+                                    <form name="bid_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="bid_form" value="123">
+                                    <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
+                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
+                                    <input type="submit" value = "Make Bid"></form>
+                                </td>
+                                <td>
+                                    <form name="history_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="history_form" value="123">
+                                    <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
+                                    <input type="submit" value = "View"></form>
+                                </td>
+                                <td>
+                                    <form name="similar_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="similar_form" value="123">
+                                    <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
+                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
+                                    <input type="hidden" name="category" value=<%=itemList.get(i)[1]%>>
+                                    <input type="submit" value = "View Similar"></form>
+                                </td>
+                        </tr>
+                        <% } 
+                    %>
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#table_id').DataTable();
+                });
+            </script>
+            
+            <p>
+            <form method="get" action="customer_representative_functions.jsp"><input type="submit" value="Customer Representative Service">
+            </form>
+            </p>
+        
 </body>
 </html>

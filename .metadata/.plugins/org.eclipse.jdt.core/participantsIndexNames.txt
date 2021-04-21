@@ -1,5 +1,0 @@
-INDEX VERSION 1.131
-C:\Users\JA1999\eclipse-workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\314088565.index
-\project\src
-C:\Users\JA1999\Desktop\GitHub Code\auction-system\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\314088565.index
-\project\src

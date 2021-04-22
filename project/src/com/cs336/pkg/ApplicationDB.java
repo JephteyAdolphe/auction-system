@@ -510,7 +510,7 @@ public class ApplicationDB {
 
 				String sql = String.format(
 						"select c.cid, cat.category, cat.size, c.brand,c.name, c.cur_price, s.start_date, s.end_date,"
-								+ "a.account_id from account a, sells s, clothing c, %s cat where s.cid = cat.cid and cat.cid = c.cid and a.account_id = s.account_id",
+								+ "a.account_id, c.bid_increment from account a, sells s, clothing c, %s cat where s.cid = cat.cid and cat.cid = c.cid and a.account_id = s.account_id",
 						cats[i]);
 
 				// Run the query against the DB and retrieves results
@@ -519,7 +519,7 @@ public class ApplicationDB {
 				// Iterates through the returned listings
 				while (rs.next()) {
 					String[] items = { rs.getString("cid"), rs.getString("category"), rs.getString("size"),
-							rs.getString("brand"), rs.getString("name"),rs.getString("cur_price"), rs.getString("start_date"),
+							rs.getString("brand"), rs.getString("name"),rs.getString("cur_price"), rs.getString("bid_increment"), rs.getString("start_date"),
 							rs.getString("end_date"), rs.getString("account_id") };
 
 					itemList.add(items);

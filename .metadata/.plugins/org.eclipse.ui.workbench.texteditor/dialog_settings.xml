@@ -6,8 +6,16 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="History"/>
+		<item key="selection" value="as p"/>
 		<list key="findhistory">
+			<item value="as p"/>
+			<item value="getbidderh"/>
+			<item value="alertList"/>
+			<item value="name"/>
+			<item value="c.name"/>
+			<item value="getlisting"/>
+			<item value="admin"/>
+			<item value="topitem"/>
 			<item value="history"/>
 			<item value="make"/>
 			<item value="makebids"/>
@@ -15,16 +23,9 @@
 			<item value="getalert"/>
 			<item value="checkiflis"/>
 			<item value="today"/>
-			<item value="endof"/>
-			<item value="max"/>
-			<item value="now()"/>
-			<item value="getlist"/>
-			<item value="itemlist"/>
-			<item value="clothing"/>
-			<item value="input"/>
-			<item value="itemtype"/>
 		</list>
 		<list key="replacehistory">
+			<item value="auctionList"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

@@ -39,6 +39,7 @@
                         <th>Brand</th>
                         <th>Name</th>
                         <th>Current Price</th>
+                        <th>Min Bid Increment</th>
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Seller</th>

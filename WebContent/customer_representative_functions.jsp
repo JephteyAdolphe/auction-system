@@ -3,7 +3,6 @@
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*" %>
 
-
 <link rel="stylesheet" type="text/css"
     href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>

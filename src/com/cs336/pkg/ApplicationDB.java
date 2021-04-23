@@ -17,7 +17,7 @@ public class ApplicationDB {
 	public Connection getConnection() {
 
 		// Create a connection string
-		String connectionUrl = "jdbc:mysql://localhost:3306/project"; // project is the database created in mysql
+		String connectionUrl = "jdbc:mysql://localhost:3306/project?autoReconnect=true&useSSL=false"; // project is the database created in mysql
 		Connection connection = null;
 
 		try {
@@ -336,7 +336,7 @@ public class ApplicationDB {
 			String category = null;
 			String size = null;
 			if (itemType == null) {
-				System.out.println("hi");
+				//System.out.println("hi");
 			}
 			else if (itemType.equals("tops")) {
 				category = "tops";
@@ -355,55 +355,88 @@ public class ApplicationDB {
 			// Create a SQL statement
 			Statement stmt = con.createStatement();
 
-			// Generate random CID
-			Random rand = new Random();
-			int upper = 10000;
-			int cid = -1;
-
-			// Generates CID and checks that it is not a duplicate
-			while (cid == -1) {
-				cid = rand.nextInt(upper);
-
-				// Forms sql select query with given account id and password
-				String sql = String.format("select cid from clothing");
-
-				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
-
-				// Iterates through the returned rows (should only be 1 row) to see if if the
-				// account with the correct password exists
-				while (rs.next()) {
-					if (rs.getInt("cid") == cid) {
-						System.out.println("CID ALREADY EXISTS");
-						cid = -1;
-						break;
-
-					} else {
-						continue;
-					}
-				}
-				rs.close();
-			}
+//			// Generate random CID
+//			Random rand = new Random();
+//			int upper = 10000;
+//			int cid = -1;
+//
+//			// Generates CID and checks that it is not a duplicate
+//			while (cid == -1) {
+//				cid = rand.nextInt(upper);
+//
+//				// Forms sql select query with given account id and password
+//				String sql = String.format("select cid from clothing");
+//
+//				// Run the query against the DB and retrieves results
+//				ResultSet rs = stmt.executeQuery(sql);
+//
+//				// Iterates through the returned rows (should only be 1 row) to see if if the
+//				// account with the correct password exists
+//				while (rs.next()) {
+//					if (rs.getInt("cid") == cid) {
+//						System.out.println("CID ALREADY EXISTS");
+//						cid = -1;
+//						break;
+//
+//					} else {
+//						continue;
+//					}
+//				}
+//				rs.close();
+//			}
 
 			// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
 			
+//			String clothingSQL = String.format(
+//					"insert into clothing (cid,name, brand, bid_increment,"
+//							+ "cur_price, start_price) values (%d, '%s', '%s', %f, %f, %f)",
+//					cid, name, brand, Float.parseFloat(bidIncrement), Float.parseFloat(startPrice),
+//					Float.parseFloat(startPrice));
+//
+//			String sellsSQL = String.format(
+//					"insert into sells (account_id, cid, minimum, start_date,"
+//							+ "end_date) values ('%s', %d, %f, '%s', '%s')",
+//					accountID, cid, Float.parseFloat(minPrice), startDateTime, endDateTime);
+//
+//			String categorySQL = String.format("insert into %s (cid, category, size) values (%d, '%s', '%s')", category,
+//					cid, category, size);
+			System.out.println("Made it to clothingSQl");
 			String clothingSQL = String.format(
-					"insert into clothing (cid,name, brand, bid_increment,"
-							+ "cur_price, start_price) values (%d, '%s', '%s', %f, %f, %f)",
-					cid, name, brand, Float.parseFloat(bidIncrement), Float.parseFloat(startPrice),
-					Float.parseFloat(startPrice));
+			"insert into clothing (name, brand, bid_increment,"
+					+ "cur_price, start_price) values ( '%s', '%s', %f, %f, %f)",
+			 name, brand, Float.parseFloat(bidIncrement), Float.parseFloat(startPrice),
+			Float.parseFloat(startPrice));
+			
+			System.out.println("Made it to execute clothingSQL");
+			stmt.executeUpdate(clothingSQL);
+			
 
+			
+			String getCID = String.format("select max(CID) as CID from clothing");
+			ResultSet rs = stmt.executeQuery(getCID);
+			
+			int CID = 0;
+			System.out.println("Able to get CID");
+			while(rs.next())
+			{
+				CID = rs.getInt("CID");
+			}
+			
+			System.out.println("This is the CID: " + CID);
+			String categorySQL = String.format("insert into %s (CID, category, size) values (%d, '%s', '%s')", category, CID,
+			 category, size);
+			
+
+			System.out.println("Update to categorySQl");
+			stmt.executeUpdate(categorySQL);
+			
 			String sellsSQL = String.format(
 					"insert into sells (account_id, cid, minimum, start_date,"
-							+ "end_date) values ('%s', %d, %f, '%s', '%s')",
-					accountID, cid, Float.parseFloat(minPrice), startDateTime, endDateTime);
-
-			String categorySQL = String.format("insert into %s (cid, category, size) values (%d, '%s', '%s')", category,
-					cid, category, size);
-
-			stmt.executeUpdate(clothingSQL);
-			stmt.executeUpdate(categorySQL);
+							+ "end_date) values ('%s',%d, %f, '%s', '%s')",
+					accountID, CID, Float.parseFloat(minPrice), startDateTime, endDateTime);
+			System.out.println("Update to sellsSQl");
 			stmt.executeUpdate(sellsSQL);
+			System.out.println("Did we execute it?");
 
 			// Close the connection with no account match
 			con.close();
@@ -412,6 +445,60 @@ public class ApplicationDB {
 		} catch (Exception ex) {
 			System.out.println(ex);
 			System.out.println("Try catch failed");
+			return false;
+		}
+	}
+	
+	// Creates watch alert for future item
+	public boolean createWatchAlert(String name, String user) {
+		try {
+
+			if (name.trim().equals("") || user.equals("")) {
+				System.out.println("Is something empty? Alert could not be set");
+				return false;
+			}
+
+			// Checks if a valid account id is submitted when creating watch alert
+			if (!accountIsValid(user))
+			{
+				System.out.println("Is the account valid?");
+				return false;
+			}
+
+			// Get the database connection
+			Connection con = this.getConnection();
+			
+			String alertExists = "";
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+							
+			String sqlCheck = String.format("select info from watching_alert where account_id = '%s'", user);
+
+			// Run the query against the DB and retrieves results
+			ResultSet rs = stmt.executeQuery(sqlCheck);
+
+			while (rs.next()) {
+				alertExists = rs.getString("info");
+			}
+			rs.close();
+			
+			if (!alertExists.equals("")) {
+				String updateSQL = String.format("UPDATE watching_alert set info = '%s' where account_id = '%s'", name, user);
+				stmt.executeUpdate(updateSQL);
+				con.close();
+				return true;
+			}
+
+			// Forms sql insert watch alert
+			String sql = String.format("insert into watching_alert (info, account_id) values ('%s', '%s')", name, user);
+			stmt.executeUpdate(sql);
+
+			con.close();
+			return true;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return false;
 		}
 	}
@@ -545,7 +632,7 @@ public class ApplicationDB {
 					if(priceOfRow > Float.valueOf(price))
 				 	{
 						//check if a manual bid was placed with the value of the autobid
-					    String sql1 = String.format("select max(price) as p from bids where account_id = %s and CID = %d and upper_limit = 0 and bidincrement = 0", accountIDFromRow, Integer.parseInt(CID));
+					    String sql1 = String.format("select max(price) as p from bids where account_id = '%s' and CID = %d and upper_limit = 0 and bidincrement = 0", accountIDFromRow, Integer.parseInt(CID));
 					    ResultSet rs1 = stmt.executeQuery(sql1);
 					    Float maxprice = null;
 					   	while(rs1.next())
@@ -736,7 +823,7 @@ public class ApplicationDB {
 			// Forms sql to get all bids
 			ArrayList<String[]> bidList = new ArrayList<String[]>();
 
-			String sql = String.format("select * from bids where cid = %s order by price ASC", cid);
+			String sql = String.format("select * from bids where cid = '%s' and upper_limit = 0 and bidincrement = 0 order by price ASC", cid);
 
 			// Run the query against the DB and retrieves results
 			ResultSet rs = stmt.executeQuery(sql);
@@ -769,7 +856,7 @@ public class ApplicationDB {
 			// Forms sql to get all bids
 			ArrayList<String[]> bidderList = new ArrayList<String[]>();
 
-			String sql = String.format("select * from bids where account_id = '%s' group by cid", bidder);
+			String sql = String.format("select * from bids where account_id='%s' and upper_limit = 0 and bidincrement = 0 and price in (select max(price) from bids where account_id='%s' group by cid)", bidder, bidder);
 
 			// Run the query against the DB and retrieves results
 			ResultSet rs = stmt.executeQuery(sql);
@@ -803,7 +890,7 @@ public class ApplicationDB {
 			// Forms sql to get all auctions
 			ArrayList<String[]> auctionList = new ArrayList<String[]>();
 
-			String sql = String.format("select *, count(b.account_id) as p from bids b, clothing c where b.account_id = '%s' and c.cid = b.cid group by b.cid", user);
+			String sql = String.format("select *, count(b.account_id) as p from bids b, clothing c where b.account_id = '%s' and c.cid = b.cid  and upper_limit = 0 and bidincrement = 0 group by b.cid", user);
 
 			// Run the query against the DB and retrieves results
 			ResultSet rs = stmt.executeQuery(sql);
@@ -819,6 +906,52 @@ public class ApplicationDB {
 
 			}
 			rs.close();
+			
+			// Close the connection
+			con.close();
+			return auctionList;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<String[]> getPersonalSellHistory(String user) {
+		try {
+			// Get the database connection
+			Connection con = this.getConnection();
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+
+			// Forms sql to get all auctions
+			ArrayList<String[]> auctionList = new ArrayList<String[]>();
+
+			// Forms sql to get all listing data
+			String[] cats = { "shoes", "tops", "bottoms" };
+
+			for (int i = 0; i < cats.length; i++) {
+
+				String sql = String.format(
+						"select c.cid, cat.category, cat.size, c.brand,c.name, c.cur_price, c.bid_increment, s.start_date, s.end_date,"
+								+ " a.account_id from account a, sells s, clothing c, %s cat where s.cid = cat.cid and cat.cid = c.cid"
+								+ " and a.account_id = s.account_id and a.account_id = '%s'", cats[i], user);
+						
+
+				// Run the query against the DB and retrieves results
+				ResultSet rs = stmt.executeQuery(sql);
+
+				// Iterates through the returned listings
+				while (rs.next()) {
+					String[] items = { rs.getString("cid"), rs.getString("category"), rs.getString("size"),
+							rs.getString("brand"), rs.getString("name"),rs.getString("cur_price"), rs.getString("bid_increment"), rs.getString("start_date"),
+							rs.getString("end_date") };
+
+					auctionList.add(items);
+				}
+				rs.close();
+			}
 			
 			// Close the connection
 			con.close();
@@ -924,6 +1057,65 @@ public class ApplicationDB {
 				
 				alerts[index] = "upper limit";
 				alertList.add(alerts);
+			}
+			
+			// Close connection
+			con.close();
+			return alertList;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<String[]> getWatchAlerts(String user) {
+		try {
+
+			// Get the database connection
+			Connection con = this.getConnection();
+
+			// Create a SQL statement
+			Statement stmt = con.createStatement();
+						
+			ArrayList<String> infoList = new ArrayList<String>();
+			ArrayList<String[]> alertList = new ArrayList<String[]>();
+			
+			 String alertSQL = String.format("select info from watching_alert where account_id = '%s'", user);
+
+			// Run the query against the DB and retrieves results
+			ResultSet rs = stmt.executeQuery(alertSQL);
+
+			// Iterates through the returned listings
+			while (rs.next()) {
+				infoList.add(String.valueOf(rs.getString("info")));
+			}
+			rs.close();
+			
+			// Loops through the CIDs that the logged in user has participated in to get any potential alert messages
+			for (int i = 0; i < infoList.size(); i++) {
+				
+				String[] alert = new String[2];
+				alert[0] = infoList.get(i);
+				
+				// Gets the name of all items to see if the watched item has been listed
+				String nameSQL = String.format("select name from clothing where name = '%s'", infoList.get(i));
+				
+				ResultSet rs2 = stmt.executeQuery(nameSQL);
+				
+				String listed = "";
+
+				while (rs2.next()) {
+					listed = rs2.getString("name");
+				}
+				rs2.close();
+				
+				if (listed.equals("")) {
+					alert[1] = "No";
+				} else {
+					alert[1] = "Yes";
+				}
+				alertList.add(alert);
 			}
 			
 			// Close connection
@@ -1902,5 +2094,87 @@ public class ApplicationDB {
 						ex.printStackTrace();
 						return false;
 						}
+				}
+				public void loopListing() {
+					try {
+					
+
+					// Get the database connection
+					Connection con = this.getConnection();
+
+					// Create a SQL statement
+					Statement stmt = con.createStatement();
+
+					// Forms sql select query with given account id and password
+					String sql = String.format("select CID from Bids where winner = 0 group by CID");
+
+					// Run the query against the DB and retrieves results
+					ResultSet rs = stmt.executeQuery(sql);
+
+					// Iterates through the returned rows (should only be 1 row) to see if if the
+					while (rs.next()) {
+						checkIfListingValid(Integer.parseInt(rs.getString("CID")), "x");
+							
+					}
+							rs.close();
+							con.close();
+							
+					// Close the connection with no account match
+					rs.close();
+					con.close();
+				
+					}
+				catch (Exception ex) {
+					ex.printStackTrace();
+				
+					}
+				}
+				public boolean delAccount(String account_id) 
+				{
+					try {
+						// Get the database connection
+						Connection con = this.getConnection();
+
+						// Create a SQL statement
+						Statement stmt = con.createStatement();
+
+						// Check if the target bid exist
+						String sql = String.format(
+								"select account_id from account where account_id='%s'",
+								account_id);
+						//System.out.println(sql);
+						
+						// Run the query against the DB and retrieves results
+						ResultSet rs = stmt.executeQuery(sql);
+
+						// Iterates through the returned rows (should only be 1 row) to see if if the
+						while (rs.next()) {
+							if (rs.getString("account_id").equals(account_id)) {
+								System.out.println("Account EXISTS - Can do account deletion");
+								
+								// update the account information
+								sql = String.format("delete from account where account_id='%s'",account_id);
+								stmt.execute(sql);
+								
+								System.out.println("Account "+account_id+" has been deleted.");
+								rs.close();
+								con.close();
+								return true;
+							} else {
+								break;
+							}
+						}
+
+						// Close the connection with no account match
+						rs.close();
+						con.close();
+						return false;
+
+					}
+					catch (Exception ex) {
+						ex.printStackTrace();
+						return false;
+						}
+					
 				}
 }

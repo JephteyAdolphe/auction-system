@@ -13,46 +13,40 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Top Buyers</title>
+    <title>Insert title here</title>
 </head>
 <%
-	ApplicationDB db=new ApplicationDB();
+	ApplicationDB db=new ApplicationDB(); ArrayList<String[]> alertList = new ArrayList<String[]>();
 	db.loopListing();
-	ArrayList<String[]> buyerList = new ArrayList<String[]>();
-	buyerList = db.topBuyers();	
+	String user = String.valueOf(session.getAttribute("user"));
+	System.out.println(user);
+		
+    alertList = db.getWatchAlerts(user);
         %>
 
         <body>
 
-          
-            <form method="get" action="Admindashboard.jsp"><input type="submit" value="Go To Admin Dash Board">
+            <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
+            <form method="get" action="dashboard.jsp"><input type="submit" value="Go To Dash Board">
             </form>
 
             <table id="table_id" class="display">
                 <thead>
                     <tr>
-                        <th>Account</th>
-                        <th># of wins</th>
-
+                        <th>Item Name</th>
+                        <th>Has this item been posted yet?</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for(int i=0; i < buyerList.size(); i++) { %>
+                    <% for(int i=0; i < alertList.size(); i++) { %>
                         <tr>
                             <%
-                            for(int j=0; j < buyerList.get(i).length; j++) {       	
+                            for(int j=0; j < alertList.get(i).length; j++) {       	
                             %>
                                 <td>
-                                    <%=buyerList.get(i)[j]%>
+                                    <%=alertList.get(i)[j]%>
                                 </td>
                                 <% } %>
-                                <%-- <td>
-                                    <form name="bidder_history_form" method="get" action="auctionServlet">
-                                    <input type="hidden" name="bidder_history_form" value="123">
-                                    <input type="hidden" name="bidder" value=<%=bidderList.get(i)[2]%>>
-                                    <input type="hidden" name="cid" value=<%=bidderList.get(i)[3]%>>
-                                    <input type="submit" value = "View"></form>
-                                </td> --%>
                         </tr>
                         <% } 
                     %>

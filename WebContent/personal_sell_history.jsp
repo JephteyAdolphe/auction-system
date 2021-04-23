@@ -13,46 +13,46 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Top Buyers</title>
+    <title>Insert title here</title>
 </head>
 <%
-	ApplicationDB db=new ApplicationDB();
-	db.loopListing();
-	ArrayList<String[]> buyerList = new ArrayList<String[]>();
-	buyerList = db.topBuyers();	
+	ApplicationDB db = new ApplicationDB();
+	ArrayList<String[]> auctionList = new ArrayList<String[]>();
+	String user = String.valueOf(session.getAttribute("user"));
+		
+    auctionList = db.getPersonalSellHistory(user);
         %>
 
         <body>
 
-          
-            <form method="get" action="Admindashboard.jsp"><input type="submit" value="Go To Admin Dash Board">
+            <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
+            <form method="get" action="dashboard.jsp"><input type="submit" value="Go To Dash Board">
             </form>
 
             <table id="table_id" class="display">
                 <thead>
                     <tr>
-                        <th>Account</th>
-                        <th># of wins</th>
-
+                        <th>Clothing ID</th>
+                        <th>Category</th>
+                        <th>Size</th>
+                        <th>Brand</th>
+                        <th>Name</th>
+                        <th>Current Price</th>
+                        <th>Min Bid Increment</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for(int i=0; i < buyerList.size(); i++) { %>
+                    <% for(int i=0; i < auctionList.size(); i++) { %>
                         <tr>
                             <%
-                            for(int j=0; j < buyerList.get(i).length; j++) {       	
+                            for(int j=0; j < auctionList.get(i).length; j++) {       	
                             %>
                                 <td>
-                                    <%=buyerList.get(i)[j]%>
+                                    <%=auctionList.get(i)[j]%>
                                 </td>
                                 <% } %>
-                                <%-- <td>
-                                    <form name="bidder_history_form" method="get" action="auctionServlet">
-                                    <input type="hidden" name="bidder_history_form" value="123">
-                                    <input type="hidden" name="bidder" value=<%=bidderList.get(i)[2]%>>
-                                    <input type="hidden" name="cid" value=<%=bidderList.get(i)[3]%>>
-                                    <input type="submit" value = "View"></form>
-                                </td> --%>
                         </tr>
                         <% } 
                     %>

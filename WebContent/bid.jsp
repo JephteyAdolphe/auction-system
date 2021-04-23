@@ -56,7 +56,6 @@
 	} */
 	//TO Do
 	//Need to figure out how to get Accountid and cid into method
-
 %> --%>
 	<form method="post" id="make_bid" action="auctionServlet">
 	

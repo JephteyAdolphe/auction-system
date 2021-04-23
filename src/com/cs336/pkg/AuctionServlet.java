@@ -388,6 +388,28 @@ public class AuctionServlet extends HttpServlet {
 				response.sendRedirect("customer_representative_functions.jsp");
 			
 		}
+		else if(request.getParameter("watch_alert_form") != null)
+		{
+			try {
+				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
+				if (db.createWatchAlert(request.getParameter("item_name").trim(), String.valueOf(session.getAttribute("user")))) {
+					System.out.println("Alert Created!");
+		        	response.sendRedirect("dashboard.jsp");
+		        } else {
+		        	response.sendRedirect("wrong.jsp");
+		        }
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+			
+		}
+		else if (request.getParameter("del_account")!=null) 
+		 {
+			 if (db.delAccount(request.getParameter("del_account"))) {System.out.println("Redirect");}
+			 response.sendRedirect("main.jsp");
+		 }
 		
 		else {System.out.println("No form was submitted");}		
 	}

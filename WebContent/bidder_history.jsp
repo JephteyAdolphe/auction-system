@@ -17,6 +17,7 @@
 </head>
 <%
 	ApplicationDB db=new ApplicationDB(); ArrayList<String[]> bidderList = new ArrayList<String[]>();
+	db.loopListing();
 	String bidder = String.valueOf(session.getAttribute("bidder"));
     bidderList = db.getBidderHistory(bidder);	
         %>

@@ -40,4 +40,5 @@ VALUES      ('Admin','1', 'Admin');
 INSERT INTO administrator
 VALUES      ('Admin');
 
+alter table bids add column bidincrement float default 0;
 alter table Clothing add column name varchar(50);

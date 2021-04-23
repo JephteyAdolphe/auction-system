@@ -14,8 +14,12 @@
 	
 	<body>
 	<body style="background-color:#1F1F1F;">
-	<form method="get" action="createCR.jsp"><input type="submit" value="Create Customer Representive Account"></form>
-	<form method="get" action="SalesReport.jsp"><input type="submit" value="Generate Sales Reports"></form>
+	 <form method="get" action="Admindashboard.jsp"><input type="submit" value="back to dashboard"></form>
+	<% 
+	ApplicationDB db = new ApplicationDB();
+	
+	String searchName =String.valueOf(session.getAttribute("Item"));
+	String total = db.itemEarnings(searchName); %>
 	<p style="font-family:georgia,garamond,serif;font-size:24px;font-style:bold;color:white;">
-       Hi Admin
-        </p>
+     Total Earnings for <%=searchName%> is $<%=total%>
+    </p>

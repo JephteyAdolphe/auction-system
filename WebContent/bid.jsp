@@ -62,7 +62,8 @@
 	
 	<input type="hidden" name="make_bid" value="1234">
   	Bid Price: <input type="number" step="0.01" name="price">
-  	<p>Upper Limit of Automatic Bid: <input type="number" step="0.01" name="upperLimit"></p>
+  	<p>Upper Limit of Automatic Bid (optional): <input type="number" step="0.01" name="upperLimit"></p>
+  	<p>Automatic Bid increment (optional): <input type="number" step="0.01" name="bidIncrement"></p>
   	<p><input type="submit" value="Create Bid"></p></form>
 	</body>
 </html>

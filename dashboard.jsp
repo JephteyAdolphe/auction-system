@@ -13,7 +13,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>DashBoard</title>
+    <title>Insert title here</title>
 </head>
 <% ApplicationDB db=new ApplicationDB(); ArrayList<String[]> itemList = new ArrayList<String[]>();
         itemList = db.getListings();
@@ -28,6 +28,7 @@
             <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
             <form method="get" action="createListing.jsp"><input type="submit" value="Create A Listing"></form>
             <form method="get" action="alert.jsp"><input type="submit" value="Go To Alerts"></form>
+            <form method="get" action="personal_history.jsp"><input type="submit" value="View Auction History"></form>
 
             <table id="table_id" class="display">
                 <thead>
@@ -36,7 +37,9 @@
                         <th>Category</th>
                         <th>Size</th>
                         <th>Brand</th>
+                        <th>Name</th>
                         <th>Current Price</th>
+                        <th>Min Bid Increment</th>
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Seller</th>
@@ -61,17 +64,20 @@
 
                                 <% } %>
                                 <td>
+                                	
                                     <form name="bid_form" method="get" action="auctionServlet">
                                     <input type="hidden" name="bid_form" value="123">
                                     <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
-                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
+                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[9]%>>
+                                    <input type="hidden" name="bidIncrementForItem" value=<%=itemList.get(i)[6]%>>
+                                    <input type="hidden" name="currPrice" value=<%=itemList.get(i)[5]%>>
                                     <input type="submit" value = "Make Bid"></form>
                                 </td>
                                 <td>
                                     <form name="history_form" method="get" action="auctionServlet">
                                     <input type="hidden" name="history_form" value="123">
                                     <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
-                                    <input type="submit" value = "View"></form>
+                                    <input type="submit" value = "View History Of This Item"></form>
                                 </td>
                                 <td>
                                     <form name="similar_form" method="get" action="auctionServlet">
@@ -79,7 +85,7 @@
                                     <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
                                     <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
                                     <input type="hidden" name="category" value=<%=itemList.get(i)[1]%>>
-                                    <input type="submit" value = "View Similar"></form>
+                                    <input type="submit" value = "View Items Similar To This"></form>
                                 </td>
                         </tr>
                         <% } 
@@ -91,11 +97,15 @@
                     $('#table_id').DataTable();
                 });
             </script>
-            
             <p>
             <form method="get" action="customer_representative_functions.jsp"><input type="submit" value="Customer Representative Service">
             </form>
             </p>
+        
+       
+            <form method="post" id="del_account" action="auctionServlet">
+            <input type="hidden" name="del_account" value=<%=test%>>
+            <input type="submit" value="Delete Current Account (Dangerous Operation!)"></form>
         
 </body>
 </html>

@@ -6,31 +6,31 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="as p"/>
+		<item key="selection" value="similar"/>
 		<list key="findhistory">
-			<item value="as p"/>
-			<item value="getbidderh"/>
-			<item value="alertList"/>
-			<item value="name"/>
-			<item value="c.name"/>
+			<item value="similar"/>
+			<item value="getlist"/>
+			<item value="getbidderhi"/>
+			<item value="getaler"/>
+			<item value=" %s"/>
+			<item value="properly"/>
+			<item value="autobid"/>
+			<item value="auto"/>
+			<item value="createlis"/>
+			<item value="bidderh"/>
+			<item value="minprice"/>
+			<item value="endofauction"/>
+			<item value="setwinner"/>
 			<item value="getlisting"/>
-			<item value="admin"/>
-			<item value="topitem"/>
-			<item value="history"/>
-			<item value="make"/>
-			<item value="makebids"/>
-			<item value="from bids"/>
-			<item value="getalert"/>
-			<item value="checkiflis"/>
-			<item value="today"/>
+			<item value="winner"/>
 		</list>
 		<list key="replacehistory">
 			<item value="auctionList"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="913"/>
-		<item key="DIALOG_Y_ORIGIN" value="203"/>
+		<item key="DIALOG_X_ORIGIN" value="899"/>
+		<item key="DIALOG_Y_ORIGIN" value="281"/>
 		<item key="DIALOG_WIDTH" value="248"/>
 		<item key="DIALOG_HEIGHT" value="354"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-21|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

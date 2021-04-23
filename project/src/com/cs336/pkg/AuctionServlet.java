@@ -123,6 +123,10 @@ public class AuctionServlet extends HttpServlet {
 					
 				    String cid = (String)request.getParameter("cid");
 				    String seller = (String)request.getParameter("seller");
+				    String currPrice = (String)request.getParameter("currPrice");
+				    session.setAttribute("currPrice", currPrice);
+				    String bidIncrementItem = (String)request.getParameter("bidIncrementForItem");
+				    session.setAttribute("bidIncrementForItem", bidIncrementItem);
 				    session.setAttribute("cid", cid);
 				    
 				 // If true send user to wrong.jsp since auction is over, else send user to bid.jsp so they can bid
@@ -260,24 +264,95 @@ public class AuctionServlet extends HttpServlet {
 				session = request.getSession();
 				
 			    String cid = String.valueOf(session.getAttribute("cid"));
-				
-				
+				String currPrice = String.valueOf(session.getAttribute("currPrice"));
+				System.out.println("currPrice");
+				String bidIncrementForItem = String.valueOf(session.getAttribute("bidIncrementForItem"));
+				float bidIncrement = Float.valueOf(bidIncrementForItem);
+				float currentPrice = Float.valueOf(currPrice);
 				//Make BID
 				//need to get account_id and CID
 				//is working when i hard code account_id and cid but currently null because idk how to get values
 				//price may need to be updated because idk if i should make it the starting price seller put + bid price or
 				//force bid price to above previous bids and starting price or in general how to do it
-				if(db.createBid(request.getParameter("price").trim(), request.getParameter("upperLimit").trim(), 
-						String.valueOf(session.getAttribute("user")), cid))
-				{
-					System.out.println("Bid made successfully");
-					response.sendRedirect("dashboard.jsp");
-				} 
-				else
-				{
-					//System.out.println("1st wrong");
-					response.sendRedirect("wrong.jsp");
-				}
+			    String upperLimit = "-1";
+			    
+			    //check if manual bid
+			    if(request.getParameter("upperLimit").equals("") && request.getParameter("bidIncrement").equals(""))
+			    {
+			    	//if upperLimit isn't typed in set it to 0
+			    	if(request.getParameter("upperLimit").equals("")) 
+			    		upperLimit = "0";
+			    	else //get upperlimit
+			    		upperLimit = request.getParameter("upperLimit").trim();
+			    	//check if the bid price inputted is greater than the current price + min bidIncrement
+			    	if(Float.valueOf(request.getParameter("price")) >= bidIncrement + currentPrice)
+			    	{
+			    		//checks to make sure price is higher than current price and create bid
+				    	if(Float.valueOf(request.getParameter("price")) > currentPrice && db.createBid(request.getParameter("price").trim(), upperLimit, 
+								String.valueOf(session.getAttribute("user")), cid))
+						{
+							System.out.println("Bid made successfully");
+							response.sendRedirect("dashboard.jsp");
+						} //error bidprice isn't higher than current price
+						else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
+						{
+							System.out.println("The current bid price is higher");
+							response.sendRedirect("wrong.jsp");
+						}//bid not made successfully
+						else
+						{
+							response.sendRedirect("wrong.jsp");
+						}
+			    	}
+			    	else
+			    	{
+			    		System.out.println("The bid price must be higher than the bid increment specified by the buyer");
+			    		response.sendRedirect("wrong.jsp");
+			    	}
+			    }//fields not typed in correctly
+			    else if(request.getParameter("upperLimit").equals("") && !request.getParameter("bidIncrement").equals(""))
+			    {
+			    	System.out.println("Input both upperLimit and bidIncrement for an autobid or only price for a manual bid");
+			    	response.sendRedirect("wrong.jsp");
+			    }
+			    else if(!request.getParameter("upperLimit").equals("") && request.getParameter("bidIncrement").equals(""))
+			    {
+			    	System.out.println("Input both upperLimit and bidIncrement for an autobid or only price for a manual bid");
+			    	response.sendRedirect("wrong.jsp");
+			    }
+			    else //autobid
+			    {
+			    	if(request.getParameter("bidIncrement").equals("") || request.getParameter("upperLimit").equals("") || request.getParameter("bidIncrement").equals(""))
+			    	{
+			    		System.out.println("Input all fields to auto increment");
+			    		response.sendRedirect("wrong.jsp");
+			    	}
+			    	
+			    	if(Float.valueOf(request.getParameter("price")) > currentPrice && db.createAutoBid(request.getParameter("price").trim(), request.getParameter("upperLimit").trim(), 
+			    			request.getParameter("bidIncrement").trim(), String.valueOf(session.getAttribute("user")), cid))
+					{
+						System.out.println("Bid made successfully");
+						response.sendRedirect("dashboard.jsp");
+					} //error bidprice isn't higher than current price
+					else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
+					{
+						System.out.println("The current bid price is higher");
+						response.sendRedirect("wrong.jsp");
+					}//bid not made successfully
+					else
+					{
+						response.sendRedirect("wrong.jsp");
+					}
+			    }		    
+			    //update all autobids 
+			    if(db.updateAutoBid((String)session.getAttribute("currPrice"), cid))
+			    {
+			    	System.out.println("updated");
+			    }
+			    else
+			    {
+			    	System.out.println("didn't update properly");
+			    }
 			} 
 			catch(Exception ex) 
 			{
@@ -302,6 +377,34 @@ public class AuctionServlet extends HttpServlet {
 					response.sendRedirect("wrong.jsp");
 				}
 		 }
+		else if(request.getParameter("QA_servlet")!=null)
+		{
+			if (db.createQuestion(request.getParameter("question").trim())) {}
+		    if (db.EditAnswer(request.getParameter("targetQuestion"), request.getParameter("answer"))){}
+		    if (db.editAccount(request.getParameter("account_id"), request.getParameter("newPassword"))) {}
+		    if (db.removeBid(request.getParameter("bid_id"), request.getParameter("bid_account") , request.getParameter("bid_cloth"))){}
+		    if (db.removeAuction(request.getParameter("auc_cloth"))) {}
+		
+				response.sendRedirect("customer_representative_functions.jsp");
+			
+		}
+		else if(request.getParameter("watch_alert_form") != null)
+		{
+			try {
+				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
+				if (db.createWatchAlert(request.getParameter("item_name").trim(), String.valueOf(session.getAttribute("user")))) {
+					System.out.println("Alert Created!");
+		        	response.sendRedirect("dashboard.jsp");
+		        } else {
+		        	response.sendRedirect("wrong.jsp");
+		        }
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				response.sendRedirect("wrong.jsp");
+			}
+			
+		}
 		
 		else {System.out.println("No form was submitted");}		
 	}

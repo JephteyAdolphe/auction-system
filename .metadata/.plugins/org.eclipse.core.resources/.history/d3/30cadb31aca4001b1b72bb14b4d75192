@@ -36,7 +36,7 @@ public class ApplicationDB {
 		}
 		try {
 			// Create a connection to your DB
-			connection = DriverManager.getConnection(connectionUrl, "root", "password");
+			connection = DriverManager.getConnection(connectionUrl, "root", "vbnm1234");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1757,342 +1757,342 @@ public class ApplicationDB {
 			}
 		}
 		// TODO: Ignore this method, havent finish yet.
-		public boolean EditAnswer(String Q, String A) {
-			try {
+				public boolean EditAnswer(String Q, String A) {
+					try {
+								
+						Connection con = this.getConnection();
+						Statement stmt = con.createStatement();
 						
-				Connection con = this.getConnection();
-				Statement stmt = con.createStatement();
-				
-				String sql1 = String.format("update QA set A='%s' where Q='%s'", A, Q);
-				stmt.executeUpdate(sql1);
-						
-						
-				con.close();
-				return true;
-
-			} catch (Exception ex) {
-				System.out.println(ex);
-				return false;
-			}
-		}
-
-		public ArrayList<String[]> getQAs() {
-			try {
-
-				// Get the database connection
-				Connection con = this.getConnection();
-
-				// Create a SQL statement
-				Statement stmt = con.createStatement();
-				ArrayList<String[]> QAList = new ArrayList<String[]>();
-
-				String sql = "select Q, A from QA;";
-				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
-
-				// Iterates through the returned listings
-				while (rs.next()) {
-				String[] QAs = {rs.getString("Q"), rs.getString("A")};
-							
-							
-				QAList.add(QAs);
-				}
-				rs.close();
-						
-
-				// Close the connection
-				con.close();
-				return QAList;
-
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				return null;
-			}
-		}
-
-		public boolean createQuestion(String Q)
-		{
-			try {
-
-				if (Q.equals("")){
-					return false;
-				}
-
-				Connection con = this.getConnection();
-
-				Statement stmt = con.createStatement();
-
-				String A = "Waiting for answer ...";
-				// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
-				String instruction = "insert into QA (Q, A) values (\""+Q+"\",\""+A+"\");";
-
-				stmt.executeUpdate(instruction);
-						
-				// Close the connection with no account match
-				con.close();
-				return true;
-
-			} catch (Exception ex) {
-				System.out.println(ex);
-				return false;
-			}
-		}
-
-		public boolean isCR(String givenAccountID) {
-			try {
-				// Log In
-
-				if (givenAccountID == null) {
-					return false;
-				}
-
-				// Get the database connection
-				Connection con = this.getConnection();
-
-				// Create a SQL statement
-				Statement stmt = con.createStatement();
-
-				// Forms sql select query with given account
-				String sql = String.format(
-						"select account_id  from customer_representative where account_id = '%s'",
-						givenAccountID);
-
-				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
-
-				// Iterates through the returned rows (should only be 1 row) to see if if the
-				// account with the correct password exists
-				while (rs.next()) {
-					if (rs.getString("account_id").equals(givenAccountID)) {
-						
+						String sql1 = String.format("update QA set A='%s' where Q='%s'", A, Q);
+						stmt.executeUpdate(sql1);
+								
+								
 						con.close();
-
 						return true;
-					} else {
-						break;
+
+					} catch (Exception ex) {
+						System.out.println(ex);
+						return false;
 					}
 				}
 
-				// Close the connection with no account match
-				rs.close();
-				con.close();
-				return false;
+				public ArrayList<String[]> getQAs() {
+					try {
 
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				return false;
-			}
-		}
+						// Get the database connection
+						Connection con = this.getConnection();
 
-		public boolean editAccount(String givenAccountID, String newPasswd)
-		{
-			try {
-			if (givenAccountID == null || newPasswd == null) {
-				return false;
-			}
+						// Create a SQL statement
+						Statement stmt = con.createStatement();
+						ArrayList<String[]> QAList = new ArrayList<String[]>();
 
-			// Get the database connection
-			Connection con = this.getConnection();
+						String sql = "select Q, A from QA;";
+						// Run the query against the DB and retrieves results
+						ResultSet rs = stmt.executeQuery(sql);
 
-			// Create a SQL statement
-			Statement stmt = con.createStatement();
+						// Iterates through the returned listings
+						while (rs.next()) {
+						String[] QAs = {rs.getString("Q"), rs.getString("A")};
+									
+									
+						QAList.add(QAs);
+						}
+						rs.close();
+								
 
-			// Forms sql select query with given account id and password
-			String sql = String.format(
-					"select account_id, password from account where account_id = '%s'",
-					givenAccountID);
+						// Close the connection
+						con.close();
+						return QAList;
 
-			// Run the query against the DB and retrieves results
-			ResultSet rs = stmt.executeQuery(sql);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						return null;
+					}
+				}
 
-			// Iterates through the returned rows (should only be 1 row) to see if if the
-			while (rs.next()) {
-				if (rs.getString("account_id").equals(givenAccountID)) {
-					
-					// update the account information
-					sql = "update account set password='"+newPasswd+"' where account_id='"+givenAccountID+"'";
-					stmt.executeUpdate(sql);
+				public boolean createQuestion(String Q)
+				{
+					try {
+
+						if (Q.equals("")){
+							return false;
+						}
+
+						Connection con = this.getConnection();
+
+						Statement stmt = con.createStatement();
+
+						String A = "Waiting for answer ...";
+						// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
+						String instruction = "insert into QA (Q, A) values (\""+Q+"\",\""+A+"\");";
+
+						stmt.executeUpdate(instruction);
+								
+						// Close the connection with no account match
+						con.close();
+						return true;
+
+					} catch (Exception ex) {
+						System.out.println(ex);
+						return false;
+					}
+				}
+
+				public boolean isCR(String givenAccountID) {
+					try {
+						// Log In
+
+						if (givenAccountID == null) {
+							return false;
+						}
+
+						// Get the database connection
+						Connection con = this.getConnection();
+
+						// Create a SQL statement
+						Statement stmt = con.createStatement();
+
+						// Forms sql select query with given account
+						String sql = String.format(
+								"select account_id  from customer_representative where account_id = '%s'",
+								givenAccountID);
+
+						// Run the query against the DB and retrieves results
+						ResultSet rs = stmt.executeQuery(sql);
+
+						// Iterates through the returned rows (should only be 1 row) to see if if the
+						// account with the correct password exists
+						while (rs.next()) {
+							if (rs.getString("account_id").equals(givenAccountID)) {
+								
+								con.close();
+
+								return true;
+							} else {
+								break;
+							}
+						}
+
+						// Close the connection with no account match
+						rs.close();
+						con.close();
+						return false;
+
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						return false;
+					}
+				}
+
+				public boolean editAccount(String givenAccountID, String newPasswd)
+				{
+					try {
+					if (givenAccountID == null || newPasswd == null) {
+						return false;
+					}
+
+					// Get the database connection
+					Connection con = this.getConnection();
+
+					// Create a SQL statement
+					Statement stmt = con.createStatement();
+
+					// Forms sql select query with given account id and password
+					String sql = String.format(
+							"select account_id, password from account where account_id = '%s'",
+							givenAccountID);
+
+					// Run the query against the DB and retrieves results
+					ResultSet rs = stmt.executeQuery(sql);
+
+					// Iterates through the returned rows (should only be 1 row) to see if if the
+					while (rs.next()) {
+						if (rs.getString("account_id").equals(givenAccountID)) {
+							
+							// update the account information
+							sql = "update account set password='"+newPasswd+"' where account_id='"+givenAccountID+"'";
+							stmt.executeUpdate(sql);
+							rs.close();
+							con.close();
+							return true;
+						} else {
+							break;
+						}
+					}
+
+					// Close the connection with no account match
 					rs.close();
 					con.close();
-					return true;
-				} else {
-					break;
-				}
-			}
-
-			// Close the connection with no account match
-			rs.close();
-			con.close();
-			return false;
-			}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			return false;
-			}
-		}
-
-		public boolean removeBid(String bid_id, String bid_account, String bid_cloth)
-		{
-			try {
-				if (bid_id == null || bid_account == null || bid_cloth == null) {
 					return false;
+					}
+				catch (Exception ex) {
+					ex.printStackTrace();
+					return false;
+					}
 				}
 
-				// Get the database connection
-				Connection con = this.getConnection();
+				public boolean removeBid(String bid_id, String bid_account, String bid_cloth)
+				{
+					try {
+						if (bid_id == null || bid_account == null || bid_cloth == null) {
+							return false;
+						}
 
-				// Create a SQL statement
-				Statement stmt = con.createStatement();
+						// Get the database connection
+						Connection con = this.getConnection();
 
-				// Check if the target bid exist
-				String sql = String.format(
-						"select Bid_ID from Bids where Bid_ID='%s' and account_id='%s' and CID='%s'",
-						bid_id, bid_account, bid_cloth);
+						// Create a SQL statement
+						Statement stmt = con.createStatement();
 
-				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
+						// Check if the target bid exist
+						String sql = String.format(
+								"select Bid_ID from Bids where Bid_ID='%s' and account_id='%s' and CID='%s'",
+								bid_id, bid_account, bid_cloth);
 
-				// Iterates through the returned rows (should only be 1 row) to see if if the
-				while (rs.next()) {
-					if (rs.getString("Bid_ID").equals(bid_id)) {
+						// Run the query against the DB and retrieves results
+						ResultSet rs = stmt.executeQuery(sql);
+
+						// Iterates through the returned rows (should only be 1 row) to see if if the
+						while (rs.next()) {
+							if (rs.getString("Bid_ID").equals(bid_id)) {
+								
+								// update the account information
+								sql = String.format("delete from Bids where Bid_ID='%s' and account_id='%s' and CID='%s'",bid_id, bid_account, bid_cloth);
+								stmt.execute(sql);
+								rs.close();
+								con.close();
+								return true;
+							} else {
+								break;
+							}
+						}
+
+						// Close the connection with no account match
+						rs.close();
+						con.close();
+						return false;
+						}
+					catch (Exception ex) {
+						ex.printStackTrace();
+						return false;
+						}
+				}
+
+				public boolean removeAuction(String auc_cloth) 
+				{
+					try {
 						
-						// update the account information
-						sql = String.format("delete from Bids where Bid_ID='%s' and account_id='%s' and CID='%s'",bid_id, bid_account, bid_cloth);
-						stmt.execute(sql);
+						// Get the database connection
+						Connection con = this.getConnection();
+
+						// Create a SQL statement
+						Statement stmt = con.createStatement();
+
+						// Check if the target bid exist
+						String sql = String.format(
+								"select CID from Clothing where CID='%s'",
+								auc_cloth);
+
+						// Run the query against the DB and retrieves results
+						ResultSet rs = stmt.executeQuery(sql);
+
+						// Iterates through the returned rows (should only be 1 row) to see if if the
+						while (rs.next()) {
+							if (rs.getString("CID").equals(String.valueOf(auc_cloth))) {						
+								// update the account information
+								sql = String.format("delete from Clothing where CID=%s",auc_cloth);
+								stmt.execute(sql);
+								rs.close();
+								con.close();
+								return true;
+							} else {
+								break;
+							}
+						}
+
+						// Close the connection with no account match
 						rs.close();
 						con.close();
-						return true;
-					} else {
-						break;
-					}
+						return false;
+						}
+					catch (Exception ex) {
+						ex.printStackTrace();
+						return false;
+						}
 				}
-
-				// Close the connection with no account match
-				rs.close();
-				con.close();
-				return false;
-				}
-			catch (Exception ex) {
-				ex.printStackTrace();
-				return false;
-				}
-		}
-
-		public boolean removeAuction(String auc_cloth) 
-		{
-			try {
-				
-				// Get the database connection
-				Connection con = this.getConnection();
-
-				// Create a SQL statement
-				Statement stmt = con.createStatement();
-
-				// Check if the target bid exist
-				String sql = String.format(
-						"select CID from Clothing where CID='%s'",
-						auc_cloth);
-
-				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
-
-				// Iterates through the returned rows (should only be 1 row) to see if if the
-				while (rs.next()) {
-					if (rs.getString("CID").equals(String.valueOf(auc_cloth))) {						
-						// update the account information
-						sql = String.format("delete from Clothing where CID=%s",auc_cloth);
-						stmt.execute(sql);
-						rs.close();
-						con.close();
-						return true;
-					} else {
-						break;
-					}
-				}
-
-				// Close the connection with no account match
-				rs.close();
-				con.close();
-				return false;
-				}
-			catch (Exception ex) {
-				ex.printStackTrace();
-				return false;
-				}
-		}
-		public void loopListing() {
-			try {
-			
-
-			// Get the database connection
-			Connection con = this.getConnection();
-
-			// Create a SQL statement
-			Statement stmt = con.createStatement();
-
-			// Forms sql select query with given account id and password
-			String sql = String.format("select CID from Bids where winner = 0 group by CID");
-
-			// Run the query against the DB and retrieves results
-			ResultSet rs = stmt.executeQuery(sql);
-
-			// Iterates through the returned rows (should only be 1 row) to see if if the
-			while (rs.next()) {
-				checkIfListingValid(Integer.parseInt(rs.getString("CID")), "x");
+				public void loopListing() {
+					try {
 					
-			}
+
+					// Get the database connection
+					Connection con = this.getConnection();
+
+					// Create a SQL statement
+					Statement stmt = con.createStatement();
+
+					// Forms sql select query with given account id and password
+					String sql = String.format("select CID from Bids where winner = 0 group by CID");
+
+					// Run the query against the DB and retrieves results
+					ResultSet rs = stmt.executeQuery(sql);
+
+					// Iterates through the returned rows (should only be 1 row) to see if if the
+					while (rs.next()) {
+						checkIfListingValid(Integer.parseInt(rs.getString("CID")), "x");
+							
+					}
+							rs.close();
+							con.close();
+							
+					// Close the connection with no account match
 					rs.close();
 					con.close();
-					
-			// Close the connection with no account match
-			rs.close();
-			con.close();
-		
-			}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		
-			}
-		}
-		public boolean delAccount(String account_id) 
-		{
-			try {
-				// Get the database connection
-				Connection con = this.getConnection();
-
-				// Create a SQL statement
-				Statement stmt = con.createStatement();
-
-				// Check if the target bid exist
-				String sql = String.format(
-						"select account_id from account where account_id='%s'",
-						account_id);
 				
-				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
-
-				// Iterates through the returned rows (should only be 1 row) to see if if the
-				while (rs.next()) {
-					if (rs.getString("account_id").equals(account_id)) {			
-						// update the account information
-						sql = String.format("delete from account where account_id='%s'",account_id);
-						stmt.execute(sql);
-						rs.close();
-						con.close();
-						return true;
-					} else {
-						break;
+					}
+				catch (Exception ex) {
+					ex.printStackTrace();
+				
 					}
 				}
+				public boolean delAccount(String account_id) 
+				{
+					try {
+						// Get the database connection
+						Connection con = this.getConnection();
 
-				// Close the connection with no account match
-				rs.close();
-				con.close();
-				return false;
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-				return false;
-				}	
-		}
+						// Create a SQL statement
+						Statement stmt = con.createStatement();
+
+						// Check if the target bid exist
+						String sql = String.format(
+								"select account_id from account where account_id='%s'",
+								account_id);
+						
+						// Run the query against the DB and retrieves results
+						ResultSet rs = stmt.executeQuery(sql);
+
+						// Iterates through the returned rows (should only be 1 row) to see if if the
+						while (rs.next()) {
+							if (rs.getString("account_id").equals(account_id)) {			
+								// update the account information
+								sql = String.format("delete from account where account_id='%s'",account_id);
+								stmt.execute(sql);
+								rs.close();
+								con.close();
+								return true;
+							} else {
+								break;
+							}
+						}
+
+						// Close the connection with no account match
+						rs.close();
+						con.close();
+						return false;
+					}
+					catch (Exception ex) {
+						ex.printStackTrace();
+						return false;
+						}	
+				}
 }

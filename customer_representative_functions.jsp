@@ -16,15 +16,81 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Customer Representative Service</title>
 		<link rel="stylesheet" href="mystyle.css" type= "text/css">
+		
+		<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #0073B1;
+  height: 300px;
+  padding: 20px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav {
+  float: left;
+  width: 30%;
+  height: 300px; /* only for demonstration, should be removed */
+  background: #81f6ff;
+  text-color: white;
+  padding: 30px;
+  color: white;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 70%;
+  background-color: #f1f1f1; /* only for demonstration, should be removed */
+}
+
+/* Clear floats after the columns */
+section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  nav, article {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
 	</head>
 	
 	<body>
 	
 	<div class="Login">
-	<p style="font-family:georgia,garamond,serif;font-size:36px;font-style:bold;color:white;">
-         Customer Representative Service
-      </p>
 	</div>
+	
+	
 	
 		<form method="get" action="dashboard.jsp"><input type="submit" value="Go Back to Dash Board"></form>
 		
@@ -80,52 +146,74 @@
 		if (db.isCR(test))
 		{
 		%>
-		
-		<!-- edit answer function for customer representative -->
-		<p style="font-family:georgia,garamond,serif;font-size:24px;">Edit Answer For A Question</p>
-		<br>
-		<label>Question:</label>
-		<input type="text" name="targetQuestion" id="targetQuestion" size="100"><br>
+		<section>
+  <nav>
+    <ul>
+      <li><a href="#editAnswer">Edit Answer For A Question</a></li>
+      <br><br>
+      <li><a href="#editAccount">Edit Account Information</a></li>
+      <br><br>
+      <li><a href="#delBid">Remove an existing bid</a></li>
+      <br><br>
+      <li><a href="#delAuction">Remove all auction for a cloth</a></li>
+    </ul>
+  </nav>
+  <header>
+  <h1>Customer Representative Service</h1>
+	</header>
+</section>
+	<br>
+	
+<section>
+  <article>
+    <h2 id="editAnswer">Edit Answer For A Question</h2>
+    <label>Question:</label>
+		<input type="text" name="targetQuestion" id="targetQuestion" size="50"><br>
 		<label>Answer:</label>
-		<input type="text" name="answer" id="answer" size="100">
+		<input type="text" name="answer" id="answer" size="50">
 		<input type="submit" value="submit">
-		
-		<!-- edit account information function for customer representative -->
-		<p style="font-family:georgia,garamond,serif;font-size:24px;">Edit Account Information</p>
-		<br>
-		<label>Account ID:</label>
-		<input type="text" name="account_id" id="account_id" size="100"><br>
+  </article>
+</section>
+  <br>
+  
+<section>
+  <article>
+    <h2 id="editAccount">Edit Account Information</h2>
+    <label>Account ID:</label>
+		<input type="text" name="account_id" id="account_id" size="50"><br>
 		<label>New Password:</label>
-		<input type="text" name="newPassword" id="newPassword" size="100">
+		<input type="text" name="newPassword" id="newPassword" size="50"><br>
 		<input type="submit" value="submit">
-		
-		<!-- Remove bids function for customer representative -->
-		<p style="font-family:georgia,garamond,serif;font-size:24px;">Remove an existing bids</p>
-		<br>
-		<label>Bid id:</label>
-		<input type="text" name="bid_id" id="bid_id"><br>
+  </article>
+</section>
+	<br>
+	
+<section>
+  <article>
+    <h2 id="delBid">Remove an existing bid</h2>
+    <label>Bid id:</label>
+		<input type="text" name="bid_id" id="bid_id" size="50"><br>
 		<label>Account id:</label>
-		<input type="text" name="bid_account" id="bid_account"><br>
+		<input type="text" name="bid_account" id="bid_account" size="50"><br>
 		<label>Cloth id</label>
-		<input type="text" name="bid_cloth" id="bid_cloth">
+		<input type="text" name="bid_cloth" id="bid_cloth" size="50"><br>
 		<input type="submit" value="submit">
-		
-		<!-- Remove auctions function for customer representative -->
-		<p style="font-family:georgia,garamond,serif;font-size:24px;">Remove all auction for a cloth</p>
-		<br>
-		<label>Cloth id:</label>
-		<input type="text" name="auc_cloth" id="auc_cloth">
+  </article>
+</section>
+	<br>
+	
+<section>
+  <article>
+    <h2 id="delAuction">Remove all auction for a cloth</h2>
+    <label>Cloth id:</label>
+		<input type="text" name="auc_cloth" id="auc_cloth" size="50"><br>
 		<input type="submit" value="submit">
+  </article>
+</section>
+	<br>
 		
 		<%}%>
-
-  		
-
-		<!-- TODO: reps reply to user questions -->
-		<!-- TODO: edits and deletes account information -->
-		<!-- TODO: removes bids -->
-		<!-- TODO: removes auctions -->
-	<br>
+		
 	</div>
 	</form>
 </body>

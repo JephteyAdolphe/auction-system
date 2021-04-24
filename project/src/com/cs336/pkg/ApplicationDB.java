@@ -1959,6 +1959,11 @@ public class ApplicationDB {
 						// update the account information
 						sql = String.format("delete from Bids where Bid_ID='%s' and account_id='%s' and CID='%s'",bid_id, bid_account, bid_cloth);
 						stmt.execute(sql);
+						
+						sql = String.format("update Clothing set cur_price = (select price from Bids where cid=%s and price >= all (select price from Bids)) where CID=%s;",bid_cloth,bid_cloth);
+						stmt.executeUpdate(sql);
+						
+						
 						rs.close();
 						con.close();
 						return true;

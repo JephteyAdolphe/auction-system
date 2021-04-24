@@ -133,16 +133,14 @@ public class AuctionServlet extends HttpServlet {
 					if (db.checkIfListingValid(Integer.valueOf(cid), String.valueOf(session.getAttribute("user")))) {
 						if(String.valueOf(session.getAttribute("user")).equals(seller))
 					    {
-							System.out.println("Seller cannot bid on their own item");
-					    	response.sendRedirect("wrong.jsp");
+					    	response.sendRedirect("SellerError.jsp");
 					    }
 					    else
 					    {
 					    	response.sendRedirect("bid.jsp");
 					    }
 					} else {
-						System.out.println("The auction is no longer valid");
-						response.sendRedirect("wrong.jsp");
+						response.sendRedirect("AuctionNotValid.jsp");
 					}
 					
 				} 
@@ -230,7 +228,7 @@ public class AuctionServlet extends HttpServlet {
 		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
-		        	System.out.println("Are we here?");
+		        	//System.out.println("Are we here?");
 		        	response.sendRedirect("invalidListing.jsp");
 		        }
 				
@@ -265,7 +263,7 @@ public class AuctionServlet extends HttpServlet {
 				
 			    String cid = String.valueOf(session.getAttribute("cid"));
 				String currPrice = String.valueOf(session.getAttribute("currPrice"));
-				System.out.println("currPrice");
+				//System.out.println("currPrice");
 				String bidIncrementForItem = String.valueOf(session.getAttribute("bidIncrementForItem"));
 				float bidIncrement = Float.valueOf(bidIncrementForItem);
 				float currentPrice = Float.valueOf(currPrice);
@@ -296,12 +294,11 @@ public class AuctionServlet extends HttpServlet {
 						} //error bidprice isn't higher than current price
 						else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
 						{
-							System.out.println("The current bid price is higher");
-							response.sendRedirect("wrong.jsp");
+							response.sendRedirect("BidPriceError.jsp");
 						}//bid not made successfully
 						else
 						{
-							response.sendRedirect("wrong.jsp");
+							response.sendRedirect("BidFailed.jsp");
 						}
 			    	}
 			    	else
@@ -309,6 +306,7 @@ public class AuctionServlet extends HttpServlet {
 			    		System.out.println("The bid price must be higher than the bid increment specified by the buyer");
 			    		response.sendRedirect("wrong.jsp");
 			    	}
+			    	//update all autobids 
 			    }//fields not typed in correctly
 			    else if(request.getParameter("upperLimit").equals("") && !request.getParameter("bidIncrement").equals(""))
 			    {
@@ -322,36 +320,56 @@ public class AuctionServlet extends HttpServlet {
 			    }
 			    else //autobid
 			    {
+			    	
 			    	if(request.getParameter("bidIncrement").equals("") || request.getParameter("upperLimit").equals("") || request.getParameter("bidIncrement").equals(""))
 			    	{
 			    		System.out.println("Input all fields to auto increment");
 			    		response.sendRedirect("wrong.jsp");
 			    	}
-			    	
-			    	if(Float.valueOf(request.getParameter("price")) > currentPrice && db.createAutoBid(request.getParameter("price").trim(), request.getParameter("upperLimit").trim(), 
-			    			request.getParameter("bidIncrement").trim(), String.valueOf(session.getAttribute("user")), cid))
-					{
-						System.out.println("Bid made successfully");
-						response.sendRedirect("dashboard.jsp");
-					} //error bidprice isn't higher than current price
-					else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
-					{
-						System.out.println("The current bid price is higher");
-						response.sendRedirect("wrong.jsp");
-					}//bid not made successfully
-					else
-					{
-						response.sendRedirect("wrong.jsp");
-					}
-			    }		    
-			    //update all autobids 
-			    if(db.updateAutoBid((String)session.getAttribute("currPrice"), cid))
+			    	if(Float.valueOf(request.getParameter("price")) >= bidIncrement + currentPrice && Float.valueOf(request.getParameter("upperLimit")) > Float.valueOf(request.getParameter("price").trim()) && Float.valueOf(request.getParameter("bidIncrement").trim()) >= bidIncrement)
+			    	{
+			    		if(Float.valueOf(request.getParameter("price")) > currentPrice && db.createAutoBid(request.getParameter("price").trim(), request.getParameter("upperLimit").trim(), 
+				    			request.getParameter("bidIncrement").trim(), String.valueOf(session.getAttribute("user")), cid))
+						{
+							System.out.println("Bid made successfully");
+							response.sendRedirect("dashboard.jsp");
+						} //error bidprice isn't higher than current price
+						else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
+						{
+							response.sendRedirect("BidPriceError.jsp");
+						}//bid not made successfully
+						else
+						{
+							response.sendRedirect("BidFailed.jsp");
+						}
+			    	}
+			    	else
+			    	{
+			    		response.sendRedirect("InvalidInput.jsp");
+			    	}
+			    }
+			    
+			    if(Float.valueOf((String)session.getAttribute("currPrice")) > Float.valueOf(request.getParameter("price")))
 			    {
-			    	System.out.println("updated");
+			    	if(db.updateAutoBid((String)session.getAttribute("currPrice"), cid))
+				    {
+				    	System.out.println("updated");
+				    }
+				    else
+				    {
+				    	System.out.println("didn't update properly");
+				    }
 			    }
 			    else
 			    {
-			    	System.out.println("didn't update properly");
+			    	if(db.updateAutoBid(String.valueOf(request.getParameter("price")), cid))
+				    {
+				    	System.out.println("updated");
+				    }
+				    else
+				    {
+				    	System.out.println("didn't update properly");
+				    }
 			    }
 			} 
 			catch(Exception ex) 

@@ -587,6 +587,7 @@ public class ApplicationDB {
 		{
 			try
 			{
+				System.out.println("price: " + price);
 				// Get the database connection
 				Connection con = this.getConnection();
 
@@ -628,17 +629,23 @@ public class ApplicationDB {
 					System.out.println("priceOfRow:" + priceOfRow);
 					System.out.println("price:" + Float.valueOf(price));
 					System.out.println();
+					
+					String sql1 = String.format("select max(price) as p, account_id as accid from bids where account_id = '%s' and CID = %d and upper_limit = 0 and bidincrement = 0", accountIDFromRow, Integer.parseInt(CID));
+				    ResultSet rs1 = stmt.executeQuery(sql1);
+				    
+				    Float maxprice = null;
+				    String accId = null;
+				   	while(rs1.next())
+				   	{
+				   		maxprice = rs1.getFloat("p");
+				   		accId = rs1.getString("accid");
+				  	}
+				    
+				   	
 					//checks if the autobid is greater than the current price
-					if(priceOfRow > Float.valueOf(price))
+					if(priceOfRow >= Float.valueOf(price))
 				 	{
 						//check if a manual bid was placed with the value of the autobid
-					    String sql1 = String.format("select max(price) as p from bids where account_id = '%s' and CID = %d and upper_limit = 0 and bidincrement = 0", accountIDFromRow, Integer.parseInt(CID));
-					    ResultSet rs1 = stmt.executeQuery(sql1);
-					    Float maxprice = null;
-					   	while(rs1.next())
-					   	{
-					   		maxprice = rs1.getFloat("p");
-					  	}
 					   	//check if the current autobid is the highest price, if so check if there is a manual bid for that user and make it
 						if(maxprice == null || maxprice < Float.valueOf(priceOfRow))
 					   	{ 	
@@ -646,23 +653,36 @@ public class ApplicationDB {
 						   	String sql2 = String.format("update clothing set cur_price = %f where CID = %d", priceOfRow, Integer.parseInt(CID));
 						   	stmt.executeUpdate(sql2);
 						   	price = String.valueOf(priceOfRow);
-						   	System.out.println(price);
+						   	//System.out.println(price);
 					 		countNumberOfUpdates++;			    	
+					    }
+					    else if(maxprice > Float.valueOf(priceOfRow) && maxprice < upperlimit)
+					    {
+					    	String sql2 = String.format("update clothing set cur_price = %f where CID = %d", maxprice, Integer.parseInt(CID));
+						   	stmt.executeUpdate(sql2);
+						   	price = String.valueOf(maxprice);
+					    }
+					    else if(maxprice > Float.valueOf(priceOfRow) && maxprice > upperlimit)
+					    {
+					    	String sql2 = String.format("update clothing set cur_price = %f where CID = %d", upperlimit, Integer.parseInt(CID));
+						   	stmt.executeUpdate(sql2);
+						   	price = String.valueOf(upperlimit);
 					    }
 					    else
 					   	{
-					    	System.out.println("There is a manual bid made for this winning autobid");
-					   		//countNumberOfUpdates = 0;
+					    	//System.out.println("There is a manual bid made for this winning autobid");
+					   		countNumberOfUpdates = 0;
 					   	}
 					}
 					//if the current auto bid is less than the current price check if the update is possible and if so do it
 					else if(priceOfRow < Float.valueOf(price))
 					{
-						System.out.println("Can it tell that the first bid is lower");
+						//System.out.println("Can it tell that the first bid is lower");
 						//can make a bid 
+			
 						if((Float.valueOf(price) + bidincrement) < upperlimit)
 						{
-							System.out.println("Did i make it here to update Float.valueOf(price) + bidincrement");
+							//System.out.println("Did i make it here to update Float.valueOf(price) + bidincrement");
 							Float newPrice = Float.valueOf(price) + bidincrement;
 							createBid(String.valueOf(newPrice), "0", accountIDFromRow, CID);
 						   	String sql2 = String.format("update clothing set cur_price = %f where CID = %d", newPrice, Integer.parseInt(CID));
@@ -670,7 +690,7 @@ public class ApplicationDB {
 						   	String sql3 = String.format("update bids set price = %f where Bid_ID = %d", newPrice, bidId);
 							stmt.executeUpdate(sql3);
 						   	price = String.valueOf(newPrice);
-						   	System.out.println(price);
+						   	//System.out.println(price);
 					 		countNumberOfUpdates++;	
 						}
 						else if((Float.valueOf(price) + bidincrement) > upperlimit)
@@ -695,28 +715,28 @@ public class ApplicationDB {
 						}
 						else
 						{
-							System.out.println("Reached upper limit of this autobid, alert in this case");
+							//System.out.println("Reached upper limit of this autobid, alert in this case");
 							countNumberOfUpdates = 0;
 						}
 					}
 					else 
 					{
-						System.out.println("Autobid price is equal to the current price");
+						//System.out.println("Autobid price is equal to the current price");
 						countNumberOfUpdates = 0;
-						System.out.println("Count number of updates:" + countNumberOfUpdates);
+						//System.out.println("Count number of updates:" + countNumberOfUpdates);
 					}		
 				}
 				con.close();
 				rs.close();
 				//rs1.close();
-				System.out.println("Value of countNumberOfUpdates before returning" + countNumberOfUpdates);
+				//System.out.println("Value of countNumberOfUpdates before returning" + countNumberOfUpdates);
 				if (countNumberOfUpdates != 0)
 				{
 					System.out.println("Recursion happens");
 					updateAutoBid(price, CID);
 				}
 				//MAY be issues here
-				System.out.println("Count number of updates for it to be true" + countNumberOfUpdates);
+				//System.out.println("Count number of updates for it to be true" + countNumberOfUpdates);
 				return true;
 			}
 			catch (Exception ex)
@@ -1800,18 +1820,28 @@ public class ApplicationDB {
 				// Forms sql to get all bids
 				ArrayList<String[]> bidderList = new ArrayList<String[]>();
 
-				String sql = String.format("select name, count(winner) as p from Bids join Clothing s using (CID) where winner = '1'  group by name ORDER BY p DESC");
+				String sql = String.format("Create temporary table items(\n"
+						+ "select *,  count(winner) as p from ((Bids join Clothing s using (CID))join shoes i using (CID)) where winner = '1'  group by name, brand\n"
+						+ "union \n"
+						+ "select *,  count(winner) as p from ((Bids join Clothing s using (CID))join tops i using (CID)) where winner = '1'  group by name, brand\n"
+						+ "union \n"
+						+ "select *,  count(winner) as p from ((Bids join Clothing s using (CID))join bottoms i using (CID)) where winner = '1'  group by name, brand\n"
+						+ ") ;\n");
+					
+				String sql12 = String.format( "select name,brand, category, p from items where winner = '1'");
+					String sql2=String.format("drop table items;");
 
 				// Run the query against the DB and retrieves results
-				ResultSet rs = stmt.executeQuery(sql);
-
+				stmt.executeUpdate(sql);
+				ResultSet rs = stmt.executeQuery(sql12);
+				
 				// Iterates through the returned listings
 				while (rs.next()) {
-					String[] bidder_row = { rs.getString("name"), rs.getString("p")};
+					String[] bidder_row = { rs.getString("name"),rs.getString("brand"), rs.getString("category"), rs.getString("p")};
 					bidderList.add(bidder_row);
 				}
 				rs.close();
-				
+				stmt.executeUpdate(sql2);
 				// Close the connection
 				con.close();
 				return bidderList;
@@ -2169,12 +2199,10 @@ public class ApplicationDB {
 						rs.close();
 						con.close();
 						return false;
-
 					}
 					catch (Exception ex) {
 						ex.printStackTrace();
 						return false;
-						}
-					
+						}	
 				}
 }

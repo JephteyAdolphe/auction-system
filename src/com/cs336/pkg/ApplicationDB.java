@@ -43,7 +43,6 @@ public class ApplicationDB {
 		}
 
 		return connection;
-
 	}
 
 	public void closeConnection(Connection connection) {
@@ -57,11 +56,7 @@ public class ApplicationDB {
 
 	public static void main(String[] args) {
 		ApplicationDB dao = new ApplicationDB();
-		// Connection connection = dao.getConnection();
-
-		// System.out.println(connection);
 		dao.getListings();
-		// dao.closeConnection(connection);
 	}
 
 	// givenAccountID / givenPass refers to the credentials that the user submitted
@@ -93,7 +88,6 @@ public class ApplicationDB {
 			while (rs.next()) {
 				if (rs.getString("account_id").equals(givenAccountID)
 						&& rs.getString("password").equals(givenPassword)) {
-					System.out.println("ACCOUNT EXISTS - Logged In");
 					con.close();
 					rs.close();
 					return true;
@@ -156,7 +150,7 @@ public class ApplicationDB {
 		}
 	}
 
-	public boolean createCRAccount(String givenAccountID, String givenPassword) { /////////////////////////////
+	public boolean createCRAccount(String givenAccountID, String givenPassword) {
 		try {
 			// Sign Up
 
@@ -296,7 +290,6 @@ public class ApplicationDB {
 
 			if (endDate.equals("") || endTime.equals("")
 					|| bidIncrement.equals("") || startPrice.equals("") || accountID.equals("")) {
-				System.out.println("Is something empty");
 				return false;
 			}
 
@@ -304,7 +297,6 @@ public class ApplicationDB {
 			// obtained from session object though
 			if (!accountIsValid(accountID))
 			{
-				System.out.println("Is the account valid?");
 				return false;
 			}
 
@@ -318,9 +310,7 @@ public class ApplicationDB {
 			 SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
 			 String td = day.format(date);
 			 String tim = time.format(date);
-			 String startDateTime = (td + " " + tim);
-			 //System.out.println(startDateTime);
-			
+			 String startDateTime = (td + " " + tim);		
 			
 			String endDateTime = endD[2] + "-" + endD[0] + "-" + endD[1] + " " + endT[0] + ":" + endT[1] + ":"
 					+ endT[2];
@@ -328,7 +318,6 @@ public class ApplicationDB {
 			// Checks that start date/time is before end date/time
 			if (!compareDates(startDateTime, endDateTime))
 			{
-				System.out.println("Are the dates correct?");
 				return false;
 			}
 
@@ -336,7 +325,6 @@ public class ApplicationDB {
 			String category = null;
 			String size = null;
 			if (itemType == null) {
-				//System.out.println("hi");
 			}
 			else if (itemType.equals("tops")) {
 				category = "tops";
@@ -355,59 +343,12 @@ public class ApplicationDB {
 			// Create a SQL statement
 			Statement stmt = con.createStatement();
 
-//			// Generate random CID
-//			Random rand = new Random();
-//			int upper = 10000;
-//			int cid = -1;
-//
-//			// Generates CID and checks that it is not a duplicate
-//			while (cid == -1) {
-//				cid = rand.nextInt(upper);
-//
-//				// Forms sql select query with given account id and password
-//				String sql = String.format("select cid from clothing");
-//
-//				// Run the query against the DB and retrieves results
-//				ResultSet rs = stmt.executeQuery(sql);
-//
-//				// Iterates through the returned rows (should only be 1 row) to see if if the
-//				// account with the correct password exists
-//				while (rs.next()) {
-//					if (rs.getInt("cid") == cid) {
-//						System.out.println("CID ALREADY EXISTS");
-//						cid = -1;
-//						break;
-//
-//					} else {
-//						continue;
-//					}
-//				}
-//				rs.close();
-//			}
-
-			// Forms sql insert query for Clothing, Sells, and ISA Category tables with data
-			
-//			String clothingSQL = String.format(
-//					"insert into clothing (cid,name, brand, bid_increment,"
-//							+ "cur_price, start_price) values (%d, '%s', '%s', %f, %f, %f)",
-//					cid, name, brand, Float.parseFloat(bidIncrement), Float.parseFloat(startPrice),
-//					Float.parseFloat(startPrice));
-//
-//			String sellsSQL = String.format(
-//					"insert into sells (account_id, cid, minimum, start_date,"
-//							+ "end_date) values ('%s', %d, %f, '%s', '%s')",
-//					accountID, cid, Float.parseFloat(minPrice), startDateTime, endDateTime);
-//
-//			String categorySQL = String.format("insert into %s (cid, category, size) values (%d, '%s', '%s')", category,
-//					cid, category, size);
-			System.out.println("Made it to clothingSQl");
 			String clothingSQL = String.format(
 			"insert into clothing (name, brand, bid_increment,"
 					+ "cur_price, start_price) values ( '%s', '%s', %f, %f, %f)",
 			 name, brand, Float.parseFloat(bidIncrement), Float.parseFloat(startPrice),
 			Float.parseFloat(startPrice));
 			
-			System.out.println("Made it to execute clothingSQL");
 			stmt.executeUpdate(clothingSQL);
 			
 
@@ -416,27 +357,24 @@ public class ApplicationDB {
 			ResultSet rs = stmt.executeQuery(getCID);
 			
 			int CID = 0;
-			System.out.println("Able to get CID");
+
 			while(rs.next())
 			{
 				CID = rs.getInt("CID");
 			}
 			
-			System.out.println("This is the CID: " + CID);
 			String categorySQL = String.format("insert into %s (CID, category, size) values (%d, '%s', '%s')", category, CID,
 			 category, size);
 			
 
-			System.out.println("Update to categorySQl");
 			stmt.executeUpdate(categorySQL);
 			
 			String sellsSQL = String.format(
 					"insert into sells (account_id, cid, minimum, start_date,"
 							+ "end_date) values ('%s',%d, %f, '%s', '%s')",
 					accountID, CID, Float.parseFloat(minPrice), startDateTime, endDateTime);
-			System.out.println("Update to sellsSQl");
+			
 			stmt.executeUpdate(sellsSQL);
-			System.out.println("Did we execute it?");
 
 			// Close the connection with no account match
 			con.close();
@@ -444,7 +382,6 @@ public class ApplicationDB {
 
 		} catch (Exception ex) {
 			System.out.println(ex);
-			System.out.println("Try catch failed");
 			return false;
 		}
 	}
@@ -454,14 +391,12 @@ public class ApplicationDB {
 		try {
 
 			if (name.trim().equals("") || user.equals("")) {
-				System.out.println("Is something empty? Alert could not be set");
 				return false;
 			}
 
 			// Checks if a valid account id is submitted when creating watch alert
 			if (!accountIsValid(user))
 			{
-				System.out.println("Is the account valid?");
 				return false;
 			}
 
@@ -546,7 +481,6 @@ public class ApplicationDB {
 		
 		public boolean createAutoBid(String price, String upperLimit, String bidIncrement, String accountID, String CID)
 		{
-			System.out.println("Are we here");
 			try
 			{
 				if (price.equals("") || upperLimit.equals("") || bidIncrement.equals("") || accountID.equals("") || CID.equals("")) {
@@ -587,7 +521,6 @@ public class ApplicationDB {
 		{
 			try
 			{
-				System.out.println("price: " + price);
 				// Get the database connection
 				Connection con = this.getConnection();
 
@@ -620,15 +553,6 @@ public class ApplicationDB {
 						accountIDFromRow = row[3];
 						bidincrement = Float.valueOf(row[4]);
 					}
-					System.out.println(bidId);
-					System.out.println(priceOfRow);
-					System.out.println(upperlimit);
-					System.out.println(accountIDFromRow);
-					System.out.println(bidincrement);
-					System.out.println();
-					System.out.println("priceOfRow:" + priceOfRow);
-					System.out.println("price:" + Float.valueOf(price));
-					System.out.println();
 					
 					String sql1 = String.format("select max(price) as p, account_id as accid from bids where account_id = '%s' and CID = %d and upper_limit = 0 and bidincrement = 0", accountIDFromRow, Integer.parseInt(CID));
 				    ResultSet rs1 = stmt.executeQuery(sql1);
@@ -653,7 +577,6 @@ public class ApplicationDB {
 						   	String sql2 = String.format("update clothing set cur_price = %f where CID = %d", priceOfRow, Integer.parseInt(CID));
 						   	stmt.executeUpdate(sql2);
 						   	price = String.valueOf(priceOfRow);
-						   	//System.out.println(price);
 					 		countNumberOfUpdates++;			    	
 					    }
 					    else if(maxprice > Float.valueOf(priceOfRow) && maxprice < upperlimit)
@@ -670,19 +593,15 @@ public class ApplicationDB {
 					    }
 					    else
 					   	{
-					    	//System.out.println("There is a manual bid made for this winning autobid");
 					   		countNumberOfUpdates = 0;
 					   	}
 					}
 					//if the current auto bid is less than the current price check if the update is possible and if so do it
 					else if(priceOfRow < Float.valueOf(price))
 					{
-						//System.out.println("Can it tell that the first bid is lower");
 						//can make a bid 
-			
 						if((Float.valueOf(price) + bidincrement) < upperlimit)
 						{
-							//System.out.println("Did i make it here to update Float.valueOf(price) + bidincrement");
 							Float newPrice = Float.valueOf(price) + bidincrement;
 							createBid(String.valueOf(newPrice), "0", accountIDFromRow, CID);
 						   	String sql2 = String.format("update clothing set cur_price = %f where CID = %d", newPrice, Integer.parseInt(CID));
@@ -690,7 +609,6 @@ public class ApplicationDB {
 						   	String sql3 = String.format("update bids set price = %f where Bid_ID = %d", newPrice, bidId);
 							stmt.executeUpdate(sql3);
 						   	price = String.valueOf(newPrice);
-						   	//System.out.println(price);
 					 		countNumberOfUpdates++;	
 						}
 						else if((Float.valueOf(price) + bidincrement) > upperlimit)
@@ -715,28 +633,20 @@ public class ApplicationDB {
 						}
 						else
 						{
-							//System.out.println("Reached upper limit of this autobid, alert in this case");
 							countNumberOfUpdates = 0;
 						}
 					}
 					else 
 					{
-						//System.out.println("Autobid price is equal to the current price");
 						countNumberOfUpdates = 0;
-						//System.out.println("Count number of updates:" + countNumberOfUpdates);
 					}		
 				}
 				con.close();
 				rs.close();
-				//rs1.close();
-				//System.out.println("Value of countNumberOfUpdates before returning" + countNumberOfUpdates);
 				if (countNumberOfUpdates != 0)
 				{
-					System.out.println("Recursion happens");
 					updateAutoBid(price, CID);
 				}
-				//MAY be issues here
-				//System.out.println("Count number of updates for it to be true" + countNumberOfUpdates);
 				return true;
 			}
 			catch (Exception ex)
@@ -1013,17 +923,51 @@ public class ApplicationDB {
 			// Iterates through the returned listings
 			while (rs.next()) {
 				cidList.add(String.valueOf(rs.getString("CID")));
-				System.out.println(String.valueOf(rs.getString("CID")));
 			}
 			rs.close();
 			
 			// Loops through the CIDs that the logged in user has participated in to get any potential alert messages
 			for (int i = 0; i < cidList.size(); i++) {
+				
+				String leadUser = "";
+				String leadPrice = "";
+				String upper = "";
+				String upperAlert = "";
+				
+				// Sql to see if upper_limit has been surpassed
+				String upperSQL = String.format("select * from bids where account_id = '%s'", user);
+				String leadUserSQL = String.format("select * from bids where cid = '%s'", cidList.get(i));
+				
+				ResultSet rsLead = stmt.executeQuery(leadUserSQL);
+
+				// Iterates through the returned bids
+				while (rsLead.next()) {
+					// Last user will be the user who is winning the listing
+					leadUser = rsLead.getString("account_id");
+					leadPrice = rsLead.getString("price");
+				}
+				rsLead.close();
+				
+				ResultSet rsUpper = stmt.executeQuery(upperSQL);
+
+				// Iterates through the returned bids
+				while (rsUpper.next()) {
+					// Last upper limit will be the most recent
+					upper = rsUpper.getString("upper_limit");
+				}
+				rsUpper.close();
+				
+				if (user.equals(leadUser)) {
+					upperAlert = "No";
+				} else if (!user.equals(leadUser) && Integer.valueOf(leadPrice) > Integer.valueOf(upper)) {
+					upperAlert = "Yes";
+				} else {
+					upperAlert = "No";
+				}
 		
 				int index = 0;
 				
 				String cid = cidList.get(i);
-				System.out.println(cid);
 				checkIfListingValid(Integer.valueOf(cid), user);
 				
 				// String array of alerts that will accumulate any alert messages specific to the logged in user
@@ -1050,7 +994,7 @@ public class ApplicationDB {
 					alerts[index] = "There has been a higher bid placed";
 					index++;
 				}
-				System.out.println("herehrehrh");
+				
 				if (endOfauction(today, Integer.valueOf(cid))) {
 					String winnerSQL = String.format("select account_id from bids where CID = '%d' and winner = 1", Integer.valueOf(cid));
 					
@@ -1075,7 +1019,7 @@ public class ApplicationDB {
 					index++;
 				}
 				
-				alerts[index] = "upper limit";
+				alerts[index] = upperAlert;
 				alertList.add(alerts);
 			}
 			
@@ -1151,7 +1095,6 @@ public class ApplicationDB {
 	private boolean accountIsValid(String accountID) {
 		try {
 			if (accountID.equals("")) {
-				System.out.println("Is the account empty");
 				return false;
 			}
 
@@ -1182,12 +1125,10 @@ public class ApplicationDB {
 			// Close the connection with no account match
 			rs.close();
 			con.close();
-			System.out.println("Account did not match");
 			return false;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Try catch failed");
 			return false;
 		}
 	}
@@ -1235,23 +1176,17 @@ public class ApplicationDB {
 				
 				//Run the query against the DB and retrieves results
 				ResultSet rs = stmt.executeQuery(sql);
-			//	System.out.println ("HERE: ");
 				
 				// Iterates through the returned rows (should only be 1 row) to see if if the account with the correct password exists
 				while (rs.next()) {
-					//System.out.println ("end date: " + sdf.parse(rs.getString("End_date")));
 					if (rs.getString("CID").equals(String.valueOf(CID)) && ( (sdf.parse(today).after(sdf.parse(rs.getString("End_date")))) || (sdf.parse(today).equals(sdf.parse(rs.getString("End_date"))))  )) {
-						//System.out.println("Time is up");
 						con.close();
 						rs.close();
-						//System.out.println ("HERE: worked");
 						return true;
 					} else {
-						//System.out.println ("HERE: midb");
 						break;
 					}
 				}
-				//System.out.println ("HERE: end ");
 				//Close the connection with no account match
 				rs.close();
 				con.close();
@@ -1259,7 +1194,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return false;
 			}
 		}
@@ -1282,7 +1216,6 @@ public class ApplicationDB {
 				// Iterates through the returned rows (should only be 1 row) to see if if the account with the correct password exists
 				while (rs.next()) {
 					if (rs.getString("Minimum") != null) {
-						//System.out.println ("HERE: worked2");
 						float minprice = Float.parseFloat(rs.getString("Minimum")); //this is the min price in our table as float
 						con.close();
 						rs.close();
@@ -1299,7 +1232,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return 0;
 			}
 		}
@@ -1322,7 +1254,6 @@ public class ApplicationDB {
 				while (rs.next()) {
 					
 					if (rs.getString("p") != null) {
-						//System.out.println ("HERE: worked3");
 						 highestBid = Float.parseFloat(rs.getString("p")); //this is the max bid price in our table
 						con.close();
 						rs.close();
@@ -1339,12 +1270,10 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return 0;
 			}
 		}
-		
-		
+				
 		public int highestBidAid (int CID){ //finds the highest bider account id on a cid
 			try {
 				//Get the database connection
@@ -1361,7 +1290,6 @@ public class ApplicationDB {
 				int accountW_highestBid = -1;
 				// Iterates through the returned rows (should only be 1 row) to see if if the account with the correct password exists
 				while (rs.next()) {
-					//System.out.println ("HERE: worked5");
 						 accountW_highestBid = Integer.parseInt(rs.getString("Bid_id")); //this is the min price in our table
 						con.close();
 						rs.close();
@@ -1375,7 +1303,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return -1;
 			}
 		}
@@ -1391,7 +1318,6 @@ public class ApplicationDB {
 			}
 		String setsWinner = String.format("update Bids set winner = '1' where Bid_id = '%d'", Bid_id);
 		
-		//System.out.println ("HERE: worked8");
 		try { //update 
 			stmt.executeUpdate(setsWinner);
 		} catch (SQLException e) {
@@ -1423,7 +1349,6 @@ public class ApplicationDB {
 			try {
 			
 			if (accountID.equals("")) {
-				System.out.println("Is the account empty");
 				return false;
 			}
 		
@@ -1435,17 +1360,14 @@ public class ApplicationDB {
 			 String tim = time.format(date);
 			 String today= (td + " " + tim);
 			 
-			 //System.out.println(today);
 			//When the user loads the auction, you check if it is expired or not and do the corresponding things
 			if (endOfauction(today, cid)) { //call function to determine that the date and time matches a product thats auction time is up
 				if ( minPrice(cid) == 0){ //means that there is no min value
-					float winBid = highestBid(cid);
 					int winnerBidID = highestBidAid(cid);//find the highest bid acc
 					setWinner(winnerBidID); //Store account with highest bid as winner in  bids table by setting winner value to 1
 					return false;
 				}
 				else if (minPrice(cid) <= highestBid(cid)){ //means there is a min value
-					float winBid = highestBid(cid);
 					int winnerBidID = highestBidAid(cid); //find the highest bid acc
 					setWinner(winnerBidID);//Store bid_id with highest bid as winner in bids table by setting winner value to 1
 					return false;
@@ -1456,7 +1378,6 @@ public class ApplicationDB {
 			
 			}
 			else {
-				//System.out.println("auction is not over");
 				return true;
 			}
 			
@@ -1481,7 +1402,6 @@ public class ApplicationDB {
 				ResultSet rs = stmt.executeQuery(sql);
 				String total = "";
 				while (rs.next()) {
-					//System.out.println ("HERE: worked5");
 						 total = rs.getString("p"); 
 						 if (total == null) {
 							 total = "0";
@@ -1498,7 +1418,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return "0";
 			}
 		}
@@ -1518,7 +1437,6 @@ public class ApplicationDB {
 				ResultSet rs = stmt.executeQuery(sql);
 				String total = "";
 				while (rs.next()) {
-					//System.out.println ("HERE: worked5");
 						 total = rs.getString("p"); 
 						 if (total == null) {
 							 total = "0";
@@ -1535,7 +1453,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return "0";
 			}
 		}
@@ -1554,7 +1471,6 @@ public class ApplicationDB {
 				ResultSet rs = stmt.executeQuery(sql);
 				String total = "";
 				while (rs.next()) {
-					//System.out.println ("HERE: worked5");
 						 total = rs.getString("p"); 
 						 if (total == null) {
 							 total = "0";
@@ -1570,7 +1486,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return "0";
 			}
 		}
@@ -1590,16 +1505,12 @@ public class ApplicationDB {
 				ResultSet rs = stmt.executeQuery(sql);
 				String total = "";
 				while (rs.next()) {
-					//System.out.println ("HERE: worked5");
 						 total = rs.getString("p");
-						 //System.out.println ("HERE: worked89");
 						 if (total == null) {
 							 total = "0";
-							// System.out.println ("HERE: sdsfewfr");
 						 }
 						con.close();
 						rs.close();
-						//System.out.println ("HERE: sxsaxsxaxas");
 						return total;	
 				}
 
@@ -1610,7 +1521,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return "0";
 			}
 		}
@@ -1647,7 +1557,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return "0";
 			}
 		}
@@ -1678,7 +1587,6 @@ public class ApplicationDB {
 				while (rs.next()) {
 					if (rs.getString("account_id").equals(givenAccountID)
 							) {
-						//System.out.println("ACCOUNT EXISTS - Logged In");
 						con.close();
 						rs.close();
 						return true;
@@ -1756,7 +1664,6 @@ public class ApplicationDB {
 				while (rs.next()) {
 					if (rs.getString("name").equals(item)
 							) {
-						//System.out.println("ACCOUNT EXISTS - Logged In");
 						con.close();
 						rs.close();
 						return true;
@@ -1789,7 +1696,6 @@ public class ApplicationDB {
 				ResultSet rs = stmt.executeQuery(sql);
 				String total = "";
 				while (rs.next()) {
-					//System.out.println ("HERE: worked5");
 						 total = rs.getString("p"); 
 						 if (total == null) {
 							 total = "0";
@@ -1805,7 +1711,6 @@ public class ApplicationDB {
 									
 			} catch (Exception ex) {
 				System.out.println(ex);
-				//System.out.println("Account Does Not Exist");
 				return "0";
 			}
 		}
@@ -1859,7 +1764,6 @@ public class ApplicationDB {
 						Statement stmt = con.createStatement();
 						
 						String sql1 = String.format("update QA set A='%s' where Q='%s'", A, Q);
-						//System.out.println(sql1);
 						stmt.executeUpdate(sql1);
 								
 								
@@ -1892,7 +1796,6 @@ public class ApplicationDB {
 									
 									
 						QAList.add(QAs);
-						System.out.println(rs.getString("Q"));
 						}
 						rs.close();
 								
@@ -2005,12 +1908,10 @@ public class ApplicationDB {
 					// Iterates through the returned rows (should only be 1 row) to see if if the
 					while (rs.next()) {
 						if (rs.getString("account_id").equals(givenAccountID)) {
-							System.out.println("ACCOUNT EXISTS - Can do edit account information operation");
 							
 							// update the account information
 							sql = "update account set password='"+newPasswd+"' where account_id='"+givenAccountID+"'";
 							stmt.executeUpdate(sql);
-							System.out.println(givenAccountID+" password update to "+ newPasswd);
 							rs.close();
 							con.close();
 							return true;
@@ -2054,12 +1955,10 @@ public class ApplicationDB {
 						// Iterates through the returned rows (should only be 1 row) to see if if the
 						while (rs.next()) {
 							if (rs.getString("Bid_ID").equals(bid_id)) {
-								System.out.println("Bid EXISTS - Can do remove bid operation");
 								
 								// update the account information
 								sql = String.format("delete from Bids where Bid_ID='%s' and account_id='%s' and CID='%s'",bid_id, bid_account, bid_cloth);
 								stmt.execute(sql);
-								System.out.println(bid_id+" has been deleted.");
 								rs.close();
 								con.close();
 								return true;
@@ -2099,14 +1998,10 @@ public class ApplicationDB {
 
 						// Iterates through the returned rows (should only be 1 row) to see if if the
 						while (rs.next()) {
-							if (rs.getString("CID").equals(String.valueOf(auc_cloth))) {
-								System.out.println("Cloth EXISTS - Can do remove auction operation");
-								
+							if (rs.getString("CID").equals(String.valueOf(auc_cloth))) {						
 								// update the account information
 								sql = String.format("delete from Clothing where CID=%s",auc_cloth);
 								stmt.execute(sql);
-								
-								System.out.println("Auction with cloth("+auc_cloth+") has been deleted.");
 								rs.close();
 								con.close();
 								return true;
@@ -2172,21 +2067,16 @@ public class ApplicationDB {
 						String sql = String.format(
 								"select account_id from account where account_id='%s'",
 								account_id);
-						//System.out.println(sql);
 						
 						// Run the query against the DB and retrieves results
 						ResultSet rs = stmt.executeQuery(sql);
 
 						// Iterates through the returned rows (should only be 1 row) to see if if the
 						while (rs.next()) {
-							if (rs.getString("account_id").equals(account_id)) {
-								System.out.println("Account EXISTS - Can do account deletion");
-								
+							if (rs.getString("account_id").equals(account_id)) {			
 								// update the account information
 								sql = String.format("delete from account where account_id='%s'",account_id);
 								stmt.execute(sql);
-								
-								System.out.println("Account "+account_id+" has been deleted.");
 								rs.close();
 								con.close();
 								return true;

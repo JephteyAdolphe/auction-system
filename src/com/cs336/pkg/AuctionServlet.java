@@ -41,11 +41,9 @@ public class AuctionServlet extends HttpServlet {
 				session = request.getSession();
 				// Checks if the given account id and password exists in the user account table
 				if (db.accountExists(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
-					System.out.println("Account matches");
 
 					if (db.isAdmin(request.getParameter("account_id").trim(), request.getParameter("password").trim()) == true ) {
 						if (db.isAdminTable(request.getParameter("account_id").trim())== true) { //if admin ( acc id in admin table and bool = 1)
-						//System.out.print("here");
 						session.setAttribute("user", request.getParameter("account_id").trim());
 						response.sendRedirect("Admindashboard.jsp");
 					}
@@ -75,13 +73,10 @@ public class AuctionServlet extends HttpServlet {
 				session = request.getSession();
 				// Checks if the given account id and password exists in the user account table
 				if (db.searchAccountExists(request.getParameter("Saccount_id").trim())) {
-					System.out.println("Account matches");
-					
-					
+							
 					session.setAttribute("suser", request.getParameter("Saccount_id").trim());
 					response.sendRedirect("EndUserSalesReport2.jsp");
 					
-					//response.sendRedirect("dashboard.jsp");
 				} else {
 					response.sendRedirect("wrong.jsp");
 				}
@@ -97,8 +92,6 @@ public class AuctionServlet extends HttpServlet {
 				session = request.getSession();
 				// Checks if the given account id and password exists in the user account table
 				if (db.searchItem(request.getParameter("Sname").trim())) {
-					//System.out.println("item matches");
-					
 					
 					session.setAttribute("Item", request.getParameter("Sname").trim());
 					response.sendRedirect("PerItemSalesReport2.jsp");
@@ -228,7 +221,6 @@ public class AuctionServlet extends HttpServlet {
 		        		request.getParameter("end_date").trim(), request.getParameter("end_time").trim(), request.getParameter("min_price").trim())) {
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
-		        	//System.out.println("Are we here?");
 		        	response.sendRedirect("invalidListing.jsp");
 		        }
 				
@@ -244,7 +236,6 @@ public class AuctionServlet extends HttpServlet {
 
 				// If account creation is successful then user is sent to the main login page else they are sent to an error page
 				if (db.createAccount(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
-					System.out.println("Account Successfully Created!");
 					response.sendRedirect("main.jsp");
 				} else{
 					response.sendRedirect("wrong.jsp");
@@ -263,15 +254,10 @@ public class AuctionServlet extends HttpServlet {
 				
 			    String cid = String.valueOf(session.getAttribute("cid"));
 				String currPrice = String.valueOf(session.getAttribute("currPrice"));
-				//System.out.println("currPrice");
 				String bidIncrementForItem = String.valueOf(session.getAttribute("bidIncrementForItem"));
 				float bidIncrement = Float.valueOf(bidIncrementForItem);
 				float currentPrice = Float.valueOf(currPrice);
 				//Make BID
-				//need to get account_id and CID
-				//is working when i hard code account_id and cid but currently null because idk how to get values
-				//price may need to be updated because idk if i should make it the starting price seller put + bid price or
-				//force bid price to above previous bids and starting price or in general how to do it
 			    String upperLimit = "-1";
 			    
 			    //check if manual bid
@@ -289,7 +275,6 @@ public class AuctionServlet extends HttpServlet {
 				    	if(Float.valueOf(request.getParameter("price")) > currentPrice && db.createBid(request.getParameter("price").trim(), upperLimit, 
 								String.valueOf(session.getAttribute("user")), cid))
 						{
-							System.out.println("Bid made successfully");
 							response.sendRedirect("dashboard.jsp");
 						} //error bidprice isn't higher than current price
 						else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
@@ -303,27 +288,31 @@ public class AuctionServlet extends HttpServlet {
 			    	}
 			    	else
 			    	{
-			    		System.out.println("The bid price must be higher than the bid increment specified by the buyer");
-			    		response.sendRedirect("wrong.jsp");
+			    		response.sendRedirect("BidIncrementError.jsp");
 			    	}
-			    	//update all autobids 
+			    	//update the autobids
+			    	if(Float.valueOf((String)session.getAttribute("currPrice")) > Float.valueOf(request.getParameter("price")))
+				    {
+			    		db.updateAutoBid((String)session.getAttribute("currPrice"), cid);
+				    }
+				    else
+				    {
+				    	db.updateAutoBid(String.valueOf(request.getParameter("price")), cid);
+				    } 
 			    }//fields not typed in correctly
 			    else if(request.getParameter("upperLimit").equals("") && !request.getParameter("bidIncrement").equals(""))
 			    {
-			    	System.out.println("Input both upperLimit and bidIncrement for an autobid or only price for a manual bid");
-			    	response.sendRedirect("wrong.jsp");
+			    	response.sendRedirect("BidInputError.jsp");
 			    }
 			    else if(!request.getParameter("upperLimit").equals("") && request.getParameter("bidIncrement").equals(""))
 			    {
-			    	System.out.println("Input both upperLimit and bidIncrement for an autobid or only price for a manual bid");
-			    	response.sendRedirect("wrong.jsp");
+			    	response.sendRedirect("BidInputError.jsp");
 			    }
-			    else //autobid
+			    else //make an autobid
 			    {
 			    	
 			    	if(request.getParameter("bidIncrement").equals("") || request.getParameter("upperLimit").equals("") || request.getParameter("bidIncrement").equals(""))
 			    	{
-			    		System.out.println("Input all fields to auto increment");
 			    		response.sendRedirect("wrong.jsp");
 			    	}
 			    	if(Float.valueOf(request.getParameter("price")) >= bidIncrement + currentPrice && Float.valueOf(request.getParameter("upperLimit")) > Float.valueOf(request.getParameter("price").trim()) && Float.valueOf(request.getParameter("bidIncrement").trim()) >= bidIncrement)
@@ -331,7 +320,6 @@ public class AuctionServlet extends HttpServlet {
 			    		if(Float.valueOf(request.getParameter("price")) > currentPrice && db.createAutoBid(request.getParameter("price").trim(), request.getParameter("upperLimit").trim(), 
 				    			request.getParameter("bidIncrement").trim(), String.valueOf(session.getAttribute("user")), cid))
 						{
-							System.out.println("Bid made successfully");
 							response.sendRedirect("dashboard.jsp");
 						} //error bidprice isn't higher than current price
 						else if (Float.valueOf(request.getParameter("price")) <= currentPrice)
@@ -347,28 +335,14 @@ public class AuctionServlet extends HttpServlet {
 			    	{
 			    		response.sendRedirect("InvalidInput.jsp");
 			    	}
-			    }
-			    
-			    if(Float.valueOf((String)session.getAttribute("currPrice")) > Float.valueOf(request.getParameter("price")))
-			    {
-			    	if(db.updateAutoBid((String)session.getAttribute("currPrice"), cid))
+			    	//update autobids
+			    	if(Float.valueOf((String)session.getAttribute("currPrice")) > Float.valueOf(request.getParameter("price")))
 				    {
-				    	System.out.println("updated");
+			    		db.updateAutoBid((String)session.getAttribute("currPrice"), cid);
 				    }
 				    else
 				    {
-				    	System.out.println("didn't update properly");
-				    }
-			    }
-			    else
-			    {
-			    	if(db.updateAutoBid(String.valueOf(request.getParameter("price")), cid))
-				    {
-				    	System.out.println("updated");
-				    }
-				    else
-				    {
-				    	System.out.println("didn't update properly");
+				    	db.updateAutoBid(String.valueOf(request.getParameter("price")), cid);
 				    }
 			    }
 			} 
@@ -378,16 +352,14 @@ public class AuctionServlet extends HttpServlet {
 				response.sendRedirect("wrong.jsp");
 			}
 		}
-		else if (request.getParameter("create_CRuser_form") != null){ ////
+		else if (request.getParameter("create_CRuser_form") != null){
 			 try {
 					// Sign Up
-
 					// If account creation is successful then user is sent to the main login page else they are sent to an error page
 					if (db.createCRAccount(request.getParameter("account_id").trim(), request.getParameter("password").trim())) {
-						System.out.println("Account Successfully Created!");
 						response.sendRedirect("Admindashboard.jsp");
 					} else{
-						response.sendRedirect("wrong.jsp");
+						response.sendRedirect("CRAccountFailed.jsp");
 					}
 					
 				} catch (Exception ex) {
@@ -411,10 +383,9 @@ public class AuctionServlet extends HttpServlet {
 			try {
 				// If listing creation is successful then user is sent to the dash board else they are sent to an error page
 				if (db.createWatchAlert(request.getParameter("item_name").trim(), String.valueOf(session.getAttribute("user")))) {
-					System.out.println("Alert Created!");
 		        	response.sendRedirect("dashboard.jsp");
 		        } else {
-		        	response.sendRedirect("wrong.jsp");
+		        	response.sendRedirect("CreateAlertError.jsp");
 		        }
 				
 			} catch (Exception ex) {
@@ -425,7 +396,8 @@ public class AuctionServlet extends HttpServlet {
 		}
 		else if (request.getParameter("del_account")!=null) 
 		 {
-			 if (db.delAccount(request.getParameter("del_account"))) {System.out.println("Redirect");}
+			 db.delAccount(request.getParameter("del_account"));
+	 
 			 response.sendRedirect("main.jsp");
 		 }
 		

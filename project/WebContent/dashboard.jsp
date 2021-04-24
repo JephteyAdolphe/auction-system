@@ -102,6 +102,10 @@
             <form method="get" action="customer_representative_functions.jsp"><input type="submit" value="Customer Representative Service">
             </form>
             </p>
+            
+            <form method="post" id="del_account" action="auctionServlet">
+            <input type="hidden" name="del_account" value=<%=test%>>
+            <input type="submit" value="Delete Current Account (Dangerous Operation!)"></form>
         
 </body>
 </html>

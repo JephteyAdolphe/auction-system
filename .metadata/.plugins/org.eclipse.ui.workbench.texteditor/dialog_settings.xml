@@ -6,23 +6,23 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="similar"/>
+		<item key="selection" value="createW"/>
 		<list key="findhistory">
-			<item value="similar"/>
+			<item value="createw"/>
+			<item value="duplicate"/>
 			<item value="getlist"/>
-			<item value="getbidderhi"/>
 			<item value="getaler"/>
+			<item value="createlisting"/>
+			<item value="listin"/>
+			<item value="personal"/>
+			<item value="similar"/>
+			<item value="getbidderhi"/>
 			<item value=" %s"/>
 			<item value="properly"/>
 			<item value="autobid"/>
 			<item value="auto"/>
 			<item value="createlis"/>
 			<item value="bidderh"/>
-			<item value="minprice"/>
-			<item value="endofauction"/>
-			<item value="setwinner"/>
-			<item value="getlisting"/>
-			<item value="winner"/>
 		</list>
 		<list key="replacehistory">
 			<item value="auctionList"/>

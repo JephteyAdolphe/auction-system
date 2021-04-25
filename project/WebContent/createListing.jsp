@@ -51,6 +51,7 @@
          			Clothing Size:</p></td><td>
          			
 						<select name="clothing_size" id="size" >
+						<option value="null">null</option>
 						  <option value="small">Small</option>
 						  <option value="medium">Medium</option>
 						  <option value="large">Large</option>
@@ -63,6 +64,7 @@
          			Shoes Size:</p></td><td>
          			
 						<select name="shoe_size" id="size" >
+						<option value="null">null</option>
 						  <option value="8">8</option>
 						  <option value="8.5">8.5</option>
 						  <option value="9">9</option>
@@ -76,7 +78,7 @@
 				</tr>
 				<tr>
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
-         			Bid Increment:</p></td><td><input type="number" name="bid_increment"></td>
+         			Bid Increment:</p></td><td><input type="number" min="0.00" step="0.01" name="bid_increment"></td>
 				</tr>
 				<tr>    
 					<td> <p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
@@ -88,7 +90,7 @@
 				</tr>
 				<tr>
 					<td><p style="font-family:georgia,garamond,serif;font-size:16px;color:white;">
-         			Minimum Reserve Price:</p></td><td><input type="number" min="0.00" step="0.01" value="0.01" name="min_price"></td>
+         			Minimum Reserve Price:</p></td><td><input type="number" min="0.00" step="0.01" value="0.00" name="min_price"></td>
 				</tr>
 			</table>
 			</div>

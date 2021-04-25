@@ -16,8 +16,8 @@
     <title>Insert title here</title>
 </head>
 <%
-	ApplicationDB db=new ApplicationDB();
-	ArrayList<String[]> alertList = new ArrayList<String[]>();
+	ApplicationDB db=new ApplicationDB(); ArrayList<String[]> alertList = new ArrayList<String[]>();
+	db.loopListing();
 	String user = String.valueOf(session.getAttribute("user"));
 	System.out.println(user);
 		

@@ -17,7 +17,7 @@
 	 <form method="get" action="Admindashboard.jsp"><input type="submit" value="back to dashboard"></form>
 	<% 
 	ApplicationDB db = new ApplicationDB();
-	
+	db.loopListing();
 	String searchName =String.valueOf(session.getAttribute("suser"));
 	String total = db.userEarnings(searchName); %>
 	<p style="font-family:georgia,garamond,serif;font-size:24px;font-style:bold;color:white;">

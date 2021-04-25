@@ -17,6 +17,7 @@
 </head>
 <%
 	ApplicationDB db=new ApplicationDB();
+	db.loopListing();
 	ArrayList<String[]> itemList = new ArrayList<String[]>();
 	itemList = db.topItems();	
         %>
@@ -31,6 +32,8 @@
                 <thead>
                     <tr>
                         <th>Item</th>
+                        <th>Brand</th>
+                        <th>Category</th>
                         <th># of sales</th>
 
                     </tr>
@@ -45,6 +48,13 @@
                                     <%=itemList.get(i)[j]%>
                                 </td>
                                 <% } %>
+                                <%-- <td>
+                                    <form name="bidder_history_form" method="get" action="auctionServlet">
+                                    <input type="hidden" name="bidder_history_form" value="123">
+                                    <input type="hidden" name="bidder" value=<%=bidderList.get(i)[2]%>>
+                                    <input type="hidden" name="cid" value=<%=bidderList.get(i)[3]%>>
+                                    <input type="submit" value = "View"></form>
+                                </td> --%>
                         </tr>
                         <% } 
                     %>

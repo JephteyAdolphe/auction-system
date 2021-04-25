@@ -17,10 +17,8 @@
 </head>
 <% ApplicationDB db=new ApplicationDB(); ArrayList<String[]> itemList = new ArrayList<String[]>();
         itemList = db.getListings();
-
 		String account_id = String.valueOf(request.getAttribute("user"));
 		String test = String.valueOf(session.getAttribute("user"));
-
         %>
 
         <body>
@@ -28,7 +26,10 @@
             <form method="get" action="main.jsp"><input type="submit" value="Log Out"></form>
             <form method="get" action="createListing.jsp"><input type="submit" value="Create A Listing"></form>
             <form method="get" action="alert.jsp"><input type="submit" value="Go To Alerts"></form>
-            <form method="get" action="personal_history.jsp"><input type="submit" value="View Auction History"></form>
+            <form method="get" action="personal_history.jsp"><input type="submit" value="My Bid History"></form>
+            <form method="get" action="personal_sell_history.jsp"><input type="submit" value="My Selling History"></form>
+            <form method="get" action="create_watching_alert.jsp"><input type="submit" value="Create Watch Alert for Item"></form>
+            <form method="get" action="my_watching_alerts.jsp"><input type="submit" value="View My Watch Alerts"></form>
 
             <table id="table_id" class="display">
                 <thead>
@@ -39,6 +40,7 @@
                         <th>Brand</th>
                         <th>Name</th>
                         <th>Current Price</th>
+                        <th>Min Bid Increment</th>
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Seller</th>
@@ -63,10 +65,13 @@
 
                                 <% } %>
                                 <td>
+                                	
                                     <form name="bid_form" method="get" action="auctionServlet">
                                     <input type="hidden" name="bid_form" value="123">
                                     <input type="hidden" name="cid" value=<%=itemList.get(i)[0]%>>
-                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[7]%>>
+                                    <input type="hidden" name="seller" value=<%=itemList.get(i)[9]%>>
+                                    <input type="hidden" name="bidIncrementForItem" value=<%=itemList.get(i)[6]%>>
+                                    <input type="hidden" name="currPrice" value=<%=itemList.get(i)[5]%>>
                                     <input type="submit" value = "Make Bid"></form>
                                 </td>
                                 <td>
@@ -93,6 +98,10 @@
                     $('#table_id').DataTable();
                 });
             </script>
+            <p>
+            <form method="get" action="customer_representative_functions.jsp"><input type="submit" value="Customer Representative Service">
+            </form>
+            </p>
         
 </body>
 </html>
